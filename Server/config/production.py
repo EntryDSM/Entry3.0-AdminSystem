@@ -4,6 +4,7 @@ from config import Config
 
 
 class ProductionConfig(Config):
+    # get host ip
     HOST = socket.gethostbyname(socket.gethostname())
     PORT = 80
     DEBUG = False
@@ -14,4 +15,4 @@ class ProductionConfig(Config):
         'debug': DEBUG
     })
 
-    Config.SWAGGER['host'] = '{}:{}'.format(Config.REPRESENTATIVE_HOST or HOST, PORT)
+    Config.SWAGGER['host'] = '{}:{}'.format(Config.DOMAIN or HOST, PORT)

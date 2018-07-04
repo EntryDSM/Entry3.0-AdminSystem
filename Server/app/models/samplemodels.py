@@ -1,11 +1,6 @@
-from peewee import Model, CharField
+from peewee import CharField
 
-from app.models import mysql_db
-
-
-class BaseModel(Model):
-    class Meta:
-        database = mysql_db
+from app.models import BaseModel
 
 
 class User(BaseModel):
