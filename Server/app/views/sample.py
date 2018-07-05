@@ -3,7 +3,7 @@ from flask import Blueprint, request, Response
 from flask_restful import Api
 
 from app.docs.sample import *
-from app.views import BaseResource, json_required, gzipped
+from app.views import BaseResource
 from app.models.samplemodels import User, Dot
 
 api = Api(Blueprint('/sample', __name__))
@@ -13,7 +13,6 @@ api.prefix = '/prefix'
 @api.resource('/sample')
 class Sample(BaseResource):
     @swag_from(SAMPLE_POST)
-    @gzipped
     @json_required({'name': str, 'age': int})
     def post(self):
         payload = request.json
