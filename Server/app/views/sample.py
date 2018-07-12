@@ -13,7 +13,6 @@ api.prefix = '/prefix'
 @api.resource('/sample')
 class Sample(BaseResource):
     @swag_from(SAMPLE_POST)
-    @json_required({'name': str, 'age': int})
     def post(self):
         payload = request.json
 
