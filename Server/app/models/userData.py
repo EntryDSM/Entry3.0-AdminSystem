@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from peewee import CharField, DateTimeField
-
-from app.models import BaseModel
+from app.models import db
 
 
-class User(BaseModel):
-    id = CharField(primary_key=True, max_length=32)
-    email = CharField(unique=True, max_length=50, null=False)
-    password = CharField(max_length=100, null=False)
-    create_at = DateTimeField(null=True, default=datetime.now)
+class UserModel(db.Model):
+    __tablename__ = 'User'
+
+    user_id = db.Column(db.String(32), primary_key=True)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    create_at = db.Column(db.DateTime, default=datetime.now)
