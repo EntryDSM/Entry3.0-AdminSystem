@@ -4,7 +4,7 @@ from flask_restful import Api
 
 from app.docs.sample import *
 from app.views import BaseResource
-from app.models.samplemodels import User, Dot
+# from app.models.userData import User, Dot
 
 api = Api(Blueprint('/sample', __name__))
 api.prefix = '/prefix'
@@ -25,10 +25,4 @@ class Sample(BaseResource):
 @api.resource('/save')
 class Peewee(BaseResource):
     def post(self):
-        name = request.form['name']
-        dot = request.form['dot']
-
-        User(username=name).save()
-        Dot(dots=dot).save()
-
-        return Response('peewee!', 201)
+        pass

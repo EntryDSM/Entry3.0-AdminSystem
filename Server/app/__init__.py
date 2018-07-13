@@ -3,7 +3,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
-from app.models.samplemodels import *
+from app.models.userData import User
+from app.models.infoData import Info
 from app.models import mysql_db
 from app.views import Router
 
@@ -29,6 +30,7 @@ def create_app(*config_cls):
     Swagger(template=app_.config['SWAGGER_TEMPLATE']).init_app(app_)
     Router().init_app(app_)
 
-    mysql_db.create_tables([User, Dot])
+    mysql_db.connect()
+    mysql_db.create_tables([User, Info])
 
     return app_
