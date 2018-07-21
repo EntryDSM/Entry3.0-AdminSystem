@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import LoginInput from './LoginInput';
+import LoginButton from './LoginButton';
 
 const Box = styled.div`
   position: absolute;
@@ -18,15 +20,20 @@ const Box = styled.div`
 
 const HeaderTitle = styled.p`
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #fff;
 `
 
 const HeaderSubTitle = styled.p`
   margin: 0;
-  font-size: 15px;
+  margin-top: 15px;
+  font-size: 13px;
   color: #fff;
+`
+
+const InputBox = styled.div`
+  
 `
 
 const LoginBox = () => {
@@ -34,6 +41,11 @@ const LoginBox = () => {
     <Box>
       <HeaderTitle>관리자 로그인</HeaderTitle>
       <HeaderSubTitle>부여받은 아이디와 비밀번호를 입력하시오</HeaderSubTitle>
+      <InputBox>
+        <LoginInput label='ID' type='text' />
+        <LoginInput label='Password' type='password' />
+      </InputBox>
+      <LoginButton />
     </Box>
   );
 }
