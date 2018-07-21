@@ -18,13 +18,7 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=3)
     JWT_HEADER_TYPE = 'JWT'
 
-    MYSQL_SETTING = {
-        'name': SERVICE_NAME_UPPER,
-        'user': 'root',
-        'password': 'germany33',
-        'host': 'localhost',
-        'port': 3306
-    }
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:germany33@localhost:3306/" + SERVICE_NAME
 
     SWAGGER = {
         'title': SERVICE_NAME,
