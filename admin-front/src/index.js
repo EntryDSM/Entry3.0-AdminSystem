@@ -1,6 +1,7 @@
 import React from 'react';
 import { Login } from './containers';
 import { render } from 'react-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { injectGlobal } from 'styled-components';
 
 injectGlobal`
@@ -12,4 +13,10 @@ injectGlobal`
 `
 
 const root = document.getElementById('root');
-render(<Login />, root);
+render(
+  <Router>
+    <Switch>
+      <Route path='/login' component={Login} />
+    </Switch>
+  </Router> 
+, root);

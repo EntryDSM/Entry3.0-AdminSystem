@@ -32,10 +32,10 @@ const Label = styled.div`
   box-sizing: border-box;
 `
 
-const LoginInput = ({ label, type }) =>
+const LoginInput = ({ label, type, event }) =>
   <InputWrapper>
     <Label>{label}</Label>
-    <Input name={label} type={type} />
+    <Input name={label} type={type} onChange={event} />
   </InputWrapper>
 
 export default LoginInput;
