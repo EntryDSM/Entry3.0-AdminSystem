@@ -32,7 +32,7 @@ class InfoModel(db.Model):
     __tablename__ = 'info'
 
     # one to one
-    user_id = db.Column(db.String(32), db.ForeignKey('user.user_id'), primary_key=True)
+    user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
     address_base = db.Column(db.String(100), nullable=False, default="")
     address_detail = db.Column(db.String(50), nullable=False, default="")
     admission = db.Column(db.Enum(AdmissionChoice), nullable=False, default=AdmissionChoice.NORMAL)
