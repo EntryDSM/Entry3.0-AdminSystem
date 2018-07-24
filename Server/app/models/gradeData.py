@@ -30,10 +30,10 @@ class GraduateInfoModel(db.Model):
 
     # one to one
     user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
-    grade_year = db.Column(Integer(), nullable=False, default=2019)
+    graduate_year = db.Column(Integer(unsigned=True), nullable=False, default=2019)
     school_code = db.Column(db.String(32), nullable=False, default="")
     school_name = db.Column(db.String(50), nullable=False, default="")
-    student_number = db.Column(db.String(5), nullable=False)
+    student_number = db.Column(db.String(5), nullable=False, default="")
 
 
 class GraduateGradeModel(db.Model):
@@ -42,11 +42,11 @@ class GraduateGradeModel(db.Model):
     # one to one
     user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
     final_score = db.Column(Double(), nullable=False, default=0.0)
-    volunteer_time = db.Column(Integer(), nullable=False, default=0)
-    period_cut = db.Column(Integer(), nullable=False, default=0)
-    full_cut = db.Column(Integer(), nullable=False, default=0)
-    late = db.Column(Integer(), nullable=False, default=0)
-    early_leave = db.Column(Integer(), nullable=False, default=0)
+    volunteer_time = db.Column(Integer(unsigned=True), nullable=False, default=0)
+    period_cut = db.Column(Integer(unsigned=True), nullable=False, default=0)
+    full_cut = db.Column(Integer(unsigned=True), nullable=False, default=0)
+    late = db.Column(Integer(unsigned=True), nullable=False, default=0)
+    early_leave = db.Column(Integer(unsigned=True), nullable=False, default=0)
 
 
 class GradeInfoModel(db.Model):
@@ -54,7 +54,7 @@ class GradeInfoModel(db.Model):
 
     # one to many
     user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
-    is_pass = db.Column(db.Boolean, nullable=True, default=True)
+    is_pass = db.Column(db.Boolean, nullable=False, default=True)
     score = db.Column(db.Enum(ScoreChoice), nullable=True)
     semester = db.Column(Integer(), primary_key=True)
     subject = db.Column(db.Eum(SubjectChoice), primary_key=True)

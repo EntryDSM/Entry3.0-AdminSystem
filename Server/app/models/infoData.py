@@ -24,8 +24,8 @@ class AdmissionDetailChoice(Enum):
 
 
 class SexChoice(Enum):
-    FEMALE = 0
-    MALE = 1
+    FEMALE = 1
+    MALE = 2
 
 
 class InfoModel(db.Model):
