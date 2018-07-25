@@ -34,7 +34,7 @@ def check_auth(model):
     return decorator
 
 
-def whether_json(essential_keys):
+def check_json(essential_keys):
     """
     Check about essential json data
     - whether data is json
@@ -46,8 +46,9 @@ def whether_json(essential_keys):
             if not request.is_json:
                 abort(406)
 
-            for k, t in enumerate(essential_keys):
+            for k, t in essential_keys.items():
                 if k not in request.json or type(request.json[k]) is not t:
+                    print(k)
                     abort(400)
 
             return original_func(*args, **kwargs)
@@ -85,3 +86,6 @@ class Router:
 
         from app.views import sample
         app.register_blueprint(sample.api.blueprint)
+
+        from app.views import auth
+        app.register_blueprint(auth.api.blueprint)
