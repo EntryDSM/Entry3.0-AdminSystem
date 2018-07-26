@@ -36,7 +36,7 @@ class InfoModel(db.Model):
     address_base = db.Column(db.String(100), nullable=False, default="")
     address_detail = db.Column(db.String(50), nullable=False, default="")
     admission = db.Column(db.Enum(AdmissionChoice), nullable=False, default=AdmissionChoice.NORMAL)
-    admission_detail = db.Cloumn(db.Enum(AdmissionDetailChoice), nullable=False, default=AdmissionDetailChoice.DEFAULT)
+    admission_detail = db.Column(db.Enum(AdmissionDetailChoice), nullable=False, default=AdmissionDetailChoice.DEFAULT)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     exam_code = db.Column(db.String(6), nullable=True, unique=True)
     img_path = db.Column(db.String(50), nullable=True, unique=True)

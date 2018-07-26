@@ -2,6 +2,7 @@ from enum import Enum
 
 from sqlalchemy.dialects.mysql import INTEGER as Integer
 from sqlalchemy.dialects.mysql import DOUBLE as Double
+from sqlalchemy import PrimaryKeyConstraint
 
 from app.models import db
 
@@ -15,7 +16,7 @@ class ScoreChoice(Enum):
     F = 6
 
 
-class SubjectChoice(db.Model):
+class SubjectChoice(Enum):
     KOREAN = 1
     MATHEMATICS = 2
     SOCIAL = 3
@@ -57,7 +58,12 @@ class GradeInfoModel(db.Model):
     is_pass = db.Column(db.Boolean, nullable=False, default=True)
     score = db.Column(db.Enum(ScoreChoice), nullable=True)
     semester = db.Column(Integer(), primary_key=True)
-    subject = db.Column(db.Eum(SubjectChoice), primary_key=True)
+    subject = db.Column(db.Enum(SubjectChoice), primary_key=True)
+
+    # __table_args__ = (
+    #     PrimaryKeyConstraint('user_id', 'semester'),
+    #     {},
+    # )
 
 
 class GedGradeModel(db.Model):
