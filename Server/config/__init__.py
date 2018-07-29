@@ -45,6 +45,10 @@ class Config:
             {
                 'name': '[계정]',
                 'description': 'admin 계정관련 API'
+            },
+            {
+                'name': '[지원자 관리]',
+                'description': '지원자 관리 API'
             }
         ]
     }
