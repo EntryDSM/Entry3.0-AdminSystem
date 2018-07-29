@@ -69,6 +69,12 @@ class BaseResource(Resource):
             **kwargs
         )
 
+    @classmethod
+    def str_to_bool(cls, val):
+        if val == 'false':
+            val = None
+        return bool(val)
+
     class ValidationError(Exception):
         def __init__(self, description='', *args):
             self.description = description
