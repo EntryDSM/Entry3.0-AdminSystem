@@ -47,7 +47,6 @@ VIEW_APPLICANTS_GET = {
                         'receipt_code': 111,
                         'name': '정경서',
                         'region': '전국',
-                        'school': '군서중학교',
                         'type': 'normal',
                         'receipt': True,
                         'payment': True
@@ -56,7 +55,6 @@ VIEW_APPLICANTS_GET = {
                         'receipt_code': 112,
                         'name': '정근철',
                         'region': '전국',
-                        'school': '해솔중',
                         'type': 'meister',
                         'receipt': False,
                         'payment': True
@@ -65,7 +63,6 @@ VIEW_APPLICANTS_GET = {
                         'receipt_code': 113,
                         'name': '엔트리',
                         'region': '전국',
-                        'school': '서울대학교사범대학부설중학교',
                         'type': 'social',
                         'receipt': False,
                         'payment': False
@@ -75,6 +72,39 @@ VIEW_APPLICANTS_GET = {
         },
         '400': {
             'description': '요청 불가능한 검색 조건'
+        }
+    }
+}
+
+PRINT_APPLICANTS_AS_EXCEL_POST = {
+    'tags': ['[지원자 관리]'],
+    'description': '원하는 학생들의 정보를 엑셀로 출력',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    "produces": [
+       "text/csv"
+    ],
+    'responses': {
+        '201': {
+            'description': 'Success : csv file response ',
+            'content-type': 'text/csv',
+            'examples': {
+                'Response Headers': {
+                    'Content-Disposition': 'attachment; filename=applicants.csv',
+                    'Content-type': 'text/csv'
+                },
+                'Response Body': 'receipt_code,name,region,type,receipt,payment\n'
+                        '112,차태민,전국,meister,False,False\n'
+                        '113,연준모,대전,normal,True,True\n'
+                        '114,백팡민,전국,normal,True,False\n'
+            }
         }
     }
 }
