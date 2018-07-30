@@ -21,23 +21,23 @@ class ViewApplicants(BaseResource):
     def get(self):
         search_word = request.args.get('search')
         search_condition = request.args.get('condition')
-        checking_submit = request.args.get('submit')
+        checking_receipt = request.args.get('receipt')
         checking_payment = request.args.get('payment')
 
-        # info(admission, region, receipt_code, name), apply_status(final_submit, payment), graduate_info(school_name)
+        # info(admission, region, receipt_code, name), apply_status(receipt, payment), graduate_info(school_name)
         join_res = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
             .join(InfoModel)\
             .join(ApplyStatusModel)\
             .join(GraduateInfoModel)\
 
-        if not (checking_submit and checking_payment):
+        if not (checking_receipt and checking_payment):
             # 제출-전형료 조건 없음
             filtering_res = join_res
 
         else:
             # 제출-전형료 조건 있음
             filtering_res = join_res\
-                .filter(ApplyStatusModel.final_submit == ViewApplicants.str_to_bool(checking_submit))\
+                .filter(ApplyStatusModel.receipt == ViewApplicants.str_to_bool(checking_receipt))\
                 .filter(ApplyStatusModel.payment == ViewApplicants.str_to_bool(checking_payment))
 
         final_res = []
@@ -63,11 +63,17 @@ class ViewApplicants(BaseResource):
             abort(400)
 
         return [{
-            'receipt': student.InfoModel.receipt_code,
+            'receipt_code': student.InfoModel.receipt_code,
             'name': student.InfoModel.name,
             'region': '대전' if student.InfoModel.region is True else '전국',
             'school': student.GraduateInfoModel.school_name,
             'type': str(student.InfoModel.admission).split('.')[1].lower(),
-            'submit': student.ApplyStatusModel.final_submit,
+            'receipt': student.ApplyStatusModel.receipt,
             'payment': student.ApplyStatusModel.payment
         } for student in final_res], 200
+
+
+@api.resource('/applicants/excel')
+class PrintExcel(BaseResource):
+    def post(self):
+        pass

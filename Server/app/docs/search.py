@@ -24,7 +24,7 @@ VIEW_APPLICANTS_GET = {
             'required': False
         },
         {
-            'name': 'submit',
+            'name': 'receipt',
             'description': '제출 여부(true or false)',
             'in': 'query',
             'type': 'str',
@@ -44,30 +44,30 @@ VIEW_APPLICANTS_GET = {
             'examples': {
                 '조건없는 예시 데이터': [
                     {
-                        'receipt': 111,
+                        'receipt_code': 111,
                         'name': '정경서',
                         'region': '전국',
                         'school': '군서중학교',
                         'type': 'normal',
-                        'submit': True,
+                        'receipt': True,
                         'payment': True
                     },
                     {
-                        'receipt': 112,
+                        'receipt_code': 112,
                         'name': '정근철',
                         'region': '전국',
                         'school': '해솔중',
                         'type': 'meister',
-                        'submit': False,
+                        'receipt': False,
                         'payment': True
                     },
                     {
-                        'receipt': 113,
+                        'receipt_code': 113,
                         'name': '엔트리',
                         'region': '전국',
                         'school': '서울대학교사범대학부설중학교',
                         'type': 'social',
-                        'submit': False,
+                        'receipt': False,
                         'payment': False
                     }
                 ]
