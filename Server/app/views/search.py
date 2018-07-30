@@ -1,4 +1,7 @@
-from flask import Blueprint, request, abort
+import csv
+from io import StringIO
+
+from flask import Blueprint, request, abort, make_response
 from flask_restful import Api
 from flasgger import swag_from
 
@@ -9,7 +12,7 @@ from app.models.userData import UserModel, ApplyStatusModel
 from app.models.infoData import InfoModel, AdmissionChoice
 from app.models.gradeData import GraduateInfoModel
 
-from app.docs.search import VIEW_APPLICANTS_GET
+from app.docs.search import VIEW_APPLICANTS_GET, PRINT_APPLICANTS_AS_EXCEL_POST
 
 api = Api(Blueprint(__name__, __name__))
 
@@ -24,11 +27,10 @@ class ViewApplicants(BaseResource):
         checking_receipt = request.args.get('receipt')
         checking_payment = request.args.get('payment')
 
-        # info(admission, region, receipt_code, name), apply_status(receipt, payment), graduate_info(school_name)
-        join_res = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
+        # info(admission, region, receipt_code, name), apply_status(receipt, payment)
+        join_res = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
             .join(InfoModel)\
             .join(ApplyStatusModel)\
-            .join(GraduateInfoModel)\
 
         if not (checking_receipt and checking_payment):
             # 제출-전형료 조건 없음
@@ -66,7 +68,6 @@ class ViewApplicants(BaseResource):
             'receipt_code': student.InfoModel.receipt_code,
             'name': student.InfoModel.name,
             'region': '대전' if student.InfoModel.region is True else '전국',
-            'school': student.GraduateInfoModel.school_name,
             'type': str(student.InfoModel.admission).split('.')[1].lower(),
             'receipt': student.ApplyStatusModel.receipt,
             'payment': student.ApplyStatusModel.payment
@@ -75,5 +76,21 @@ class ViewApplicants(BaseResource):
 
 @api.resource('/applicants/excel')
 class PrintExcel(BaseResource):
+    @swag_from(PRINT_APPLICANTS_AS_EXCEL_POST)
+    @check_auth()
     def post(self):
-        pass
+        search_res = request.json
+        print(request.json['name'])
+        si = StringIO()
+        si.write(u'\ufeff')
+        f = csv.writer(si)
+
+        f.writerow(["receipt_code", "name", "region", "type", "receipt", "payment"])
+        for r in search_res:
+            f.writerow([r["receipt_code"], r["name"], r["region"], r["type"], r["receipt"], r["payment"]])
+
+        res = make_response(si.getvalue(), 201)
+        res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
+        res.headers['Content-type'] = "text/csv"
+
+        return res
