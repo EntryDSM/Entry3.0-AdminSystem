@@ -95,6 +95,7 @@ class Router:
         from app.views import sample
         app.register_blueprint(sample.api.blueprint)
 
-        from app.views import auth, search
+        from app.views import auth, search, details
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
+        app.register_blueprint(details.api.blueprint)
