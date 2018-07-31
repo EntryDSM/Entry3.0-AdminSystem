@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, Response
 from flask_restful import Api
 from flasgger import swag_from
 
@@ -41,7 +41,7 @@ class ViewApplicantsDetails(BaseResource):
             graduate_info['student_number'] = None
             graduate_info['graduated_year'] = None
 
-        return {
+        return self.unicode_safe_json_dumps({
             'main': {
                 'name': applicant.InfoModel.name,
                 'admission': str(applicant.InfoModel.admission).split('.')[1].lower(),
@@ -57,7 +57,7 @@ class ViewApplicantsDetails(BaseResource):
                 'tel': applicant.InfoModel.parent_tel
             },
             'graduate_info': graduate_info
-        }, 200
+        }, 200)
 
 
 @api.resource('/grade/<user_id>')
@@ -69,13 +69,29 @@ class ViewApplicantsGrade(BaseResource):
 @api.resource('/receipt/<user_id>')
 class ConvertToTrueReceipt(BaseResource):
     def post(self, user_id):
-        pass
+        applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant_status:
+            abort(400)
+
+        applicant_status.receipt = True
+        db.session.commit()
+
+        return Response('', 201)
 
 
 @api.resource('/payment/<user_id>')
 class ConvertToTruePayment(BaseResource):
     def post(self, user_id):
-        pass
+        applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant_status:
+            abort(400)
+
+        applicant_status.payment = True
+        db.session.commit()
+
+        return Response('', 201)
 
 
 @api.resource('/exam_code/<user_id>')
