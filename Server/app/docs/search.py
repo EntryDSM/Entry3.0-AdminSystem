@@ -44,6 +44,7 @@ VIEW_APPLICANTS_GET = {
             'examples': {
                 '조건없는 예시 데이터': [
                     {
+                        'user_id': 'flouie74',
                         'receipt_code': 111,
                         'name': '정경서',
                         'region': '전국',
@@ -52,6 +53,7 @@ VIEW_APPLICANTS_GET = {
                         'payment': True
                     },
                     {
+                        'user_id': 'dld2133',
                         'receipt_code': 112,
                         'name': '정근철',
                         'region': '전국',
@@ -60,6 +62,7 @@ VIEW_APPLICANTS_GET = {
                         'payment': True
                     },
                     {
+                        'user_id': 'llll111',
                         'receipt_code': 113,
                         'name': '엔트리',
                         'region': '전국',

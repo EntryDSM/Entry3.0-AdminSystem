@@ -10,7 +10,6 @@ from app.views import BaseResource, check_auth
 from app.models import db
 from app.models.userData import UserModel, ApplyStatusModel
 from app.models.infoData import InfoModel, AdmissionChoice
-from app.models.gradeData import GraduateInfoModel
 
 from app.docs.search import VIEW_APPLICANTS_GET, PRINT_APPLICANTS_AS_EXCEL_POST
 
@@ -39,8 +38,8 @@ class ViewApplicants(BaseResource):
         else:
             # 제출-전형료 조건 있음
             filtering_res = join_res\
-                .filter(ApplyStatusModel.receipt == ViewApplicants.str_to_bool(checking_receipt))\
-                .filter(ApplyStatusModel.payment == ViewApplicants.str_to_bool(checking_payment))
+                .filter(ApplyStatusModel.receipt == self.str_to_bool(checking_receipt))\
+                .filter(ApplyStatusModel.payment == self.str_to_bool(checking_payment))
 
         final_res = []
 
@@ -50,7 +49,7 @@ class ViewApplicants(BaseResource):
 
         elif search_condition == 'region':
             # 지역이 검색어
-            final_res = filtering_res.filter(InfoModel.region == ViewApplicants.str_to_bool(search_word)).all()
+            final_res = filtering_res.filter(InfoModel.region == self.str_to_bool(search_word)).all()
 
         elif search_condition == 'type':
             # 전형이 검색어
@@ -64,23 +63,23 @@ class ViewApplicants(BaseResource):
             # 요청 불가능한 검색어 조건
             abort(400)
 
-        return [{
+        return self.unicode_safe_json_dumps([{
+            'user_id': student.UserModel.user_id,
             'receipt_code': student.InfoModel.receipt_code,
             'name': student.InfoModel.name,
             'region': '대전' if student.InfoModel.region is True else '전국',
             'type': str(student.InfoModel.admission).split('.')[1].lower(),
             'receipt': student.ApplyStatusModel.receipt,
             'payment': student.ApplyStatusModel.payment
-        } for student in final_res], 200
+        } for student in final_res], 200)
 
 
 @api.resource('/applicants/excel')
 class PrintExcel(BaseResource):
     @swag_from(PRINT_APPLICANTS_AS_EXCEL_POST)
-    @check_auth()
+    # @check_auth()
     def post(self):
         search_res = request.json
-        print(request.json['name'])
         si = StringIO()
         si.write(u'\ufeff')
         f = csv.writer(si)
