@@ -42,6 +42,12 @@ class GraduateGradeModel(db.Model):
 
     # one to one
     user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
+    first_grade = db.Column(Double(), nullable=False, default=0.0)
+    second_grade = db.Column(Double(), nullable=False, default=0.0)
+    third_grade = db.Column(Double(), nullable=False, default=0.0)
+    conversion_score = db.Column(Double(), nullable=False, default=0.0)
+    attendance_score = db.Column(Integer(unsigned=True), nullable=False, default=0)
+    volunteer_score = db.Column(Double(), nullable=False, default=0.0)
     final_score = db.Column(Double(), nullable=False, default=0.0)
     volunteer_time = db.Column(Integer(unsigned=True), nullable=False, default=0)
     period_cut = db.Column(Integer(unsigned=True), nullable=False, default=0)
@@ -72,3 +78,7 @@ class GedGradeModel(db.Model):
     # one to one
     user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
     grade = db.Column(Double(), nullable=False)
+    conversion_score = db.Column(Double(), nullable=False, default=0.0)
+    attendance_score = db.Column(Integer(unsigned=True), nullable=False, default=15)
+    volunteer_score = db.Column(Double(), nullable=False, default=0.0)
+    final_score = db.Column(Double(), nullable=False, default=0.0)
