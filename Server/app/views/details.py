@@ -7,7 +7,7 @@ from app.views import BaseResource, check_auth
 from app.models import db
 from app.models.userData import UserModel, ApplyStatusModel
 from app.models.infoData import InfoModel, AdmissionChoice
-from app.models.gradeData import GraduateInfoModel, GedGradeModel
+from app.models.gradeData import *
 
 
 from app.docs.search import VIEW_APPLICANTS_GET, PRINT_APPLICANTS_AS_EXCEL_POST
@@ -63,7 +63,38 @@ class ViewApplicantsDetails(BaseResource):
 @api.resource('/grade/<user_id>')
 class ViewApplicantsGrade(BaseResource):
     def get(self, user_id):
-        pass
+        if str(InfoModel.query.filter_by(user_id=user_id).first().admission).split('.')[1] == 'Ged':
+            grade = GedGradeModel.query.filter_by(user_id=user_id).first()
+            res = {
+                'final_score': grade.final_score,
+                'grade': grade.grade
+            }
+        else:
+            grade = GraduateGradeModel.query.filter_by(user_id=user_id).first()
+            subject_grade = GradeInfoModel.query.filter_by(user_id=user_id)
+            res = {
+                'grades': {
+                    'first_grade': float(grade.first_grade),
+                    'second_grade': float(grade.second_grade),
+                    'third_grade': float(grade.third_grade),
+                    'conversion_score': float(grade.conversion_score)
+                },
+                'scores': {
+                    'attendance_score': float(grade.attendance_score),
+                    'volunteer_score': float(grade.volunteer_score),
+                    'final_score': float(grade.final_score)
+                },
+                'volunteer_time': float(grade.volunteer_time),
+                'subject_grades': {
+                    'first_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=1)],
+                    'first_second': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=2)],
+                    'second_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=3)],
+                    'second_second': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=4)],
+                    'third_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=5)]
+                }
+            }
+
+        return res, 200
 
 
 @api.resource('/receipt/<user_id>')
