@@ -147,5 +147,52 @@ class ConvertToTruePayment(BaseResource):
 
 @api.resource('/exam_code/<user_id>')
 class IssueExamCode(BaseResource):
+    @swag_from(ISSUE_EXAM_CODE_PATCH)
+    @check_auth()
     def patch(self, user_id):
+        applicant_info = InfoModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant_info:
+            abort(400)
+
+        # 수험번호 첫자리 - 전형
+        exam_code = str(applicant_info.admission.value)
+
+        # 수험번호 둘째자리 - 주소
+        if len(applicant_info.address_base) == 4:
+            address = applicant_info.address_base[:3]
+        else:
+            address = applicant_info.address_base[:2]
+
+        if address == '대전':
+            exam_code = exam_code + '1'
+        elif address == '제주':
+            exam_code = exam_code + '2'
+        elif address == '강원':
+            exam_code = exam_code + '3'
+        elif address in ('부산', '울산', '경상남'):
+            exam_code = exam_code + '4'
+        elif address in ('광주', '전라남'):
+            exam_code = exam_code + '5'
+        elif address in ('대구', '경상북'):
+            exam_code = exam_code + '6'
+        elif address == '전라북':
+            exam_code = exam_code + '7'
+        elif address in ('서울', '경기', '인천'):
+            exam_code = exam_code + '8'
+        elif address in ('세종', '충청'):
+            exam_code = exam_code + '9'
+
+        # 수험번호 셋쩨&마지막세자리 - 전형세부&접수번호
+        exam_code = exam_code + str(applicant_info.admission_detail.value) + str(applicant_info.receipt_code)
+
+        applicant_info.exam_code = exam_code
+        db.session.commit()
+
+        return Response('', 201)
+
+
+@api.resource('/<user_id>/excel')
+class PrintExcelOne(BaseResource):
+    def post(self, user_id):
         pass

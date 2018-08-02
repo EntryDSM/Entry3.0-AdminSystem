@@ -21,6 +21,8 @@ class AdmissionDetailChoice(Enum):
     FROM_NORTH = 5
     MULTI_CULTURE = 6
     ETC = 7
+    # NATIONAL_MERIT = 8
+    # SPECIAL_ADMISSION = 9
 
 
 class SexChoice(Enum):
