@@ -6,7 +6,7 @@ from app.views import BaseResource, check_auth
 
 from app.models import db
 from app.models.userData import UserModel, ApplyStatusModel
-from app.models.infoData import InfoModel, AdmissionChoice
+from app.models.infoData import InfoModel
 from app.models.gradeData import *
 
 
@@ -24,7 +24,8 @@ class ViewApplicantsDetails(BaseResource):
     def get(self, user_id):
         applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
             .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
-            .filter(UserModel.user_id == user_id).first()
+            .filter(UserModel.user_id == user_id)\
+            .filter(ApplyStatusModel.final_submit is True).first()
 
         if not applicant:
             abort(400)
@@ -67,7 +68,8 @@ class ViewApplicantsGrade(BaseResource):
     @swag_from(VIEW_APPLICANTS_GRADE_GET)
     @check_auth()
     def get(self, user_id):
-        if not UserModel.query.filter_by(user_id=user_id).first():
+        if not UserModel.query.filter_by(user_id=user_id).first() \
+                or not ApplyStatusModel.query.filter_by(user_id=user_id).first().final_submit:
             abort(400)
 
         def compute_subject_grade(semester):

@@ -30,6 +30,7 @@ class ViewApplicants(BaseResource):
         join_res = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
             .join(InfoModel)\
             .join(ApplyStatusModel)\
+            .join(ApplyStatusModel.final_submit is True)
 
         if not (checking_receipt and checking_payment):
             # 제출-전형료 조건 없음
