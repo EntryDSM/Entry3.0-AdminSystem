@@ -77,7 +77,7 @@ class ViewApplicants(BaseResource):
 @api.resource('/applicants/excel')
 class PrintExcel(BaseResource):
     @swag_from(PRINT_APPLICANTS_AS_EXCEL_POST)
-    # @check_auth()
+    @check_auth()
     def post(self):
         search_res = request.json
         si = StringIO()

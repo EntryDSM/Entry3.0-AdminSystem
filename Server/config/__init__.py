@@ -49,6 +49,10 @@ class Config:
             {
                 'name': '[지원자 관리]',
                 'description': '지원자 관리 API'
+            },
+            {
+                'name': '[성적]',
+                'description': '지원자 학생정보 및 성적 관리 API'
             }
         ]
     }

@@ -10,7 +10,7 @@ from app.models.infoData import InfoModel, AdmissionChoice
 from app.models.gradeData import *
 
 
-from app.docs.search import VIEW_APPLICANTS_GET, PRINT_APPLICANTS_AS_EXCEL_POST
+from app.docs.details import *
 
 api = Api(Blueprint(__name__, __name__))
 
@@ -19,6 +19,8 @@ api.prefix = '/applicants'
 
 @api.resource('/details/<user_id>')
 class ViewApplicantsDetails(BaseResource):
+    @swag_from(VIEW_APPLICANTS_DETAILS_GET)
+    @check_auth()
     def get(self, user_id):
         applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
             .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
@@ -62,16 +64,28 @@ class ViewApplicantsDetails(BaseResource):
 
 @api.resource('/grade/<user_id>')
 class ViewApplicantsGrade(BaseResource):
+    @swag_from(VIEW_APPLICANTS_GRADE_GET)
+    @check_auth()
     def get(self, user_id):
-        if str(InfoModel.query.filter_by(user_id=user_id).first().admission).split('.')[1] == 'Ged':
+        if not UserModel.query.filter_by(user_id=user_id).first():
+            abort(400)
+
+        def compute_subject_grade(semester):
+            subject_grade = GradeInfoModel.query.filter_by(user_id=user_id)
+
+            return [
+                [str(g.score).split('.')[1] for g in subject_grade.filter_by(semester=semester)]
+            ] if subject_grade else None
+
+        if str(UserModel.query.filter_by(user_id=user_id).first().graduate_type).split('.')[1] == 'GED':
             grade = GedGradeModel.query.filter_by(user_id=user_id).first()
             res = {
-                'final_score': grade.final_score,
-                'grade': grade.grade
+                'final_score': float(grade.final_score),
+                'grade': float(grade.grade)
             }
         else:
             grade = GraduateGradeModel.query.filter_by(user_id=user_id).first()
-            subject_grade = GradeInfoModel.query.filter_by(user_id=user_id)
+
             res = {
                 'grades': {
                     'first_grade': float(grade.first_grade),
@@ -86,11 +100,11 @@ class ViewApplicantsGrade(BaseResource):
                 },
                 'volunteer_time': float(grade.volunteer_time),
                 'subject_grades': {
-                    'first_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=1)],
-                    'first_second': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=2)],
-                    'second_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=3)],
-                    'second_second': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=4)],
-                    'third_first': [str(ff.score).split('.')[1] for ff in subject_grade.filter_by(semester=5)]
+                    'first_first': compute_subject_grade(1),
+                    'first_second': compute_subject_grade(2),
+                    'second_first': compute_subject_grade(3),
+                    'second_second': compute_subject_grade(4),
+                    'third_first': compute_subject_grade(5)
                 }
             }
 
@@ -99,7 +113,9 @@ class ViewApplicantsGrade(BaseResource):
 
 @api.resource('/receipt/<user_id>')
 class ConvertToTrueReceipt(BaseResource):
-    def post(self, user_id):
+    @swag_from(CONVERT_TO_TRUE_RECEIPT_PATCH)
+    @check_auth()
+    def patch(self, user_id):
         applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
 
         if not applicant_status:
@@ -113,7 +129,9 @@ class ConvertToTrueReceipt(BaseResource):
 
 @api.resource('/payment/<user_id>')
 class ConvertToTruePayment(BaseResource):
-    def post(self, user_id):
+    @swag_from(CONVERT_TO_TRUE_PAYMENT_PATCH)
+    @check_auth()
+    def patch(self, user_id):
         applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
 
         if not applicant_status:
@@ -127,5 +145,5 @@ class ConvertToTruePayment(BaseResource):
 
 @api.resource('/exam_code/<user_id>')
 class IssueExamCode(BaseResource):
-    def post(self, user_id):
+    def patch(self, user_id):
         pass
