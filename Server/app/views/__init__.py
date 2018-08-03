@@ -6,6 +6,8 @@ from flask import Response, abort, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
+from app.models.interviewData import AdminModel
+
 
 def after_request(response):
     """
@@ -17,7 +19,7 @@ def after_request(response):
     return response
 
 
-def check_auth(model):
+def check_auth():
     """
     Check about auth
     - jwt token check
@@ -27,7 +29,7 @@ def check_auth(model):
         @wraps(original_func)
         @jwt_required
         def wrapper(*args, **kwargs):
-            if not model.objects(id=get_jwt_identity()).first():
+            if not AdminModel.query.filter_by(admin_id=get_jwt_identity()).first():
                 abort(401)
             return original_func(*args, **kwargs)
         return wrapper
@@ -69,6 +71,12 @@ class BaseResource(Resource):
             **kwargs
         )
 
+    @classmethod
+    def str_to_bool(cls, val):
+        if val == 'false':
+            val = None
+        return bool(val)
+
     class ValidationError(Exception):
         def __init__(self, description='', *args):
             self.description = description
@@ -87,5 +95,7 @@ class Router:
         from app.views import sample
         app.register_blueprint(sample.api.blueprint)
 
-        from app.views import auth
+        from app.views import auth, search, details
         app.register_blueprint(auth.api.blueprint)
+        app.register_blueprint(search.api.blueprint)
+        app.register_blueprint(details.api.blueprint)
