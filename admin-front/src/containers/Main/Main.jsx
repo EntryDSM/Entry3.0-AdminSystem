@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import AsideMenu from './AsideMenu';
+import DataTable from './DataTable';
 
 const Section = styled.section`
   width: calc(100% - 300px);
   height: 100vh;
+  padding: 50px;
   float: left;
-  background-color: rgb(56, 54, 55);
+  box-sizing: border-box;
 `
 
 class Main extends Component {
@@ -22,7 +24,9 @@ class Main extends Component {
     return (
       <Fragment>
         <AsideMenu conditions={this.props.conditions} />
-        <Section></Section>
+        <Section>
+          <DataTable />
+        </Section>
       </Fragment>
     );
   }

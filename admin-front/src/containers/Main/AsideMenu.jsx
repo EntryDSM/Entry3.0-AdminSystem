@@ -9,6 +9,7 @@ const Aside = styled.aside`
   width: 300px;
   height: 100vh;
   padding: 40px;
+  border-right: 1px solid rgb(160, 195, 212);
   box-sizing: border-box;
 `
 
