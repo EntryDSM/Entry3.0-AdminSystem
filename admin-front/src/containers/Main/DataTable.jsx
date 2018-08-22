@@ -7,12 +7,13 @@ const Table = styled.table`
   width: 100%;
   height: 100%;
   border: 1px solid rgb(160, 195, 212);
+  border-collapse: collapse;
 `
 
-const DataTable = () =>
+const DataTable = ({ datas }) =>
   <Table>
     <DataTableHeader />
-    <DataTableBody />
+    <DataTableBody datas={datas} />
   </Table>
 
 export default DataTable;

@@ -16,7 +16,120 @@ class Main extends Component {
     super(props);
 
     this.state = {
-
+      datas: [
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+        {
+          checked: false,
+          num: 123,
+          name: '정근철',
+          type: 'normal',
+          isReceive: false,
+          isPayment: false
+        },
+      ]
     }
   }
 
@@ -25,7 +138,7 @@ class Main extends Component {
       <Fragment>
         <AsideMenu conditions={this.props.conditions} />
         <Section>
-          <DataTable />
+          <DataTable datas={this.state.datas} />
         </Section>
       </Fragment>
     );
