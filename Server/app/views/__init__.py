@@ -99,3 +99,6 @@ class Router:
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
         app.register_blueprint(details.api.blueprint)
+
+        from app.views.interview import search, details, concat
+        app.register_blueprint(search.api.blueprint)

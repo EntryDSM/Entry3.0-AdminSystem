@@ -29,6 +29,6 @@ def create_app(*config_cls):
     Router().init_app(app_)
 
     db.init_app(app_)
-    db.create_all(app=app_)
+    # db.create_all(app=app_)
 
     return app_

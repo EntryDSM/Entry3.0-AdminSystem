@@ -7,23 +7,38 @@ from app.views import BaseResource
 
 from app.models import db
 from app.models.interviewData import *
-# # # from app.models.userData import User, Dot
+from app.models.userData import UserModel, ApplyStatusModel
+from app.models.infoData import InfoModel
 
 api = Api(Blueprint('interview search', __name__))
 api.prefix = '/interviews'
 
 
 @api.resource('/search')
-class Sample(BaseResource):
+class Search(BaseResource):
     @swag_from(SAMPLE_POST)
     def get(self):
         search_word = request.args.get('search')
         exam_code = request.args.get('code', None)
 
-        if exam_code is None:
-            query =
+        join_res = db.session.query(UserModel, InfoModel, ApplyStatusModel, InterviewData) \
+            .join(InfoModel) \
+            .join(ApplyStatusModel) \
+            .join(InterviewData) \
+            # .join(ApplyStatusModel.final_submit is True) \
 
-        interview_list = InterviewData(search_word)
+        filtered_res = join_res\
+            .filter(InfoModel.name == search_word) \
+            .filter(ApplyStatusModel.final_submit is True)
+
+        if exam_code is not None:
+            filtered_res.filter(InfoModel.exam_code)
+
+        print(filtered_res.all())
+
+        return str(filtered_res.all())
+
+        # interview_list = InterviewData(search_word)
 
 
 # @api.resource('/save')
