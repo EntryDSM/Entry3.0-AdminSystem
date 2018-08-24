@@ -2,35 +2,52 @@
 # https://github.com/damnever/pigar
 
 # Server/app/__init__.py: 1
-# Server/app/views/__init__.py: 7
+# Server/app/views/__init__.py: 5
+# Server/app/views/auth.py: 1
+# Server/app/views/details.py: 1
 # Server/app/views/sample.py: 2
-# Server/tests/views/__init__.py: 5
+# Server/app/views/search.py: 4
 Flask == 1.0
 
 # Server/app/__init__.py: 2
 Flask_Cors == 3.0.3
 
 # Server/app/__init__.py: 3
-# Server/app/views/__init__.py: 8
+# Server/app/views/__init__.py: 6
+# Server/app/views/auth.py: 3
 Flask_JWT_Extended == 3.7.2
 
-# Server/app/views/__init__.py: 9
+# Server/app/views/__init__.py: 7
+# Server/app/views/auth.py: 2
+# Server/app/views/details.py: 2
 # Server/app/views/sample.py: 3
+# Server/app/views/search.py: 5
 Flask_RESTful == 0.3.6
 
-# Server/app/views/__init__.py: 10
+# Server/app/models/__init__.py: 1
+Flask_SQLAlchemy == 2.3.2
+
+# Server/tests/conftest.py: 2
+PyMySQL == 0.8.1
+
+# Server/app/models/gradeData.py: 3,4,5
+# Server/app/models/infoData.py: 4
+# Server/app/models/interviewData.py: 3,4
+# Server/app/models/userData.py: 4
+SQLAlchemy == 1.2.1
+
+# Server/app/views/auth.py: 4
 Werkzeug == 0.14.1
 
 # Server/app/__init__.py: 4
+# Server/app/views/auth.py: 5
+# Server/app/views/details.py: 3
 # Server/app/views/sample.py: 1
+# Server/app/views/search.py: 6
 flasgger == 0.8.1
 
-# Server/app/models/__init__.py: 1
-# Server/app/models/samplemodels.py: 1
-peewee == 3.5.0
+# Server/tests/conftest.py: 1
+pytest == 3.5.1
 
-# Server/tests/views/__init__.py: 4
-pymongo == 3.6.1
-
-# Server/app/views/__init__.py: 5
+# Server/app/views/__init__.py: 3
 ujson == 1.35
