@@ -6,7 +6,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     path: __dirname + '/dist',
     publicPath: '/',
@@ -23,10 +23,17 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }]
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        use: ['ts-loader']
       }
     ]
   },
   plugins: [htmlPlugin],
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
+  },
   devServer: {
     contentBase: './dist'
   }
