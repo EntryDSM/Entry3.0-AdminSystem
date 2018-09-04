@@ -25,4 +25,4 @@ EntryDSM 의 관리자 페이지는 기존 학생들의 지원 현황을 관리�
 
 ### Test
     - pytest
-    - Covercalls
+    - Codecov
