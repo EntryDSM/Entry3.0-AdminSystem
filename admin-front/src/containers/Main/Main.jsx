@@ -16,127 +16,26 @@ class Main extends Component {
     super(props);
 
     this.state = {
-      datas: [
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-        {
-          checked: false,
-          num: 123,
-          name: '정근철',
-          type: 'normal',
-          isReceive: false,
-          isPayment: false
-        },
-      ]
+      datas: [],
+      searchText: ''
     }
+
+    this.inputSearchText = this.inputSearchText.bind(this);
+  }
+
+  inputSearchText(e) {
+    const serachText = e.target.value;
+    this.setState({
+      searchText: serachText
+    });
   }
 
   render() {
     return (
       <Fragment>
-        <AsideMenu conditions={this.props.conditions} />
+        <AsideMenu
+          conditions={this.props.conditions}
+          inputSearchText={this.inputSearchText}/>
         <Section>
           <DataTable datas={this.state.datas} />
         </Section>
@@ -150,3 +49,119 @@ Main.defaultProps = {
 }
 
 export default Main;
+
+// dumy
+// datas: [
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+//   {
+//     checked: false,
+//     num: 123,
+//     name: '정근철',
+//     type: 'normal',
+//     isReceive: false,
+//     isPayment: false
+//   },
+// ]
