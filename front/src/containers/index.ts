@@ -1,1 +1,2 @@
-export { default as Main } from './Main/Main';
+export { default as Body } from './Body/Body';
+export { default as AsideHelper } from './AsideHelper/AsideHelper';
