@@ -3,10 +3,12 @@ import styled from 'styled-components';
 const Aside = styled.aside`
   width: 300px;
   height: 100vh;
+  padding-left: 30px;
+  padding-right: 30px;
   border-right: 1px solid rgb(154, 193, 210);
 `
 
-const Header = styled.header`
+const AsideHeader = styled.header`
   margin-top: 100px;
   margin-bottom: 100px;
   text-align: center;
@@ -14,4 +16,4 @@ const Header = styled.header`
   font-weight: bold;
 `
 
-export { Aside, Header };
+export { Aside, AsideHeader };

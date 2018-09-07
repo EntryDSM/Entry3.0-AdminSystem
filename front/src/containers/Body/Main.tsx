@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import { Section } from './styled/Main';
 
-interface state {
+interface State {
   datas: {
     checked: boolean,
     isPayment: boolean,
@@ -20,7 +20,7 @@ interface state {
 }
 
 class Main extends React.Component {
-  state: state = {
+  state: State = {
     datas: [],
     search: {
       text: '',
