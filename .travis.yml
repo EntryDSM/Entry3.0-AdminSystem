@@ -18,7 +18,7 @@ install:
   - pip install codecov pytest-cov
 
 script:
-  - pytest --cov=./views
+  - pytest --cov=./
 
 before_script:
   - cd Server

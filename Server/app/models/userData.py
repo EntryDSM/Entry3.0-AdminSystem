@@ -15,16 +15,16 @@ class GraduateChoice(Enum):
 class TempUserModel(db.Model):
     __tablename__ = 'temp_user'
 
-    email = db.Column(db.String(50), primary_key=True)
-    code = db.Column(db.String(32), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    code = db.Column(db.String(32), primary_key=True)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(100), nullable=False)
 
 
 class UserModel(db.Model):
     __tablename__ = 'user'
 
     user_id = db.Column(db.String(32), primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     graduate_type = db.Column(db.Enum(GraduateChoice), nullable=False, default=GraduateChoice.WILL)
@@ -47,7 +47,8 @@ class ApplyStatusModel(db.Model):
     __tablename__ = 'apply_status'
 
     # one to one
-    user_id = db.Column(db.String(32), db.ForeignKey('user.user_id', ondelete='CASCADE'), primary_key=True)
+    user_id = db.Column(db.String(32),
+                        db.ForeignKey('user.user_id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
     final_submit = db.Column(db.Boolean, nullable=False, default=False)
     pass_status = db.Column(db.Boolean, nullable=False, default=False)
     payment = db.Column(db.Boolean, nullable=False, default=False)
