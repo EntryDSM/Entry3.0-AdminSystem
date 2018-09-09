@@ -10,6 +10,9 @@ injectGlobal`
     margin: 0;
     padding: 0;
     font-family: 'Roboto', NanumSquare;
+  }
+
+  div {
     box-sizing: border-box;
   }
 `

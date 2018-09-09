@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { Aside, AsideHeader } from './styled/AsideHelper';
 import SearchFilters from './SearchFilters';
+import Search from './Search';
 
 interface State {
-  isReceipt: boolean,
-  isPayment: boolean
+  isReceipt: boolean;
+  isPayment: boolean;
+  search: string;
 }
 
 interface Target {
-  target: HTMLInputElement
+  target: HTMLInputElement;
 }
 
 class AsideHelper extends React.Component {
   state: State = {
+    search: '',
     isReceipt: false,
     isPayment: false
   }
@@ -26,7 +29,14 @@ class AsideHelper extends React.Component {
     });
   }
 
+  searchInput = ({ target }: Target): void => {
+    this.setState({
+      search: target.value
+    });
+  }
+
   render() {
+    console.log(this.state);
     return (
       <Aside>
         <AsideHeader>지원자 검색</AsideHeader>
@@ -34,6 +44,8 @@ class AsideHelper extends React.Component {
           checkFilter={this.checkFilter}
           isReceipt={this.state.isReceipt}
           isPayment={this.state.isPayment}/>
+        <Search
+          searchInput={this.searchInput}/>
       </Aside>
     );
   }

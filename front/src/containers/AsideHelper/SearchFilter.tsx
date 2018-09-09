@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Filter, FilterCheckBox, FilterName } from './styled/SearchFilter';
 
 interface Props {
-  checkFilter: Function,
-  filterName: string,
-  filterId: string
+  checkFilter: Function;
+  filterName: string;
+  filterId: string;
 }
 
 const SearchFilter = ({ checkFilter, filterName, filterId }: Props) =>

@@ -4,19 +4,19 @@ import { Section } from './styled/Main';
 
 interface State {
   datas: {
-    checked: boolean,
-    isPayment: boolean,
-    isReceipt: boolean,
-    receipt_code: number,
-    region: string,
-    type: string,
-    name: number,
-  }[],
+    checked: boolean;
+    isPayment: boolean;
+    isReceipt: boolean;
+    receipt_code: number;
+    region: string;
+    type: string;
+    name: number;
+  }[];
   search: {
-    text: string,
-    isReceipt: boolean,
-    isPayment: boolean
-  }
+    text: string;
+    isReceipt: boolean;
+    isPayment: boolean;
+  };
 }
 
 class Main extends React.Component {
