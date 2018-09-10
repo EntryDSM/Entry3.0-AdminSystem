@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Filters } from './styled/SearchFilters';
+import { Filters } from './local-styled/SearchFilters';
 import SearchFilter from './SearchFilter';
 
 interface Props {

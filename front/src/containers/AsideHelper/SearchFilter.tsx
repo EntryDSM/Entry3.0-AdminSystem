@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Filter, FilterCheckBox, FilterName } from './styled/SearchFilter';
+import { Filter, FilterCheckBox, FilterName } from './local-styled/SearchFilter';
 
 interface Props {
   checkFilter: Function;

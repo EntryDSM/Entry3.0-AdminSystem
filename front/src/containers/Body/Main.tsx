@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Section } from './styled/Main';
+import { Section } from './local-styled/Main';
 
 interface State {
   datas: {
