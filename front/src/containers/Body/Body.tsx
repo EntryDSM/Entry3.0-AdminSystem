@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Main from './Main';
+import ApplicantsDataTable from './ApplicantsDataTable';
 
 class Body extends React.Component {
   render() {
     return (
       <Switch>
-        <Route path='/' component={Main} />
+        <Route path='/' component={ApplicantsDataTable} />
       </Switch>
     );
   }

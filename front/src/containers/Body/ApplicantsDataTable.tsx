@@ -19,7 +19,7 @@ interface State {
   };
 }
 
-class Main extends React.Component {
+class ApplicantsDataTable extends React.Component {
   state: State = {
     datas: [],
     search: {
@@ -62,4 +62,4 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+export default ApplicantsDataTable;
