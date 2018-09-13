@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Section } from './local-styled/Main';
+import { Section } from './local-styled/ApplicantsDataTable';
 
 interface State {
   datas: {
@@ -56,7 +56,7 @@ class ApplicantsDataTable extends React.Component {
   render() {
     return (
       <Section>
-        
+
       </Section>
     );
   }
