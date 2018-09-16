@@ -6,11 +6,12 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
-const Select = styled.select`
-  margin-left: 10px;
+const Condition = styled.div`
 `
 
-const SearchCondition = styled.option`
+const CheckBox = styled.input`
+  margin-left: 8px;
+  margin-right: 12px;
 `
 
-export { Wrapper, Select, SearchCondition };
+export { Wrapper, Condition, CheckBox };

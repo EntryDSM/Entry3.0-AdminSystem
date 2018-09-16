@@ -1,22 +1,18 @@
 import * as React from 'react';
+import axios from 'axios';
 import { Aside, AsideHeader } from './local-styled/AsideHelper';
-import SearchFilters from './SearchFilters';
 import Search from './Search';
-import SelectSearchCondition from './SelectSearchCondition';
+import SearchButton from './SearchButton';
+import SearchFilters from './SearchFilters';
+// import SelectSearchCondition from './SelectSearchCondition';   --deprecated
 
 interface State {
   isReceipt: boolean;
   isPayment: boolean;
   search: string;
-  condition: {
-    name: boolean,
-    region: boolean,
-    type: boolean
+  conditions: {
+    [k:string]: any;
   }
-}
-
-interface Target {
-  target: HTMLInputElement;
 }
 
 class AsideHelper extends React.Component {
@@ -24,11 +20,7 @@ class AsideHelper extends React.Component {
     isReceipt: false,
     isPayment: false,
     search: '',
-    condition: {
-      name: false,
-      region: false,
-      type: false
-    }
+    conditions: {}
   }
 
   checkFilter = ({ target }: Target): void => {
@@ -41,28 +33,16 @@ class AsideHelper extends React.Component {
   }
 
   selectCondition = ({ target }: Target): void => {
-    const conditionInit: object = {
-      name: false,
-      region: false,
-      type: false
-    }
-
-    this.setState((prevState: State) => {
-      if (target.value === 'name')
-        return { condition: { ...conditionInit, name: !prevState.condition.name } };
-      else if (target.value === 'region')
-        return { condition: { ...conditionInit, region: !prevState.condition.region } };
-      else if (target.value === 'type')
-        return { condition: { ...conditionInit, type: !prevState.condition.type } };
-      else
-        return { condition: { ...conditionInit } };
-    });
   }
 
   searchInput = ({ target }: Target): void => {
     this.setState({
       search: target.value
     });
+  }
+
+  search = (): void => {
+    axios.get(`?${this.state.search}`, { headers: {  } })
   }
 
   render() {
@@ -73,16 +53,17 @@ class AsideHelper extends React.Component {
           checkFilter={this.checkFilter}
           isReceipt={this.state.isReceipt}
           isPayment={this.state.isPayment}/>
-        <SelectSearchCondition
+        {/* <SelectSearchCondition
           conditions={[
-            { value: 'none', name: '전체' },
             { value: 'name', name: '이름' },
             { value: 'region', name: '지역' },
             { value: 'type', name: '전형' }
           ]}
-          selectCondition={this.selectCondition}/>
+          selectCondition={this.selectCondition}/> */}
         <Search
-          searchInput={this.searchInput}/>
+          searchInput={this.searchInput}
+          searchValue={this.state.search} />
+        <SearchButton search={this.search} />
       </Aside>
     );
   }

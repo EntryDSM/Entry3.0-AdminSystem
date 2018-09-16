@@ -6,6 +6,7 @@ const SearchBox = styled.div`
   flex-direction: row;
   align-items: center;
   height: 50px;
+  margin-top: 7px;
   padding-left: 10px;
   border: 1px solid #ddd;
 `

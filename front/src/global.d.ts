@@ -20,6 +20,11 @@ interface UpdateApplicantsDataAction extends Action {
   data: ApplicantsData;
 }
 
+// Event target
+interface Target {
+  target: HTMLInputElement;
+}
+
 // Image load
 declare module '*.png' {
   const value: any;

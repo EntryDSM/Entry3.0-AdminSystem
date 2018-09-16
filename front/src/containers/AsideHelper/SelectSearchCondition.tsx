@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Wrapper, Select, SearchCondition } from './local-styled/SelectSearchCondition';
+import { Wrapper, Condition, CheckBox } from './local-styled/SelectSearchCondition';
 import gs from '../../global-styled';
 
 interface Condition {
@@ -14,15 +14,13 @@ interface Props {
 
 const SelectSearchCondition = ({ conditions, selectCondition }: Props) =>
   <Wrapper>
-    <gs.Tag.P>조건선택</gs.Tag.P>
-    <Select onChange={event => selectCondition(event)}>
-      {
-        conditions.map(condition =>
-          <SearchCondition value={condition.value}>
-            {condition.name}
-          </SearchCondition>)
-      }
-    </Select>
+    {
+      conditions.map(condition =>
+        <React.Fragment key={condition.name}>
+          <Condition>{condition.name}</Condition>
+          <CheckBox type='checkbox' value={condition.value} onClick={event => selectCondition(event)} />
+        </React.Fragment>)
+    }
   </Wrapper>
 
 export default SelectSearchCondition;
