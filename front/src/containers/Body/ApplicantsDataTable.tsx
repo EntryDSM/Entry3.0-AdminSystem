@@ -1,16 +1,21 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Section } from './local-styled/ApplicantsDataTable';
+import { Section, OverFlowContainer, DataTable } from './local-styled/ApplicantsDataTable';
+import gs from '../../global-styled';
+import { connect } from 'react-redux';
+import ApplicantsDataTableRow from './ApplicantsDataTableRow';
+import ApplicantsDataTableHeader from './ApplicantsDataTableHeader';
+import { Action } from 'redux';
 
 interface State {
-  datas: {
+  data: {
     checked: boolean;
     isPayment: boolean;
     isReceipt: boolean;
-    receipt_code: number;
+    receiptCode: string;
     region: string;
     type: string;
-    name: number;
+    name: string;
   }[];
   search: {
     text: string;
@@ -21,7 +26,7 @@ interface State {
 
 class ApplicantsDataTable extends React.Component {
   state: State = {
-    datas: [],
+    data: [],
     search: {
       text: '',
       isReceipt: false,
@@ -29,37 +34,436 @@ class ApplicantsDataTable extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const config = {
-      method: 'GET',
-      url: '/applicants',
-      params: {
-        search: this.state.search.text,
-        receipt: this.state.search.isReceipt,
-        payment: this.state.search.isPayment
-      },
-      header: {
-        Authorization: ''
-      }
-    }
+  // const config = {
+  //   method: 'GET',
+  //   url: '/applicants',
+  //   params: {
+  //     search: this.state.search.text,
+  //     receipt: this.state.search.isReceipt,
+  //     payment: this.state.search.isPayment
+  //   },
+  //   header: {
+  //     Authorization: ''
+  //   }
+  // }
 
-    try {
-      const response = await axios(config);
-      this.setState({
-        datas: response.data.map((dataObj: {[k: string]: any}) => dataObj['checked'] = false)
-      });
-    } catch(e) {
-      console.log(e);
-    }
+  componentDidMount = () => {
+    this.setState({
+      data: [
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+        {
+          checked: false,
+          isPayment: false,
+          isReceipt: false,
+          receiptCode: '001',
+          region: '전국',
+          type: '마이스터인재',
+          name: '정근철'
+        },
+      ]
+    })
   }
 
+  // static getDerivedStateFromProps = (nextProps: ApplicantsData, prevState: State) => ({
+  //   data: nextProps.data
+  // });
+
   render() {
+    console.log(this.state);
     return (
       <Section>
-
+        <ApplicantsDataTableHeader />
+        <OverFlowContainer>
+          <DataTable>
+            {
+              this.state.data.map(row =>
+                <ApplicantsDataTableRow
+                  isSelect={row.checked}
+                  receiptCode={row.receiptCode}
+                  name={row.name}
+                  region={row.region}
+                  type={row.type}
+                  isReceipt={row.isReceipt}
+                  isPayment={row.isPayment} />
+              )
+            }
+          </DataTable>
+        </OverFlowContainer>
       </Section>
     );
   }
 }
 
-export default ApplicantsDataTable;
+const mapStateToProps = (state: UpdateApplicantsDataAction) => ({
+  data: state.data
+});
+
+export default connect(mapStateToProps)(ApplicantsDataTable);

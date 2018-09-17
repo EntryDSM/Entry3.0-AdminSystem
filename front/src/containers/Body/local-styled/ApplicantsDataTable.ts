@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import gs from '../../../global-styled';
 
 const Section = styled.section`
   width: calc(100% - 300px);
@@ -8,4 +9,18 @@ const Section = styled.section`
   box-sizing: border-box;
 `
 
-export { Section };
+const OverFlowContainer = styled.div`
+  height: calc(100% - 40px);
+  overflow: auto;
+  border: 1px solid ${gs.Color.skyBlue};
+  border-top: 0;
+`
+
+const DataTable = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  min-height: 0;
+`
+
+export { Section, OverFlowContainer, DataTable };

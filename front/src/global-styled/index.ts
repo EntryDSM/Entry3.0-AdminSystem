@@ -17,10 +17,18 @@ const RootWrapper = styled.div`
   flex-direction: row;
 `
 
+const CheckBox = styled.input.attrs({
+  type: 'checkbox'
+})``
+
 const Tag = {
   P: styled.p`
     font-size: 13px;
   `
 }
 
-export default { RootWrapper, Tag };
+const Color = {
+  skyBlue: 'rgb(154, 193, 210)'
+}
+
+export default { RootWrapper, CheckBox, Tag, Color };

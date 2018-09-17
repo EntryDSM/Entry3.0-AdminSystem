@@ -4,6 +4,9 @@ import { Aside, AsideHeader } from './local-styled/AsideHelper';
 import Search from './Search';
 import SearchButton from './SearchButton';
 import SearchFilters from './SearchFilters';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { updateApplicantsData } from '../../actions/applicants';
 // import SelectSearchCondition from './SelectSearchCondition';   --deprecated
 
 interface State {
@@ -69,4 +72,8 @@ class AsideHelper extends React.Component {
   }
 }
 
-export default AsideHelper;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  search: (data: ApplicantsData) => dispatch(updateApplicantsData(data))
+});
+
+export default connect(mapDispatchToProps)(AsideHelper);
