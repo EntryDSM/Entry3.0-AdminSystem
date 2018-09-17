@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import gs from '../../../global-styled';
+import gs from '../../../../global-styled';
 
 const TableRow = styled.div`
   display: flex;

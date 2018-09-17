@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TableRow, SelectStudent, ReceiptCode, Name, Region, Type, Payment, Receipt } from './local-styled/ApplicantsDataTableRow';
-import gs from '../../global-styled';
+import gs from '../../../global-styled';
 
 interface Props {
   isSelect: boolean;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
 import { Section, OverFlowContainer, DataTable } from './local-styled/ApplicantsDataTable';
-import gs from '../../global-styled';
 import { connect } from 'react-redux';
 import ApplicantsDataTableRow from './ApplicantsDataTableRow';
 import ApplicantsDataTableHeader from './ApplicantsDataTableHeader';
@@ -436,17 +435,16 @@ class ApplicantsDataTable extends React.Component {
   //   data: nextProps.data
   // });
 
-  AllStudentsSelect = () => {
+  selectAllStudent = () => {
     this.setState((prevState: State) => ({
       data: prevState.data.map(std => ({ ...std, checked: !std.checked }))
     }));
   }
 
   render() {
-    console.log(this.state);
     return (
       <Section>
-        <ApplicantsDataTableHeader selectAll={this.AllStudentsSelect} />
+        <ApplicantsDataTableHeader selectAllStudent={this.selectAllStudent} />
         <OverFlowContainer>
           <DataTable>
             {
