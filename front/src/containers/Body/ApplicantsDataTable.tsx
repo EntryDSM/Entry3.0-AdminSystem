@@ -436,11 +436,17 @@ class ApplicantsDataTable extends React.Component {
   //   data: nextProps.data
   // });
 
+  AllStudentsSelect = () => {
+    this.setState((prevState: State) => ({
+      data: prevState.data.map(std => ({ ...std, checked: !std.checked }))
+    }));
+  }
+
   render() {
     console.log(this.state);
     return (
       <Section>
-        <ApplicantsDataTableHeader />
+        <ApplicantsDataTableHeader selectAll={this.AllStudentsSelect} />
         <OverFlowContainer>
           <DataTable>
             {
