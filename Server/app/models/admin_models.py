@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 
 from sqlalchemy.orm import relationship
@@ -20,17 +21,20 @@ class AdminModel(db.Model):
     admin_type = db.Column(db.Enum(AdminTypeChoice), nullable=False, default=AdminTypeChoice.INTERVIEW)
     email = db.Column(db.String(50), nullable=True)
     password = db.Column(db.String(200), nullable=True)
-
-    # one to many
-    interview_data = relationship("InterviewData")
+    created_at = db.Column(db.DATETIME, nullable=True, default=datetime.datetime.utcnow)
+    updated_at = db.Column(db.DATETIME, nullable=True, default=datetime.datetime.utcnow)
 
 
 class SchoolModel(db.Model):
     __tablename__ = 'school'
 
     code = db.Column(db.String(10), primary_key=True)
-    goverment = db.Column(db.String(20), nullable=True)
+    government = db.Column(db.String(20), nullable=True)
     name = db.Column(db.String(20), nullable=True)
     school_region = db.Column(db.String(20), nullable=True)
 
-    graduate_info = relationship("GraduateInfoModel", uselist=False, backref="school")
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+
+    # one to one
+    graduate_info = relationship("GraduateInfoModel", uselist=False, backref="user")

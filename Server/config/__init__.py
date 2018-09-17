@@ -18,7 +18,7 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=3)
     JWT_HEADER_TYPE = 'JWT'
 
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:first1208@localhost:3306/entry"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:germany33@localhost:3306/entry"
 
     SWAGGER = {
         'title': SERVICE_NAME,
@@ -43,20 +43,20 @@ class Config:
                 'description': 'Some API'
             },
             {
-                'name': '[계정]',
-                'description': 'admin 계정관련 API'
+                'name': '[Account]',
+                'description': 'admin account API'
             },
             {
-                'name': '[지원자 관리]',
-                'description': '지원자 관리 API'
+                'name': '[Search]',
+                'description': 'Search page API'
             },
             {
-                'name': '[성적]',
-                'description': '지원자 학생정보 및 성적 관리 API'
+                'name': '[Details]',
+                'description': 'applicants detail information'
             },
             {
-                'name': '[정보 수정]',
-                'description': '지원자 정보 수정 API'
+                'name': '[Handle information]',
+                'description': 'Processing of applicant information'
             }
         ]
     }
