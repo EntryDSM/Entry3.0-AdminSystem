@@ -5,12 +5,12 @@ from flask import Blueprint, request, abort, make_response
 from flask_restful import Api
 from flasgger import swag_from
 
-from app.views import BaseResource, check_auth
+from app.views import BaseResource, check_auth, create_csv_row
 
 from app.models import db
 from app.models.user_models import UserModel, InfoModel, ApplyStatusModel, AdmissionChoice
 
-from app.docs.search import VIEW_APPLICANTS_GET
+from app.docs.search import *
 
 api = Api(Blueprint(__name__, __name__))
 
@@ -61,24 +61,34 @@ class ViewApplicants(BaseResource):
 
 @api.resource('/applicants/excel')
 class PrintExcelAllApplicants(BaseResource):
-    @swag_from()
+    @swag_from(PRINT_EXCEL_ALL_APPLICANTS_POST)
     @check_auth()
     def post(self):
-        pass
-#         search_res = request.json
-#         si = StringIO()
-#         si.write(u'\ufeff')
-#         f = csv.writer(si)
-#
-#         f.writerow(["receipt_code", "name", "region", "type", "receipt", "payment"])
-#         for r in search_res:
-#             f.writerow([r["receipt_code"], r["name"], r["region"], r["type"], r["receipt"], r["payment"]])
-#
-#         res = make_response(si.getvalue(), 201)
-#         res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
-#         res.headers['Content-type'] = "text/csv"
-#
-#         return res
+        users = list(request.json['users'])
+        si = StringIO()
+        si.write(u'\ufeff')
+        f = csv.writer(si)
+
+        rows = [create_csv_row(user_id) for user_id in users]
+        f.writerow([i for i in rows[0].keys()])
+        for r in rows:
+            f.writerow([i for i in r.items()])
+
+        res = make_response(si.getvalue(), 201)
+        res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
+        res.headers['Content-type'] = "text/csv"
+
+        return res
+
+        # f.writerow(["receipt_code", "name", "region", "type", "receipt", "payment"])
+        # for r in search_res:
+        #     f.writerow([r["receipt_code"], r["name"], r["region"], r["type"], r["receipt"], r["payment"]])
+        #
+        # res = make_response(si.getvalue(), 201)
+        # res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
+        # res.headers['Content-type'] = "text/csv"
+        #
+        # return res
 
 
 @api.resource('/applicants/exam_table')

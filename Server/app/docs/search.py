@@ -83,35 +83,38 @@ VIEW_APPLICANTS_GET = {
     }
 }
 
-# PRINT_APPLICANTS_AS_EXCEL_POST = {
-#     'tags': ['[지원자 관리]'],
-#     'description': '원하는 학생들의 정보를 엑셀로 출력',
-#     'parameters': [
-#         {
-#             'name': 'Authorization',
-#             'description': 'JWT Token',
-#             'in': 'header',
-#             'type': 'str',
-#             'required': True
-#         }
-#     ],
-#     "produces": [
-#        "text/csv"
-#     ],
-#     'responses': {
-#         '201': {
-#             'description': 'Success : csv file response ',
-#             'content-type': 'text/csv',
-#             'examples': {
-#                 'Response Headers': {
-#                     'Content-Disposition': 'attachment; filename=applicants.csv',
-#                     'Content-type': 'text/csv'
-#                 },
-#                 'Response Body': 'receipt_code,name,region,type,receipt,payment\n'
-#                         '112,차태민,전국,meister,False,False\n'
-#                         '113,연준모,대전,normal,True,True\n'
-#                         '114,백팡민,전국,normal,True,False\n'
-#             }
-#         }
-#     }
-# }
+PRINT_EXCEL_ALL_APPLICANTS_POST = {
+    'tags': ['[Print data]'],
+    'description': '원하는 학생들의 상세정보를 엑셀로 출력(text/csv)',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'users',
+            'description': '엑셀로 출력할 학생들의 id 를 담은 리스트 ex) ["geni429", "flouie74", "hub_code"]',
+            'in': 'json',
+            'type': 'list',
+            'required': True
+        }
+    ],
+    "produces": [
+       "text/csv"
+    ],
+    'responses': {
+        '201': {
+            'description': 'Success : csv file response ',
+            'content-type': 'text/csv',
+            'examples': {
+                'Response Headers': {
+                    'Content-Disposition': 'attachment; filename=applicants.csv',
+                    'Content-type': 'text/csv'
+                }
+            }
+        }
+    }
+}
