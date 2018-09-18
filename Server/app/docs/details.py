@@ -1,5 +1,5 @@
-VIEW_APPLICANTS_DETAILS_GET = {
-    'tags': ['[성적]'],
+VIEW_APPLICANT_DETAILS_GET = {
+    'tags': ['[Details]'],
     'description': '특정 지원자의 상세정보 조회',
     'parameters': [
         {
@@ -36,13 +36,15 @@ VIEW_APPLICANTS_DETAILS_GET = {
                         'name': '어머님',
                         'tel': '01099992222'
                     },
-                    'graduate_info': {
+                    'academic': {
                         'school_name': '해솔중학교',
-                        'student_number': 10111,
-                        'graduated_year': 2019,
-                        'is_ged': False,
-                        'exam_code': None
-                    }
+                        'student_class': 3,
+                        'student_grade': 3,
+                        'student_number': 33,
+                        'graduate_year': 2019,
+                        'is_ged': False
+                    },
+                    'exam_code': '10011'
                 },
                 '검정고시': {
                     'main': {
@@ -59,13 +61,10 @@ VIEW_APPLICANTS_DETAILS_GET = {
                         'name': '마더',
                         'tel': '01093992522'
                     },
-                    'graduate_info': {
-                        'school_name': None,
-                        'student_number': None,
-                        'graduated_year': None,
-                        'is_ged': True,
-                        'exam_code': None
-                    }
+                    'academic': {
+                        'is_ged': False
+                    },
+                    'exam_code': '20022'
                 }
             }
         },
@@ -75,8 +74,8 @@ VIEW_APPLICANTS_DETAILS_GET = {
     }
 }
 
-VIEW_APPLICANTS_GRADE_GET = {
-    'tags': ['[성적]'],
+VIEW_APPLICANT_GRADE_GET = {
+    'tags': ['[Details]'],
     'description': '특정 지원자의 성적 조회',
     'parameters': [
         {
@@ -99,29 +98,74 @@ VIEW_APPLICANTS_GRADE_GET = {
             'description': '성적 조회 성공',
             'examples': {
                 '졸업 or 졸업 예정자': {
-                    'grades': {
+                    'school_grade': {
                         'first_grade': 43.12,
                         'second_grade': 45,
                         'third_grade': 60,
                         'conversion_score': 140.12
                     },
-                    'scores': {
+                    'score': {
                         'attendance_score': 15,
                         'volunteer_score': 15,
                         'final_score': 298
                     },
                     'volunteer_time': 60,
-                    'subject_grades': {
-                        'first_first': ["A", "A", "A", "A", "A", "A", "A"],
-                        'first_second': ["A", "A", "A", "B", "A", "A", "A"],
-                        'second_first': ["A", "A", "A", "A", "A", "A", "A"],
-                        'second_second': ["A", "A", "A", "B", "A", "A", "A"],
-                        'third_first': ["A", "A", "A", "A", "B", "A", "A"]
-                    }
+                    'subject_grade': [
+                        {
+                            'semester': 1,
+                            'korean': 'A',
+                            'social': 'A',
+                            'history': 'A',
+                            'math': 'A',
+                            'science': 'A',
+                            'tech': 'A',
+                            'english': 'A'
+                        },
+                        {
+                            'semester': 2,
+                            'korean': 'A',
+                            'social': 'B',
+                            'history': 'A',
+                            'math': 'B',
+                            'science': 'A',
+                            'tech': 'A',
+                            'english': 'C'
+                        },
+                        {
+                            'semester': 3,
+                            'korean': 'A',
+                            'social': 'A',
+                            'history': 'A',
+                            'math': 'C',
+                            'science': 'A',
+                            'tech': 'A',
+                            'english': 'A'
+                        },
+                        {
+                            'semester': 4,
+                            'korean': 'A',
+                            'social': 'B',
+                            'history': 'A',
+                            'math': 'A',
+                            'science': 'A',
+                            'tech': 'A',
+                            'english': 'A'
+                        },
+                        {
+                            'semester': 5,
+                            'korean': 'A',
+                            'social': 'A',
+                            'history': 'A',
+                            'math': 'A',
+                            'science': 'A',
+                            'tech': 'A',
+                            'english': 'A'
+                        }
+                    ]
                 },
                 '검정고시': {
                     'final_score': 280.12,
-                    'grade': 95.12
+                    'ged_grade': 95.12
                 }
             }
         },
@@ -131,9 +175,9 @@ VIEW_APPLICANTS_GRADE_GET = {
     }
 }
 
-CONVERT_TO_TRUE_RECEIPT_PATCH = {
-    'tags': ['[정보 수정]'],
-    'description': '특정 지원자의 원서(우편 서류) 여부를 도착(true)으로 변경',
+CONVERT_RECEIPT_VALUE_PATCH = {
+    'tags': ['[Handle information]'],
+    'description': '특정 지원자의 원서(우편 서류) 여부를 도착(true)으로 변경 하거나 반대로',
     'parameters': [
         {
             'name': 'Authorization',
@@ -160,9 +204,9 @@ CONVERT_TO_TRUE_RECEIPT_PATCH = {
     }
 }
 
-CONVERT_TO_TRUE_PAYMENT_PATCH = {
-    'tags': ['[정보 수정]'],
-    'description': '특정 지원자의 전형료 여부를 제출(true)로 변경',
+CONVERT_PAYMENT_VALUE_PATCH = {
+    'tags': ['[Handle information]'],
+    'description': '특정 지원자의 전형료 여부를 제출(true)로 변경하거나 반대로',
     'parameters': [
         {
             'name': 'Authorization',
@@ -190,7 +234,7 @@ CONVERT_TO_TRUE_PAYMENT_PATCH = {
 }
 
 ISSUE_EXAM_CODE_PATCH = {
-    'tags': ['[정보 수정]'],
+    'tags': ['[Handle information]'],
     'description': '수험번호 발급 원칙에 따라 발급',
     'parameters': [
         {

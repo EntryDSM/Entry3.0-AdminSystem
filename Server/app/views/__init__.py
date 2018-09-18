@@ -6,7 +6,7 @@ from flask import Response, abort, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
-from app.models.interviewData import AdminModel
+from app.models.admin_models import AdminModel
 
 
 def after_request(response):
@@ -92,10 +92,6 @@ class Router:
     def init_app(self, app):
         app.after_request(after_request)
 
-        from app.views import sample
-        app.register_blueprint(sample.api.blueprint)
-
-        from app.views import auth, search, details
+        from app.views import auth, search
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
-        app.register_blueprint(details.api.blueprint)

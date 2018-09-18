@@ -1,6 +1,6 @@
 VIEW_APPLICANTS_GET = {
-    'tags': ['[지원자 관리]'],
-    'description': '지원자들의 목록을 검색하여 확인하는 사살상 메인 API',
+    'tags': ['[Search]'],
+    'description': '지원자들의 목록 검색 API',
     'parameters': [
         {
             'name': 'Authorization',
@@ -10,22 +10,29 @@ VIEW_APPLICANTS_GET = {
             'required': True
         },
         {
-            'name': 'search',
-            'description': '검색어(*조건* region => true(대전) or false(전국), type => 1(normal) or 2(meister) or 3(social))',
+            'name': 'name',
+            'description': '검색어 : 이름',
             'in': 'query',
             'type': 'str',
             'required': False
         },
         {
-            'name': 'condition',
-            'description': '검색어 조건(name or region or type)',
+            'name': 'region',
+            'description': '검색어 : 지역(true = 대전, false = 전국)',
+            'in': 'query',
+            'type': 'str',
+            'required': False
+        },
+        {
+            'name': 'admission',
+            'description': '검색어 : 전형(1 = 일반, 2 = 마이스터, 3 = 사회통합)',
             'in': 'query',
             'type': 'str',
             'required': False
         },
         {
             'name': 'receipt',
-            'description': '제출 여부(true or false)',
+            'description': '원서(종이 문서) 제출 여부(true or false)',
             'in': 'query',
             'type': 'str',
             'required': False
@@ -72,42 +79,39 @@ VIEW_APPLICANTS_GET = {
                     }
                 ]
             }
-        },
-        '400': {
-            'description': '요청 불가능한 검색 조건'
         }
     }
 }
 
-PRINT_APPLICANTS_AS_EXCEL_POST = {
-    'tags': ['[지원자 관리]'],
-    'description': '원하는 학생들의 정보를 엑셀로 출력',
-    'parameters': [
-        {
-            'name': 'Authorization',
-            'description': 'JWT Token',
-            'in': 'header',
-            'type': 'str',
-            'required': True
-        }
-    ],
-    "produces": [
-       "text/csv"
-    ],
-    'responses': {
-        '201': {
-            'description': 'Success : csv file response ',
-            'content-type': 'text/csv',
-            'examples': {
-                'Response Headers': {
-                    'Content-Disposition': 'attachment; filename=applicants.csv',
-                    'Content-type': 'text/csv'
-                },
-                'Response Body': 'receipt_code,name,region,type,receipt,payment\n'
-                        '112,차태민,전국,meister,False,False\n'
-                        '113,연준모,대전,normal,True,True\n'
-                        '114,백팡민,전국,normal,True,False\n'
-            }
-        }
-    }
-}
+# PRINT_APPLICANTS_AS_EXCEL_POST = {
+#     'tags': ['[지원자 관리]'],
+#     'description': '원하는 학생들의 정보를 엑셀로 출력',
+#     'parameters': [
+#         {
+#             'name': 'Authorization',
+#             'description': 'JWT Token',
+#             'in': 'header',
+#             'type': 'str',
+#             'required': True
+#         }
+#     ],
+#     "produces": [
+#        "text/csv"
+#     ],
+#     'responses': {
+#         '201': {
+#             'description': 'Success : csv file response ',
+#             'content-type': 'text/csv',
+#             'examples': {
+#                 'Response Headers': {
+#                     'Content-Disposition': 'attachment; filename=applicants.csv',
+#                     'Content-type': 'text/csv'
+#                 },
+#                 'Response Body': 'receipt_code,name,region,type,receipt,payment\n'
+#                         '112,차태민,전국,meister,False,False\n'
+#                         '113,연준모,대전,normal,True,True\n'
+#                         '114,백팡민,전국,normal,True,False\n'
+#             }
+#         }
+#     }
+# }
