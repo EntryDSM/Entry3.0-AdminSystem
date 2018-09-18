@@ -335,3 +335,32 @@ PRINT_EXAM_TABLE_ONE_GET = {
         }
     }
 }
+
+REVERSAL_FINAL_SUBMIT_PATCH = {
+    'tags': ['[Handle information]'],
+    'description': '최종 제출 번복',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '변경하고 싶은 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    'responses': {
+        '201': {
+            'description': '최종제출 번복 성공'
+        },
+        '400': {
+            'description': '존재하지 않는 유저'
+        }
+    }
+}

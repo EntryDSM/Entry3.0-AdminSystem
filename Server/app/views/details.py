@@ -223,3 +223,19 @@ class PrintExamTableOne(BaseResource):
         applicant = create_exam_table(user_id)
 
         return self.unicode_safe_json_dumps(applicant, 200)
+
+
+@api.resource('/final_submit/<user_id>')
+class ReversalFinalSubmit(BaseResource):
+    @swag_from(REVERSAL_FINAL_SUBMIT_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not status:
+            abort(400)
+
+        status.final_submit = False
+        db.session.commit()
+
+        return Response('', 201)
