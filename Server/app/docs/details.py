@@ -23,6 +23,7 @@ VIEW_APPLICANT_DETAILS_GET = {
             'examples': {
                 '졸업자 or 졸업 예정자': {
                     'main': {
+                        'img_path': '서버어딘가',
                         'name': '정근철',
                         'admission': 'will',
                         'region': '전국'
@@ -48,6 +49,7 @@ VIEW_APPLICANT_DETAILS_GET = {
                 },
                 '검정고시': {
                     'main': {
+                        'img_path': '서버어딘가',
                         'name': '김성현',
                         'admission': 'ged',
                         'region': '대전'
@@ -258,6 +260,42 @@ ISSUE_EXAM_CODE_PATCH = {
         },
         '400': {
             'description': '존재하지 않는 유저'
+        }
+    }
+}
+
+PRINT_EXCEL_ONE_POST = {
+    'tags': ['[Print data]'],
+    'description': '특정 지원자 정보를 엑셀로 출력(csv 파일 생성)',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '상세정보를 엑셀로 출력할 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    "produces": [
+        "text/csv"
+    ],
+    'responses': {
+        '201': {
+            'description': 'Success : csv file response ',
+            'content-type': 'text/csv',
+            'examples': {
+                'Response Headers': {
+                    'Content-Disposition': 'attachment; filename=applicants.csv',
+                    'Content-type': 'text/csv'
+                }
+            }
         }
     }
 }

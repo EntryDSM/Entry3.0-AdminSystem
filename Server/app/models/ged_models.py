@@ -7,7 +7,7 @@ from app.models import db
 class GedScoreModel(db.Model):
     __tablename__ = 'ged_score'
 
-    # one to many
+    # one to one
     user_id = db.Column(db.String(32),
                         db.ForeignKey('user.user_id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
     grade = db.Column(Double(unsigned=True), nullable=False, default=0.0)

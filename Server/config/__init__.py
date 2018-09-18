@@ -57,6 +57,10 @@ class Config:
             {
                 'name': '[Handle information]',
                 'description': 'Processing of applicant information'
+            },
+            {
+                'name': '[Print data]',
+                'description': 'print data API'
             }
         ]
     }
