@@ -1,8 +1,8 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
-  template: "./public/index.html",
-  filename: "./index.html"
+  template: './public/index.html',
+  filename: './index.html'
 });
 
 module.exports = {
@@ -48,6 +48,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
+    historyApiFallback: true
   }
 }
