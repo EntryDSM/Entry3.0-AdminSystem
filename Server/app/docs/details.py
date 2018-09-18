@@ -299,3 +299,39 @@ PRINT_EXCEL_ONE_POST = {
         }
     }
 }
+
+PRINT_EXAM_TABLE_ONE_GET = {
+    'tags': ['[Print data]'],
+    'description': '수험표 출력에 쓰이는 정보를 조회 *(전형 정보 번역 출력 바람)',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '수험표를 출력할 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    'responses': {
+        '200': {
+            'description': '조회 성공',
+            'examples': {
+                '': {
+                    'exam_code': '110021',
+                    'name': '정근철',
+                    'middle_school': '해솔중학교',
+                    'region': '전국',
+                    'admission': 'NORMAL',
+                    'receipt_code': '004'
+                }
+            }
+        }
+    }
+}

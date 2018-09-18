@@ -5,7 +5,7 @@ from flask import Blueprint, request, abort, make_response
 from flask_restful import Api
 from flasgger import swag_from
 
-from app.views import BaseResource, check_auth, create_csv_row
+from app.views import BaseResource, check_auth, create_csv_row, create_exam_table
 
 from app.models import db
 from app.models.user_models import UserModel, InfoModel, ApplyStatusModel, AdmissionChoice
@@ -93,7 +93,11 @@ class PrintExcelAllApplicants(BaseResource):
 
 @api.resource('/applicants/exam_table')
 class PrintExamTableAllApplicants(BaseResource):
-    @swag_from()
+    @swag_from(PRINT_EXAM_TABLE_ALL_APPLICANTS_POST)
     @check_auth()
     def post(self):
-        pass
+        users = list(request.json['users'])
+
+        tables = [create_exam_table(user) for user in users]
+
+        return self.unicode_safe_json_dumps(tables, 200)

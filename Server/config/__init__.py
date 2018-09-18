@@ -38,10 +38,7 @@ class Config:
             'http'
         ],
         'tags': [
-            {
-                'name': 'Some Tag',
-                'description': 'Some API'
-            },
+
             {
                 'name': '[Account]',
                 'description': 'admin account API'

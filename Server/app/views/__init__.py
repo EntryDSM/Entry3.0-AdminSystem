@@ -96,9 +96,10 @@ class Router:
     def init_app(self, app):
         app.after_request(after_request)
 
-        from app.views import auth, search
+        from app.views import auth, search, details
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
+        app.register_blueprint(details.api.blueprint)
 
 
 def create_csv_row(user_id):
@@ -222,3 +223,17 @@ def create_csv_row(user_id):
     column.update(grade_score)
 
     return column
+
+
+def create_exam_table(user_id):
+    applicant = db.session.query(UserModel, ApplyStatusModel, InfoModel) \
+        .join(ApplyStatusModel).join(InfoModel).filter(UserModel.user_id == user_id).first()
+
+    return {
+        'exam_code': applicant.ApplyStatusModel.exam_code,
+        'name': applicant.InfoModel.name,
+        'middle_school': GraduateInfoModel.query.filter_by(user_id=user_id).first().school_name,
+        'region': '대전 ' if applicant.UserModel.region is True else '전국',
+        'admission': applicant.UserModel.admission.name,
+        'receipt_code': str(applicant.ApplyStatusModel.receipt_code)
+    }
