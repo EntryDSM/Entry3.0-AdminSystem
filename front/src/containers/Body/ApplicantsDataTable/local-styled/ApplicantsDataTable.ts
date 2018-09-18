@@ -3,6 +3,7 @@ import gs from '../../../../global-styled';
 
 const Section = styled.section`
   width: calc(100% - 300px);
+  min-width: 660px;
   height: 100vh;
   padding: 50px;
   float: left;

@@ -49,6 +49,7 @@ class AsideHelper extends React.Component {
   }
 
   render() {
+    console.log(this)
     return (
       <Aside>
         <AsideHeader>지원자 검색</AsideHeader>
