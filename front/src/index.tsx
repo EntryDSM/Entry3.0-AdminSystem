@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { Body, AsideHelper } from './containers';
+import { Body, AsideHelper, Login } from './containers';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -13,10 +13,12 @@ const root = document.getElementById('root') as HTMLElement;
 render(
   <Provider store={store}>
     <Router>
-      <gs.RootWrapper>
-        <AsideHelper />
-        <Body />
-      </gs.RootWrapper>
+      <React.Fragment>
+        <Route path='/login' component={Login} />
+        <gs.RootWrapper>
+          <Body />
+        </gs.RootWrapper>
+      </React.Fragment>
     </Router>
   </Provider>
 , root);
