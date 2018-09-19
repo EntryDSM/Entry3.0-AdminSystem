@@ -1,7 +1,7 @@
 from flask import Blueprint, request, abort, Response
 from flask_restful import Api
 from flask_jwt_extended import create_access_token, create_refresh_token
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flasgger import swag_from
 
 from app.views import BaseResource, check_json
@@ -27,20 +27,20 @@ class Auth(BaseResource):
         }, 200) if user and check_password_hash(user.password, request.json['pw']) else abort(401)
 
 
-# @api.resource('/account')
-# class AccountAdmin(BaseResource):
-#     def post(self):
-#         payload = request.json
-#         data = {
-#             'admin_id': payload['id'],
-#             'name': payload['name'],
-#             'admin_type': AdminTypeChoice.str(payload['type']),
-#             'email': payload['email'],
-#             'password': payload['password']
-#         }
-#
-#         user = AdminModel(**data)
-#         db.session.add(user)
-#         db.session.commit()
-#
-#         return Response('', 201)
+@api.resource('/account')
+class AccountAdmin(BaseResource):
+    def post(self):
+        payload = request.json
+        data = {
+            'admin_id': payload['id'],
+            'name': payload['name'],
+            'admin_type': AdminTypeChoice.str(payload['type']),
+            'email': payload['email'],
+            'password': generate_password_hash(payload['password'])
+        }
+
+        user = AdminModel(**data)
+        db.session.add(user)
+        db.session.commit()
+
+        return Response('', 201)
