@@ -1,11 +1,14 @@
-from flask import Blueprint, request, abort, Response
+import csv
+from io import StringIO
+
+from flask import Blueprint, request, abort, Response, make_response
 from flask_restful import Api
 from flasgger import swag_from
 
-from app.views import BaseResource, check_auth
+from app.views import BaseResource, check_auth, create_csv_row, create_exam_table
 
 from app.models import db
-from app.models.user_models import UserModel, ApplyStatusModel, InfoModel
+from app.models.user_models import UserModel, ApplyStatusModel, InfoModel, DocumentModel
 from app.models.graduate_models import GraduateInfoModel, GraduateScoreModel, GraduateGradeModel
 from app.models.ged_models import GedScoreModel
 
@@ -40,6 +43,7 @@ class ViewApplicantDetails(BaseResource):
 
         return self.unicode_safe_json_dumps({
             'main': {
+                'img_path': applicant.InfoModel.img_path,
                 'name': applicant.InfoModel.name,
                 'admission': str(applicant.UserModel.admission.name),
                 'region': '대전' if applicant.UserModel.region is True else '전국'
@@ -190,7 +194,48 @@ class IssueExamCode(BaseResource):
         return Response('', 201)
 
 
-# @api.resource('/<user_id>/excel')
-# class PrintExcelOne(BaseResource):
-#     def post(self, user_id):
-#         pass
+@api.resource('/excel/<user_id>')
+class PrintExcelOne(BaseResource):
+    @swag_from(PRINT_EXCEL_ONE_POST)
+    @check_auth()
+    def post(self, user_id):
+        column = create_csv_row(user_id)
+
+        si = StringIO()
+        si.write(u'\ufeff')
+        f = csv.writer(si)
+
+        f.writerow([i for i in column.keys()])
+        f.writerow([i for i in column.items()])
+
+        res = make_response(si.getvalue(), 201)
+        res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
+        res.headers['Content-type'] = "text/csv"
+
+        return res
+
+
+@api.resource('/exam_table/<user_id>')
+class PrintExamTableOne(BaseResource):
+    @swag_from(PRINT_EXAM_TABLE_ONE_GET)
+    @check_auth()
+    def get(self, user_id):
+        applicant = create_exam_table(user_id)
+
+        return self.unicode_safe_json_dumps(applicant, 200)
+
+
+@api.resource('/final_submit/<user_id>')
+class ReversalFinalSubmit(BaseResource):
+    @swag_from(REVERSAL_FINAL_SUBMIT_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not status:
+            abort(400)
+
+        status.final_submit = False
+        db.session.commit()
+
+        return Response('', 201)

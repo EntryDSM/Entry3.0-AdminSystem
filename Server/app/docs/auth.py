@@ -1,7 +1,7 @@
 from app.docs import SAMPLE_ACCESS_TOKEN, SAMPLE_REFRESH_TOKEN
 
 AUTH_POST = {
-    'tags': ['[계정]'],
+    'tags': ['[Account]'],
     'description': '관리자 계정 로그인',
     'parameters': [
         {

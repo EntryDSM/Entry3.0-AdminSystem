@@ -23,6 +23,7 @@ VIEW_APPLICANT_DETAILS_GET = {
             'examples': {
                 '졸업자 or 졸업 예정자': {
                     'main': {
+                        'img_path': '서버어딘가',
                         'name': '정근철',
                         'admission': 'will',
                         'region': '전국'
@@ -48,6 +49,7 @@ VIEW_APPLICANT_DETAILS_GET = {
                 },
                 '검정고시': {
                     'main': {
+                        'img_path': '서버어딘가',
                         'name': '김성현',
                         'admission': 'ged',
                         'region': '대전'
@@ -255,6 +257,107 @@ ISSUE_EXAM_CODE_PATCH = {
     'responses': {
         '201': {
             'description': '수험번호 발급 성공'
+        },
+        '400': {
+            'description': '존재하지 않는 유저'
+        }
+    }
+}
+
+PRINT_EXCEL_ONE_POST = {
+    'tags': ['[Print data]'],
+    'description': '특정 지원자 정보를 엑셀로 출력(csv 파일 생성)',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '상세정보를 엑셀로 출력할 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    "produces": [
+        "text/csv"
+    ],
+    'responses': {
+        '201': {
+            'description': 'Success : csv file response ',
+            'content-type': 'text/csv',
+            'examples': {
+                'Response Headers': {
+                    'Content-Disposition': 'attachment; filename=applicants.csv',
+                    'Content-type': 'text/csv'
+                }
+            }
+        }
+    }
+}
+
+PRINT_EXAM_TABLE_ONE_GET = {
+    'tags': ['[Print data]'],
+    'description': '수험표 출력에 쓰이는 정보를 조회 *(전형 정보 번역 출력 바람)',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '수험표를 출력할 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    'responses': {
+        '200': {
+            'description': '조회 성공',
+            'examples': {
+                '': {
+                    'exam_code': '110021',
+                    'name': '정근철',
+                    'middle_school': '해솔중학교',
+                    'region': '전국',
+                    'admission': 'NORMAL',
+                    'receipt_code': '004'
+                }
+            }
+        }
+    }
+}
+
+REVERSAL_FINAL_SUBMIT_PATCH = {
+    'tags': ['[Handle information]'],
+    'description': '최종 제출 번복',
+    'parameters': [
+        {
+            'name': 'Authorization',
+            'description': 'JWT Token',
+            'in': 'header',
+            'type': 'str',
+            'required': True
+        },
+        {
+            'name': 'user_id',
+            'description': '변경하고 싶은 지원자의 id',
+            'in': 'path',
+            'type': 'str',
+            'required': True
+        }
+    ],
+    'responses': {
+        '201': {
+            'description': '최종제출 번복 성공'
         },
         '400': {
             'description': '존재하지 않는 유저'
