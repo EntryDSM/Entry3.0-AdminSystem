@@ -1,18 +1,22 @@
 import * as React from 'react';
 import axios from 'axios';
 import LoginInput from './LoginInput';
+import { Redirect } from 'react-router-dom';
 import { Container, Background, Box, HeaderTitle, HeaderSubTitle, LoginButton } from './local-styled/Login';
+import { withCookies } from 'react-cookie';
 import * as bakcground_img from './res/background.jpg';
 
 type State = {
   id: string,
-  password: string
+  password: string,
+  isLogin: boolean
 }
 
-class Login extends React.Component {
+class Login extends React.Component<any, any> {
   state: State = {
     id: '',
-    password: ''
+    password: '',
+    isLogin: false
   }
 
   inputAuthInfo = ({ target }: Target) => {
@@ -22,22 +26,40 @@ class Login extends React.Component {
   }
 
   submit = () => {
+    axios.post('/auth', {
+      id: this.state.id,
+      pw: this.state.password
+    }, {
+      withCredentials: true
+    }).then(res => {
+      const { cookies } = this.props;
+      cookies.set('access_token', res.data.access_token);
+      this.setState((prevState: State) => ({
+        isLogin: !prevState.isLogin
+      }));
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   render() {
     return (
-      <Container>
-        <Background src={bakcground_img} />
-        <Box>
-          <HeaderTitle>관리자 로그인</HeaderTitle>
-          <HeaderSubTitle>부여받은 아이디와 비밀번호를 입력하시오</HeaderSubTitle>
-          <LoginInput label='ID' type='text' event={this.inputAuthInfo} />
-          <LoginInput label='Password' type='password' event={this.inputAuthInfo} />
-          <LoginButton onClick={this.submit}>로그인</LoginButton>
-        </Box>
-      </Container>
+      this.state.isLogin ? (
+        <Container>
+          <Background src={bakcground_img} />
+          <Box>
+            <HeaderTitle>관리자 로그인</HeaderTitle>
+            <HeaderSubTitle>부여받은 아이디와 비밀번호를 입력하시오</HeaderSubTitle>
+            <LoginInput label='id' type='text' inputEvent={this.inputAuthInfo} />
+            <LoginInput label='password' type='password' inputEvent={this.inputAuthInfo} />
+            <LoginButton onClick={this.submit}>로그인</LoginButton>
+          </Box>
+        </Container>
+      ) : (
+        <Redirect to='/' />
+      )
     );
   }
 }
 
-export default Login;
+export default withCookies(Login);

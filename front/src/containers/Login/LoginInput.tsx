@@ -4,13 +4,13 @@ import { InputWrapper, Label, Input } from './local-styled/LoginInput';
 type Props = {
   label: string,
   type: string,
-  event: Function
+  inputEvent: Function
 }
 
-const LoginInput = ({ label, type, event }: Props) =>
+const LoginInput = ({ label, type, inputEvent }: Props) =>
   <InputWrapper>
     <Label>{label}</Label>
-    <Input name={label} type={type} onChange={() => event()} />
+    <Input name={label} type={type} onChange={event => inputEvent(event)} />
   </InputWrapper>
 
 export default LoginInput;
