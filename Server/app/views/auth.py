@@ -34,7 +34,7 @@ class AccountAdmin(BaseResource):
         data = {
             'admin_id': payload['id'],
             'name': payload['name'],
-            'admin_type': AdminTypeChoice.str(payload['type']),
+            'admin_type': AdminTypeChoice(int(payload['type'])),
             'email': payload['email'],
             'password': generate_password_hash(payload['password'])
         }
