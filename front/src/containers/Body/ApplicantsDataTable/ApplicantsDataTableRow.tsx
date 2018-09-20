@@ -3,6 +3,7 @@ import { TableRow, SelectStudent, ReceiptCode, Name, Region, Type, Payment, Rece
 import gs from '../../../global-styled';
 
 interface Props {
+  userId: string;
   isSelect: boolean;
   receiptCode: string;
   name: string;
@@ -10,10 +11,11 @@ interface Props {
   type: string;
   isReceipt: boolean;
   isPayment: boolean;
+  selectStudent: Function;
 }
 
-const ApplicantsDataTableRow = ({ isSelect, receiptCode, name, region, type, isReceipt, isPayment }: Props) =>
-  <TableRow>
+const ApplicantsDataTableRow = ({ userId, isSelect, receiptCode, name, region, type, isReceipt, isPayment, selectStudent }: Props) =>
+  <TableRow id={`${userId}`} onClick={() => selectStudent()}>
     <SelectStudent><gs.CheckBox checked={isSelect} /></SelectStudent>
     <ReceiptCode>{receiptCode}</ReceiptCode>
     <Name>{name}</Name>
