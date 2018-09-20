@@ -450,6 +450,7 @@ class ApplicantsDataTable extends React.Component {
             {
               this.state.data.map(row =>
                 <ApplicantsDataTableRow
+                  key={`key: ${row.receiptCode}`}
                   isSelect={row.checked}
                   receiptCode={row.receiptCode}
                   name={row.name}

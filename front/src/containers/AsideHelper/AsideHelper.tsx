@@ -49,8 +49,7 @@ class AsideHelper extends React.Component<any, any> {
   search = (): void => {
     axios.get(`http://52.79.60.204/applicants${this.state.search}`, {
       headers: {
-        Authorization: this.props.cookies.accessToken,
-        withCredentials: true
+        Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
       }
     }).then(res => {
       console.log(res);
