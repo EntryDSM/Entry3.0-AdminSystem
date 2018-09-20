@@ -33,21 +33,6 @@ export const InformationHeader = styled.div`
   border-bottom: 5px solid rgb(5, 219, 239);
 `
 
-export const Information = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-top: 10px;
-  padding-bottom: 10px;
-`
-
-export const InformationName = styled.div`
-  width: 50%;
-`
-
-export const InformationText = styled.div`
-  width: 50%;
-`
-
 export const Summary = styled.div`
 `
 

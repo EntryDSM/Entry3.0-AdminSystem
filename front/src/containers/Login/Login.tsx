@@ -45,6 +45,8 @@ class Login extends React.Component<any, any> {
   render() {
     return (
       this.state.isLogin ? (
+        <Redirect to='/' />
+      ) : (
         <Container>
           <Background src={bakcground_img} />
           <Box>
@@ -55,8 +57,6 @@ class Login extends React.Component<any, any> {
             <LoginButton onClick={this.submit}>로그인</LoginButton>
           </Box>
         </Container>
-      ) : (
-        <Redirect to='/' />
       )
     );
   }
