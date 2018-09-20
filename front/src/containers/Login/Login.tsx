@@ -26,14 +26,12 @@ class Login extends React.Component<any, any> {
   }
 
   submit = () => {
-    axios.post('/auth', {
+    axios.post('http://52.79.60.204/auth', {
       id: this.state.id,
       pw: this.state.password
-    }, {
-      withCredentials: true
     }).then(res => {
       const { cookies } = this.props;
-      cookies.set('access_token', res.data.access_token);
+      cookies.set('accessToken', res.data.accessToken);
       this.setState((prevState: State) => ({
         isLogin: !prevState.isLogin
       }));

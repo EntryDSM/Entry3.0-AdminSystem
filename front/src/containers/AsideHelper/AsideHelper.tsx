@@ -4,8 +4,10 @@ import { Aside, AsideHeader } from './local-styled/AsideHelper';
 import Search from './Search';
 import SearchButton from './SearchButton';
 import SearchFilters from './SearchFilters';
+import ExcelRequestButton from './ExcelRequestButton';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { withCookies } from 'react-cookie';
 import { updateApplicantsData } from '../../actions/applicants';
 // import SelectSearchCondition from './SelectSearchCondition';   --deprecated
 
@@ -18,7 +20,7 @@ interface State {
   }
 }
 
-class AsideHelper extends React.Component {
+class AsideHelper extends React.Component<any, any> {
   state: State = {
     isReceipt: false,
     isPayment: false,
@@ -45,7 +47,31 @@ class AsideHelper extends React.Component {
   }
 
   search = (): void => {
-    axios.get(`?${this.state.search}`, { headers: {  } })
+    axios.get(`http://52.79.60.204/applicants${this.state.search}`, {
+      headers: {
+        Authorization: this.props.cookies.accessToken,
+        withCredentials: true
+      }
+    }).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  requestCSVFile = (): void => {
+    axios.post('/applicants/excel', {
+      headers: {
+        Authorization: this.props.cookies
+      },
+      params: {
+        users: this.props.data.map((user: any) => user.userId)
+      }
+    }).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   render() {
@@ -67,6 +93,7 @@ class AsideHelper extends React.Component {
           searchInput={this.searchInput}
           searchValue={this.state.search} />
         <SearchButton search={this.search} />
+        <ExcelRequestButton request={this.requestCSVFile} />
       </Aside>
     );
   }
@@ -76,4 +103,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   search: (data: ApplicantsData) => dispatch(updateApplicantsData(data))
 });
 
-export default connect(mapDispatchToProps)(AsideHelper);
+const mapStateToProps = (state: any) => ({
+  data: state.data
+});
+
+export default withCookies(connect(mapDispatchToProps)(AsideHelper));
