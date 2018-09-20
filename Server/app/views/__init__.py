@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
 from app.models import db
-from app.models.admin_models import AdminModel
+from app.models.admin_models import AdminModel, SchoolModel
 from app.models.user_models import *
 from app.models.graduate_models import *
 from app.models.ged_models import *
@@ -103,11 +103,13 @@ class Router:
 
 
 def create_csv_row(user_id):
-    basic_data = db.session.query(UserModel, ApplyStatusModel, DocumentModel, InfoModel, GraduateInfoModel)\
-        .join(ApplyStatusModel).join(DocumentModel)\
-        .join(InfoModel).join(GraduateInfoModel).filter(UserModel.user_id == user_id).first()
+    graduate_type = str(UserModel.query.filter_by(user_id=user_id).first().graduate_type.name)
 
-    if str(basic_data.UserModel.graduate_type.name) == 'GED':
+    if graduate_type == 'GED':
+        basic_data = db.session.query(UserModel, ApplyStatusModel, DocumentModel, InfoModel) \
+            .join(ApplyStatusModel).join(DocumentModel) \
+            .join(InfoModel).filter(UserModel.user_id == user_id).first()
+
         ged = GedScoreModel.query.filter_by(user_id=user_id).first()
         grade_score = {
             '1학년': '',
@@ -115,16 +117,36 @@ def create_csv_row(user_id):
             '3학년': '',
             '교과성적환산점수': ged.conversion_score,
             '봉사시간': '',
-            '봉사점수': ged.volunteer_score,
+            '봉사점수': int(ged.volunteer_score),
             '결석': '',
             '지각': '',
             '조퇴': '',
             '결과': '',
             '출석점수': ged.attendance_score,
-            '1차전형 총점': ged.final_score
+            '1차전형 총점': ged.final_score,
+
+            '졸업년도': '',
+            '출신학교': '',
+            '반': ''
         }
+
+        grade_data = [{
+            'korean': '',
+            'social': '',
+            'history': '',
+            'math': '',
+            'science': '',
+            'tech': '',
+            'english': ''
+        } for _ in range(6)]
+
     else:
+        basic_data = db.session.query(UserModel, ApplyStatusModel, DocumentModel, InfoModel, GraduateInfoModel) \
+            .join(ApplyStatusModel).join(DocumentModel) \
+            .join(InfoModel).join(GraduateInfoModel).filter(UserModel.user_id == user_id).first()
+
         graduate = GraduateScoreModel.query.filter_by(user_id=user_id).first()
+        school_name = SchoolModel.query.filter_by(code=basic_data.GraduateInfoModel.school_code).first().name
         grade_score = {
             '1학년': graduate.first_grade,
             '2학년': graduate.second_grade,
@@ -137,24 +159,38 @@ def create_csv_row(user_id):
             '조퇴': graduate.early_leave,
             '결과': graduate.period_cut,
             '출석점수': graduate.attendance_score,
-            '1차전형 총점': graduate.final_score
+            '1차전형 총점': graduate.final_score,
+
+            '졸업년도': basic_data.GraduateInfoModel.graduate_year,
+            '출신학교': school_name,
+            '반': basic_data.GraduateInfoModel.student_class,
         }
 
-    grade_data = [{
-        'semester': grade.semester,
-        'korean': grade.korean,
-        'social': grade.social,
-        'history': grade.history,
-        'math': grade.math,
-        'science': grade.science,
-        'tech': grade.tech,
-        'english': grade.english
-    } for grade in GraduateGradeModel.query.filter_by(user_id=user_id).all()]
+        grade_data = [{
+            'korean': grade.korean.name,
+            'social': grade.social.name,
+            'history': grade.history.name,
+            'math': grade.math.name,
+            'science': grade.science.name,
+            'tech': grade.tech.name,
+            'english': grade.english.name
+        } for grade in GraduateGradeModel.query.filter_by(user_id=user_id).all()]
+
+        if len(grade_data):
+            grade_data.append({
+                'korean': '',
+                'social': '',
+                'history': '',
+                'math': '',
+                'science': '',
+                'tech': '',
+                'english': ''
+            })
 
     column = {
         '접수번호': basic_data.ApplyStatusModel.receipt_code,
         '전형유형': basic_data.UserModel.admission.name,
-        '지역': basic_data.UserModel.region,
+        '지역': '대전' if basic_data.UserModel.region is True else '전국',
         '세부유형': basic_data.UserModel.admission_detail.name,
         '성명': basic_data.InfoModel.name,
         '생년월일': str(basic_data.InfoModel.birth),
@@ -162,9 +198,6 @@ def create_csv_row(user_id):
         '휴대폰 번호': basic_data.InfoModel.my_tel,
         '성별': basic_data.InfoModel.sex.name,
         '학력구분': basic_data.UserModel.graduate_type.name,
-        '졸업년도': basic_data.GraduateInfoModel.graduate_year,
-        '출신학교': basic_data.GraduateInfoModel.school_name,
-        '반': basic_data.GraduateInfoModel.student_class,
         '보호자 성명': basic_data.InfoModel.parent_name,
         '보호자 연락처': basic_data.InfoModel.parent_tel,
 
@@ -229,10 +262,12 @@ def create_exam_table(user_id):
     applicant = db.session.query(UserModel, ApplyStatusModel, InfoModel) \
         .join(ApplyStatusModel).join(InfoModel).filter(UserModel.user_id == user_id).first()
 
+    g_info = GraduateInfoModel.query.filter_by(user_id=user_id).first()
+
     return {
         'exam_code': applicant.ApplyStatusModel.exam_code,
         'name': applicant.InfoModel.name,
-        'middle_school': GraduateInfoModel.query.filter_by(user_id=user_id).first().school_name,
+        'middle_school': SchoolModel.query.filter_by(code=g_info.school_code).first().name if g_info else "",
         'region': '대전 ' if applicant.UserModel.region is True else '전국',
         'admission': applicant.UserModel.admission.name,
         'receipt_code': str(applicant.ApplyStatusModel.receipt_code)

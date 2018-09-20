@@ -8,6 +8,7 @@ from flasgger import swag_from
 from app.views import BaseResource, check_auth, create_csv_row, create_exam_table
 
 from app.models import db
+from app.models.admin_models import SchoolModel
 from app.models.user_models import UserModel, ApplyStatusModel, InfoModel, DocumentModel
 from app.models.graduate_models import GraduateInfoModel, GraduateScoreModel, GraduateGradeModel
 from app.models.ged_models import GedScoreModel
@@ -24,16 +25,24 @@ class ViewApplicantDetails(BaseResource):
     @swag_from(VIEW_APPLICANT_DETAILS_GET)
     @check_auth()
     def get(self, user_id):
-        applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
-            .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
-            .filter(UserModel.user_id == user_id)\
-            .filter(ApplyStatusModel.final_submit is True).first()
+        applicant = UserModel.query.filter_by(user_id=user_id).first()
 
         if not applicant:
             abort(400)
 
+        if str(applicant.graduate_type.name) != 'GED':
+            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
+                .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
+                .filter(UserModel.user_id == user_id)\
+                .filter(ApplyStatusModel.final_submit).first()
+        else:
+            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
+                .join(InfoModel).join(ApplyStatusModel)\
+                .filter(UserModel.user_id == user_id)\
+                .filter(ApplyStatusModel.final_submit).first()
+
         academic = {
-            'school_name': applicant.GraduateInfoModel.school_name,
+            'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code,).first().name,
             'student_class': applicant.GraduateInfoModel.student_class,
             'student_grade': applicant.GraduateInfoModel.student_grade,
             'student_number': applicant.GraduateInfoModel.student_number,
@@ -97,13 +106,13 @@ class ViewApplicantGrade(BaseResource):
                 'volunteer_time': graduate_score.volunteer_time,
                 'subject_grade': [{
                     'semester': grade.semester,
-                    'korean': grade.korean,
-                    'social': grade.social,
-                    'history': grade.history,
-                    'math': grade.math,
-                    'science': grade.science,
-                    'tech': grade.tech,
-                    'english': grade.english
+                    'korean': grade.korean.name,
+                    'social': grade.social.name,
+                    'history': grade.history.name,
+                    'math': grade.math.name,
+                    'science': grade.science.name,
+                    'tech': grade.tech.name,
+                    'english': grade.english.name
                 } for grade in graduate_grade]
             }
 
@@ -150,13 +159,14 @@ class IssueExamCode(BaseResource):
         applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
             .join(InfoModel).join(ApplyStatusModel)\
             .filter(UserModel.user_id == user_id)\
-            .filter(ApplyStatusModel.final_submit is True).first()
+            .filter(ApplyStatusModel.final_submit).first()
 
         if not applicant:
             abort(400)
 
         # 수험번호 첫자리 - 전형
         exam_code = str(applicant.UserModel.admission.value)
+        print(exam_code)
 
         # 수험번호 둘째자리 - 주소
         if len(applicant.InfoModel.address_base) == 4:
@@ -182,10 +192,10 @@ class IssueExamCode(BaseResource):
             exam_code += '8'
         elif address in ('세종', '충청'):
             exam_code += '9'
-
+        print(exam_code)
         # 수험번호 셋쩨&마지막세자리 - 전형세부&접수번호
-        exam_code = str(applicant.UserModel.admission_detail.value) + str(applicant.ApplyStatusModel.receipt_code)
-
+        exam_code = exam_code + str(applicant.UserModel.admission_detail.value) + str(applicant.ApplyStatusModel.receipt_code)
+        print(exam_code)
         target = ApplyStatusModel.query.filter_by(user_id=user_id).first()
 
         target.exam_code = exam_code
@@ -199,14 +209,21 @@ class PrintExcelOne(BaseResource):
     @swag_from(PRINT_EXCEL_ONE_POST)
     @check_auth()
     def post(self, user_id):
-        column = create_csv_row(user_id)
+        user = UserModel.query.filter_by(user_id=user_id).first()
+
+        column = {}
+
+        if user:
+            column = create_csv_row(user_id)
+        else:
+            abort(400)
 
         si = StringIO()
         si.write(u'\ufeff')
         f = csv.writer(si)
 
         f.writerow([i for i in column.keys()])
-        f.writerow([i for i in column.items()])
+        f.writerow([i for _, i in column.items()])
 
         res = make_response(si.getvalue(), 201)
         res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"

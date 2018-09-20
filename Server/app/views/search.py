@@ -28,11 +28,11 @@ class ViewApplicants(BaseResource):
 
         joined_res = db.session.query(UserModel, InfoModel, ApplyStatusModel) \
             .join(InfoModel) \
-            .join(ApplyStatusModel) \
-            .join(ApplyStatusModel.final_submit is True)
+            .join(ApplyStatusModel)\
+            .filter(ApplyStatusModel.final_submit)
 
         # 제출-전형료 조건 없음
-        if not (checking_receipt and checking_payment):
+        if not self.str_to_bool(checking_receipt) and not self.str_to_bool(checking_payment):
             filtered_res = joined_res
 
         # 제출-전형료 조건 있음
@@ -56,7 +56,7 @@ class ViewApplicants(BaseResource):
             'admission': student.UserModel.admission.name,
             'receipt': student.ApplyStatusModel.receipt,
             'payment': student.ApplyStatusModel.payment
-        } for student in filtered_res], 200)
+        } for student in filtered_res], 200) if filtered_res else []
 
 
 @api.resource('/applicants/excel')
@@ -72,7 +72,7 @@ class PrintExcelAllApplicants(BaseResource):
         rows = [create_csv_row(user_id) for user_id in users]
         f.writerow([i for i in rows[0].keys()])
         for r in rows:
-            f.writerow([i for i in r.items()])
+            f.writerow([i for _, i in r.items()])
 
         res = make_response(si.getvalue(), 201)
         res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"

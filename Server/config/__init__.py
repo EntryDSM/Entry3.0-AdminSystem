@@ -22,7 +22,7 @@ class Config:
         'db': 'entry',
         'host': 'localhost',
         'user': 'root',
-        'password': 'germany33',
+        'password': 'first1208',
         'charset': 'utf8'
     }
 

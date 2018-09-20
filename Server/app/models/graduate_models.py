@@ -68,7 +68,7 @@ class GraduateInfoModel(db.Model):
     school_code = db.Column(db.String(32),
                             db.ForeignKey('school.code', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     graduate_year = db.Column(Integer(unsigned=True), nullable=False, default=2019)
-    school_name = db.Column(db.String(50), nullable=False, default="")
+    # school_name = db.Column(db.String(50), nullable=False, default="")
     school_tel = db.Column(db.String(15), nullable=False, default="")
     student_class = db.Column(Integer(unsigned=True), nullable=True)
     student_grade = db.Column(Integer(unsigned=True), nullable=False, default=3)

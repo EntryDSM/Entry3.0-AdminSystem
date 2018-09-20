@@ -41,14 +41,16 @@ def mysql_client_for_test(flask_app):
     """
     mysql_setting = flask_app.config['MYSQL_SETTING']
     connection = pymysql.connect(**mysql_setting)
+    # db_name = mysql_setting.pop('db')
     db_cursor = connection.cursor()
 
     yield db_cursor
 
     # teardown
-    del_admin = "DELETE FROM admin"
-    sql = del_admin
-    db_cursor.execute(sql)
+    del_list = ['admin', 'user', 'apply_status', 'document',
+                'info', 'school', 'graduate_grade', 'graduate_score', 'graduate_info', 'ged_score']
+    for table in del_list:
+        db_cursor.execute("DELETE FROM " + table + ';')
     connection.commit()
     connection.close()
 
