@@ -1,0 +1,258 @@
+import csv
+from io import StringIO
+
+from flask import Blueprint, request, abort, Response, make_response
+from flask_restful import Api
+from flasgger import swag_from
+
+from app.views import BaseResource, check_auth, create_csv_row, create_exam_table
+
+from app.models import db
+from app.models.admin_models import SchoolModel
+from app.models.user_models import UserModel, ApplyStatusModel, InfoModel, DocumentModel
+from app.models.graduate_models import GraduateInfoModel, GraduateScoreModel, GraduateGradeModel
+from app.models.ged_models import GedScoreModel
+
+from app.docs.details import *
+
+api = Api(Blueprint(__name__, __name__))
+
+api.prefix = '/applicants/details'
+
+
+@api.resource('/information/<user_id>')
+class ViewApplicantDetails(BaseResource):
+    @swag_from(VIEW_APPLICANT_DETAILS_GET)
+    @check_auth()
+    def get(self, user_id):
+        applicant = UserModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant:
+            abort(400)
+
+        if str(applicant.graduate_type.name) != 'GED':
+            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
+                .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
+                .filter(UserModel.user_id == user_id)\
+                .filter(ApplyStatusModel.final_submit).first()
+        else:
+            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
+                .join(InfoModel).join(ApplyStatusModel)\
+                .filter(UserModel.user_id == user_id)\
+                .filter(ApplyStatusModel.final_submit).first()
+
+        academic = {
+            'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code,).first().name,
+            'student_class': applicant.GraduateInfoModel.student_class,
+            'student_grade': applicant.GraduateInfoModel.student_grade,
+            'student_number': applicant.GraduateInfoModel.student_number,
+            'graduate_year': applicant.GraduateInfoModel.graduate_year,
+            'is_ged': False
+        } if str(applicant.UserModel.graduate_type.name) != 'GED' else {'is_ged': True}
+
+        return self.unicode_safe_json_dumps({
+            'main': {
+                'img_path': applicant.InfoModel.img_path,
+                'name': applicant.InfoModel.name,
+                'admission': str(applicant.UserModel.admission.name),
+                'region': '대전' if applicant.UserModel.region is True else '전국'
+            },
+            'basic': {
+                'name': applicant.InfoModel.name,
+                'tel': applicant.InfoModel.my_tel,
+                'address': applicant.InfoModel.address_base + ' ' + applicant.InfoModel.address_detail
+            },
+            'parent': {
+                'name': applicant.InfoModel.parent_name,
+                'tel': applicant.InfoModel.parent_tel
+            },
+            'academic': academic,
+            'exam_code': applicant.ApplyStatusModel.exam_code
+        }, 200)
+
+
+@api.resource('/grade/<user_id>')
+class ViewApplicantGrade(BaseResource):
+    @swag_from(VIEW_APPLICANT_GRADE_GET)
+    @check_auth()
+    def get(self, user_id):
+        applicant = UserModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant or not ApplyStatusModel.query.filter_by(user_id=user_id).first().final_submit:
+            abort(400)
+
+        if str(applicant.graduate_type.name) == 'GED':
+            ged_score = GedScoreModel.query.filter_by(user_id=user_id).first()
+            res = {
+                'ged_grade': ged_score.grade,
+                'final_score': ged_score.final_score
+            }
+        else:
+            graduate_score = GraduateScoreModel.query.filter_by(user_id=user_id).first()
+            graduate_grade = GraduateGradeModel.query.filter_by(user_id=user_id).all()
+
+            res = {
+                'school_grade': {
+                    'first_grade': graduate_score.first_grade,
+                    'second_grade': graduate_score.second_grade,
+                    'third_grade': graduate_score.third_grade,
+                    'conversion_score': graduate_score.conversion_score
+                },
+                'score': {
+                    'attendance_score': graduate_score.attendance_score,
+                    'volunteer_score': graduate_score.volunteer_score,
+                    'final_score': graduate_score.final_score
+                },
+                'volunteer_time': graduate_score.volunteer_time,
+                'subject_grade': [{
+                    'semester': grade.semester,
+                    'korean': grade.korean.name,
+                    'social': grade.social.name,
+                    'history': grade.history.name,
+                    'math': grade.math.name,
+                    'science': grade.science.name,
+                    'tech': grade.tech.name,
+                    'english': grade.english.name
+                } for grade in graduate_grade]
+            }
+
+        return self.unicode_safe_json_dumps(res, 200)
+
+
+@api.resource('/receipt/<user_id>')
+class ConvertReceiptValue(BaseResource):
+    @swag_from(CONVERT_RECEIPT_VALUE_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant_status:
+            abort(400)
+
+        applicant_status.receipt = True if not applicant_status.receipt else False
+        db.session.commit()
+
+        return Response('', 201)
+
+
+@api.resource('/payment/<user_id>')
+class ConvertPaymentValue(BaseResource):
+    @swag_from(CONVERT_PAYMENT_VALUE_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        applicant_status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not applicant_status:
+            abort(400)
+
+        applicant_status.payment = True if not applicant_status.payment else False
+        db.session.commit()
+
+        return Response('', 201)
+
+
+@api.resource('/exam_code/<user_id>')
+class IssueExamCode(BaseResource):
+    @swag_from(ISSUE_EXAM_CODE_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
+            .join(InfoModel).join(ApplyStatusModel)\
+            .filter(UserModel.user_id == user_id)\
+            .filter(ApplyStatusModel.final_submit).first()
+
+        if not applicant:
+            abort(400)
+
+        # 수험번호 첫자리 - 전형
+        exam_code = str(applicant.UserModel.admission.value)
+        print(exam_code)
+
+        # 수험번호 둘째자리 - 주소
+        if len(applicant.InfoModel.address_base) == 4:
+            address = applicant.InfoModel.address_base[:3]
+        else:
+            address = applicant.InfoModel.address_base[:2]
+
+        if address == '대전':
+            exam_code += '1'
+        elif address == '제주':
+            exam_code += '2'
+        elif address == '강원':
+            exam_code += '3'
+        elif address in ('부산', '울산', '경상남'):
+            exam_code += '4'
+        elif address in ('광주', '전라남'):
+            exam_code += '5'
+        elif address in ('대구', '경상북'):
+            exam_code += '6'
+        elif address == '전라북':
+            exam_code += '7'
+        elif address in ('서울', '경기', '인천'):
+            exam_code += '8'
+        elif address in ('세종', '충청'):
+            exam_code += '9'
+        print(exam_code)
+        # 수험번호 셋쩨&마지막세자리 - 전형세부&접수번호
+        exam_code = exam_code + str(applicant.UserModel.admission_detail.value) + str(applicant.ApplyStatusModel.receipt_code)
+        print(exam_code)
+        target = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        target.exam_code = exam_code
+        db.session.commit()
+
+        return Response('', 201)
+
+
+@api.resource('/excel/<user_id>')
+class PrintExcelOne(BaseResource):
+    @swag_from(PRINT_EXCEL_ONE_POST)
+    @check_auth()
+    def post(self, user_id):
+        user = UserModel.query.filter_by(user_id=user_id).first()
+
+        column = {}
+
+        if user:
+            column = create_csv_row(user_id)
+        else:
+            abort(400)
+
+        si = StringIO()
+        si.write(u'\ufeff')
+        f = csv.writer(si)
+
+        f.writerow([i for i in column.keys()])
+        f.writerow([i for _, i in column.items()])
+
+        res = make_response(si.getvalue(), 201)
+        res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
+        res.headers['Content-type'] = "text/csv"
+
+        return res
+
+
+@api.resource('/exam_table/<user_id>')
+class PrintExamTableOne(BaseResource):
+    @swag_from(PRINT_EXAM_TABLE_ONE_GET)
+    @check_auth()
+    def get(self, user_id):
+        applicant = create_exam_table(user_id)
+
+        return self.unicode_safe_json_dumps(applicant, 200)
+
+
+@api.resource('/final_submit/<user_id>')
+class ReversalFinalSubmit(BaseResource):
+    @swag_from(REVERSAL_FINAL_SUBMIT_PATCH)
+    @check_auth()
+    def patch(self, user_id):
+        status = ApplyStatusModel.query.filter_by(user_id=user_id).first()
+
+        if not status:
+            abort(400)
+
+        status.final_submit = False
+        db.session.commit()
+
+        return Response('', 201)

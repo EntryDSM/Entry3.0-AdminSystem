@@ -19,12 +19,14 @@ class Config:
     JWT_HEADER_TYPE = 'JWT'
 
     MYSQL_SETTING = {
-        'name': SERVICE_NAME_UPPER,
-        'user': 'root',
-        'password': 'germany33',
+        'db': 'entry',
         'host': 'localhost',
-        'port': 3306
+        'user': 'root',
+        'password': 'first1208',
+        'charset': 'utf8'
     }
+
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:first1208@localhost:3306/entry"
 
     SWAGGER = {
         'title': SERVICE_NAME,
@@ -44,9 +46,26 @@ class Config:
             'http'
         ],
         'tags': [
+
             {
-                'name': 'Some Tag',
-                'description': 'Some API'
+                'name': '[Account]',
+                'description': 'admin account API'
             },
+            {
+                'name': '[Search]',
+                'description': 'Search page API'
+            },
+            {
+                'name': '[Details]',
+                'description': 'applicants detail information'
+            },
+            {
+                'name': '[Handle information]',
+                'description': 'Processing of applicant information'
+            },
+            {
+                'name': '[Print data]',
+                'description': 'print data API'
+            }
         ]
     }
