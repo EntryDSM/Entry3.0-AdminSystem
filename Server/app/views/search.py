@@ -23,8 +23,8 @@ class ViewApplicants(BaseResource):
         search_name = request.args.get('name', default='')
         search_region = request.args.get('region', default='')
         search_admission = request.args.get('admission', default='')
-        checking_receipt = request.args.get('receipt', default=False)
-        checking_payment = request.args.get('payment', default=False)
+        checking_receipt = request.args.get('receipt', default='false')
+        checking_payment = request.args.get('payment', default='false')
 
         joined_res = db.session.query(UserModel, InfoModel, ApplyStatusModel) \
             .join(InfoModel) \
