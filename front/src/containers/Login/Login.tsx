@@ -40,6 +40,16 @@ class Login extends React.Component<any, any> {
     });
   }
 
+  componentDidMount = () => {
+    this.setState(() => {
+      if (this.props.cookies.accessToken !== null) {
+        return { isLogin: true }
+      } else {
+        return { isLogin: false }
+      }
+    })
+  }
+
   render() {
     return (
       this.state.isLogin ? (
