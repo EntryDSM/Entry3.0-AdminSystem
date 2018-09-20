@@ -56,12 +56,12 @@ class UserModel(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False)
 
     # one to one
-    apply_status = relationship("ApplyStatusModel", uselist=False, backref="user")
-    document = relationship("DocumentModel", uselist=False, backref="user")
-    ged_score = relationship("GedScoreModel", uselist=False, backref="user")
-    graduate_score = relationship("GraduateScoreModel", uselist=False, backref="user")
-    graduate_info = relationship("GraduateInfoModel", uselist=False, backref="user")
-    info = relationship("InfoModel", uselist=False, backref="user")
+    apply_status = relationship("ApplyStatusModel", uselist=False, backref="user_apply_status")
+    document = relationship("DocumentModel", uselist=False, backref="user_document")
+    ged_score = relationship("GedScoreModel", uselist=False, backref="user_ged_score")
+    graduate_score = relationship("GraduateScoreModel", uselist=False, backref="user_graduate_score")
+    graduate_info = relationship("GraduateInfoModel", uselist=False, backref="user_graduate_info")
+    info = relationship("InfoModel", uselist=False, backref="user_info")
 
     # one to many
     graduate_grade = relationship("GraduateGradeModel")
