@@ -1,6 +1,6 @@
 // Action's object
 interface ApplicantsData {
-  data: { 
+  applicantsData: { 
     name: string;
     payment: boolean;
     receipt: boolean;

@@ -1,8 +1,7 @@
-import { UPDATE_APPLICANTS_DATA } from '../actions/applicants';
-import { Action } from 'redux';
+import { UPDATE_APPLICANTS_DATA } from '../modules/applicants';
 
 const initialState: ApplicantsData = {
-  data: [
+  applicantsData: [
     {
       name: '',
       payment: false,
@@ -15,11 +14,11 @@ const initialState: ApplicantsData = {
   ]
 }
 
-const applicants = (state = initialState, action: UpdateApplicantsDataAction) => {
+const applicants = (state = initialState, action: any) => {
   if (action.type === UPDATE_APPLICANTS_DATA) {
     return {
       ...state,
-      data: action.data
+      applicantsData: action.data
     }
   } else {
     return state;

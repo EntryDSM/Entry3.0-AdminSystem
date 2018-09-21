@@ -35,13 +35,17 @@ class ApplicantsDataTable extends React.Component <any, any> {
     }
   }
 
-  static getDerivedStateFromProps = (nextProps: ApplicantsData, prevState: State) => ({
-    data: nextProps.data
-  });
+  static getDerivedStateFromProps = (nextProps: any, prevState: State) => {
+    console.log('[ApplicantsDataTable] - getDerivedStateFromProps');
+    console.log(nextProps);
+    return {
+      applicantsData: nextProps.applicantsData.applicantsData
+    }
+  }
 
   selectAllStudent = () => {
     this.setState((prevState: State) => ({
-      data: prevState.applicantsData.map(std => ({ ...std, checked: !std.checked }))
+      applicantsData: prevState.applicantsData.map(std => ({ ...std, checked: !std.checked }))
     }));
   }
 
@@ -50,7 +54,8 @@ class ApplicantsDataTable extends React.Component <any, any> {
   }
 
   render() {
-    if (this.state.applicantsData.length !== 0) {
+    console.log(this.props);
+    if (this.props.applicantsData.applicantsData) {
       return (
         <Section>
           <ApplicantsDataTableHeader selectAllStudent={this.selectAllStudent} />
@@ -81,8 +86,12 @@ class ApplicantsDataTable extends React.Component <any, any> {
   }
 }
 
-const mapStateToProps = (state: UpdateApplicantsDataAction) => ({
-  data: state.data
-});
+const mapStateToProps = (state: any) => {
+  console.log('map state to props');
+  console.log(state);
+  return {
+    applicantsData: state.applicants
+  }
+};
 
-export default connect(mapStateToProps)(withRouter(ApplicantsDataTable));
+export default connect(mapStateToProps)(ApplicantsDataTable);
