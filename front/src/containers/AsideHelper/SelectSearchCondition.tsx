@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React from 'react';
 import { Wrapper, Condition, CheckBox } from './local-styled/SelectSearchCondition';
-import gs from '../../global-styled';
 
 interface Condition {
   value: string;

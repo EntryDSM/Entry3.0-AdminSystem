@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { InputWrapper, Label, Input } from './local-styled/LoginInput';
 
-type Props = {
-  label: string,
-  type: string,
-  inputEvent: Function
+interface Props {
+  label: string;
+  type: string;
+  inputEvent: Function;
 }
 
 const LoginInput = ({ label, type, inputEvent }: Props) =>

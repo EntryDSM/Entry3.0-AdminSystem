@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { InformationWrapper, InformationName, InformationText } from './local-styled/Information';
 
-type Props = {
-  name: string,
-  text: string
+interface Props {
+  name: string;
+  text: string;
 }
 
 const Information = ({ name, text }: Props) =>

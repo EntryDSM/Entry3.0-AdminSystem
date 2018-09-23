@@ -1,23 +1,12 @@
-import * as React from 'react';
-import axios from 'axios';
+import React, { Component } from 'react';
 import { Section, OverFlowContainer, DataTable } from './local-styled/ApplicantsDataTable';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { checkApplicant } from '../../../modules/applicants/actionCreator';
 import Loading from './Loading';
 import ApplicantsDataTableRow from './ApplicantsDataTableRow';
 import ApplicantsDataTableHeader from './ApplicantsDataTableHeader';
 
 interface State {
-  applicantsData: {
-    userId: string;
-    checked: boolean;
-    isPayment: boolean;
-    isReceipt: boolean;
-    receiptCode: string;
-    region: string;
-    type: string;
-    name: string;
-  }[];
   search: {
     text: string;
     isReceipt: boolean;
@@ -25,9 +14,8 @@ interface State {
   };
 }
 
-class ApplicantsDataTable extends React.Component <any, any> {
+class ApplicantsDataTable extends Component<any, any> {
   state: State = {
-    applicantsData: [],
     search: {
       text: '',
       isReceipt: false,
@@ -35,45 +23,35 @@ class ApplicantsDataTable extends React.Component <any, any> {
     }
   }
 
-  static getDerivedStateFromProps = (nextProps: any, prevState: State) => {
-    console.log('[ApplicantsDataTable] - getDerivedStateFromProps');
-    console.log(nextProps);
-    return {
-      applicantsData: nextProps.applicantsData.applicantsData
-    }
-  }
+  static getDerivedStateFromProps = (nextProps: any, prevState: State) => ({
+    applicantsData: nextProps.applicantsData.applicantsData
+  });
 
-  selectAllStudent = () => {
-    this.setState((prevState: State) => ({
-      applicantsData: prevState.applicantsData.map(std => ({ ...std, checked: !std.checked }))
-    }));
-  }
-
-  selectStudent = ({ target }: Target) => {
-    this.props.history.push(`/applicants/details/grade/${target.id}`);
+  checkApplicant = ({ target }: Target): void => {
+    const checkApplicant = this.props.checkApplicant;
+    checkApplicant(target.name);
   }
 
   render() {
-    console.log(this.props);
-    if (this.props.applicantsData.applicantsData) {
+    if (this.props.applicantsData.length !== 0) {
       return (
         <Section>
-          <ApplicantsDataTableHeader selectAllStudent={this.selectAllStudent} />
+          <ApplicantsDataTableHeader/>
           <OverFlowContainer>
             <DataTable>
               {
-                this.state.applicantsData.map(row =>
+                this.props.applicantsData.map(row =>
                   <ApplicantsDataTableRow
-                    key={`key_${row.receiptCode}`}
-                    userId={row.userId}
-                    isSelect={row.checked}
-                    receiptCode={row.receiptCode}
+                    key={`key_${row.user_id}`}
+                    userId={row.user_id}
+                    receiptCode={row.receipt_code}
                     name={row.name}
                     region={row.region}
-                    type={row.type}
+                    admission={row.admission}
+                    isSelect={row.isSelect}
                     isReceipt={row.isReceipt}
                     isPayment={row.isPayment}
-                    selectStudent={this.selectStudent} />
+                    checkApplicant={this.checkApplicant} />
                 )
               }
             </DataTable>
@@ -86,12 +64,12 @@ class ApplicantsDataTable extends React.Component <any, any> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  console.log('map state to props');
-  console.log(state);
-  return {
-    applicantsData: state.applicants
-  }
-};
+const mapStateToProps = (state: any) => ({
+  applicantsData: state.applicants
+});
 
-export default connect(mapStateToProps)(ApplicantsDataTable);
+const mapDispatchToProps = (dispatch: any) => ({
+  checkApplicant: (userId: string) => dispatch(checkApplicant(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicantsDataTable);

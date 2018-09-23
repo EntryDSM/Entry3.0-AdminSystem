@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Button } from './local-styled/ExcelRequestButton';
 
-type Props = {
-  request: Function
+interface Props {
+  request: Function;
 }
 
 const ExcelRequestButton = ({ request }: Props) =>

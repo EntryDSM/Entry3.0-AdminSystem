@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import { Aside, AsideHeader } from './local-styled/AsideHelper';
 import Search from './Search';
@@ -6,9 +6,8 @@ import SearchButton from './SearchButton';
 import SearchFilters from './SearchFilters';
 import ExcelRequestButton from './ExcelRequestButton';
 import { connect } from 'react-redux';
-import { updateDataAsync, updateData } from '../../modules/applicants';
+import { updateApplicantsDataAsync } from '../../modules/applicants/thunk';
 import { withCookies } from 'react-cookie';
-// import SelectSearchCondition from './SelectSearchCondition';   --deprecated
 
 interface State {
   isReceipt: boolean;
@@ -19,7 +18,7 @@ interface State {
   }
 }
 
-class AsideHelper extends React.Component<any, any> {
+class AsideHelper extends Component<any, any> {
   state: State = {
     isReceipt: false,
     isPayment: false,
@@ -48,7 +47,7 @@ class AsideHelper extends React.Component<any, any> {
   search = (): void => {
     console.log('[AsideHelper] - search');
     const jwt = this.props.cookies.cookies.accessToken;
-    this.props.updateDataAsync(jwt, this.state.search);
+    this.props.updateApplicantsDataAsync(jwt, this.state.search);
   }
 
   requestCSVFile = (): void => {
@@ -88,10 +87,6 @@ class AsideHelper extends React.Component<any, any> {
   }
 }
 
-const mapDispatchToProps = { updateDataAsync };
+const mapDispatchToProps = { updateApplicantsDataAsync };
 
-const mapStateToProps = (state: any) => ({
-  data: state.data
-});
-
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));
+export default withCookies(connect(null, mapDispatchToProps)(AsideHelper));

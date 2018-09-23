@@ -1,24 +1,24 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import Information from './Information';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
 import { Section, Informations, IssueButton, InformationContainer, Summary, Image, Name, TypeAndRegion, InformationHeader } from './local-styled/ApplicantData';
 
-type State = {
-  applicantName: string,
-  applicantPhone: string,
-  address: string,
-  protectorName: string,
-  protectorPhone: string,
-  schoolName: string,
-  class: number,
-  grade: number,
-  number: number,
-  graduateYear: string,
-  examCode: string
+interface State {
+  applicantName: string;
+  applicantPhone: string;
+  address: string;
+  protectorName: string;
+  protectorPhone: string;
+  schoolName: string;
+  class: number;
+  grade: number;
+  number: number;
+  graduateYear: string;
+  examCode: string;
 }
 
-class ApplicantData extends React.Component <any, any> {
+class ApplicantData extends Component <any, any> {
   state: State = {
     applicantName: '',
     applicantPhone: '',

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { TableRow, SelectStudent, ReceiptCode, Name, Region, Type, Payment, Receipt } from './local-styled/ApplicantsDataTableRow';
+import React from 'react';
+import { TableRow, SelectStudent, ReceiptCode, Name, Region, Admission, Payment, Receipt } from './local-styled/ApplicantsDataTableRow';
 import gs from '../../../global-styled';
 
 interface Props {
@@ -8,19 +8,19 @@ interface Props {
   receiptCode: string;
   name: string;
   region: string;
-  type: string;
+  admission: string;
   isReceipt: boolean;
   isPayment: boolean;
-  selectStudent: Function;
+  checkApplicant: Function;
 }
 
-const ApplicantsDataTableRow = ({ userId, isSelect, receiptCode, name, region, type, isReceipt, isPayment, selectStudent }: Props) =>
-  <TableRow id={`${userId}`} onClick={() => selectStudent()}>
-    <SelectStudent><gs.CheckBox checked={isSelect} /></SelectStudent>
+const ApplicantsDataTableRow = ({ userId, isSelect, receiptCode, name, region, admission, isReceipt, isPayment, checkApplicant }: Props) =>
+  <TableRow id={userId}>
+    <SelectStudent><gs.CheckBox name={userId} checked={isSelect} onClick={event => checkApplicant(event)} /></SelectStudent>
     <ReceiptCode>{receiptCode}</ReceiptCode>
     <Name>{name}</Name>
     <Region>{region}</Region>
-    <Type>{type}</Type>
+    <Admission>{admission}</Admission>
     <Receipt>{isReceipt ? 'O' : 'X'}</Receipt>
     <Payment>{isPayment ? 'O' : 'X'}</Payment>
   </TableRow>

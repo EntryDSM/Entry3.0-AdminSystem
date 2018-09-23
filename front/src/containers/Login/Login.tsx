@@ -1,18 +1,18 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import LoginInput from './LoginInput';
 import { Redirect } from 'react-router-dom';
 import { Container, Background, Box, HeaderTitle, HeaderSubTitle, LoginButton } from './local-styled/Login';
 import { withCookies } from 'react-cookie';
-import * as bakcground_img from './res/background.jpg';
+import bakcground_img from './res/background.jpg';
 
-type State = {
-  id: string,
-  password: string,
-  isLogin: boolean
+interface State {
+  id: string;
+  password: string;
+  isLogin: boolean;
 }
 
-class Login extends React.Component<any, any> {
+class Login extends Component<any, any> {
   state: State = {
     id: '',
     password: '',
@@ -25,7 +25,7 @@ class Login extends React.Component<any, any> {
     });
   }
 
-  submit = () => {
+  submit = (): void => {
     axios.post('http://52.79.60.204/auth', {
       id: this.state.id,
       pw: this.state.password

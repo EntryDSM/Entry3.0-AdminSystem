@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { SearchBox, SearchIcon, SearchInput } from './local-styled/Search';
-import * as ic_search from './res/ic_search.png';
+import ic_search from './res/ic_search.png';
 
 interface Props {
   searchInput: Function;

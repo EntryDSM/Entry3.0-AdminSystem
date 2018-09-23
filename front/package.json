@@ -1,6 +1,6 @@
 {
   "name": "entry-admin-front",
-  "version": "3.0",
+  "version": "0.6",
   "private": true,
   "dependencies": {
     "@types/node": "^10.9.4",

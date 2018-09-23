@@ -40,7 +40,7 @@ const Region = TableData.extend`
   width: 10%;
 `
 
-const Type = TableData.extend`
+const Admission = TableData.extend`
   width: 20%;
 `
 
@@ -52,4 +52,4 @@ const Receipt = TableData.extend`
   width: 15%;
 `
 
-export { TableRow, TableHeader, SelectStudent, ReceiptCode, Name, Region, Type, Payment, Receipt };
+export { TableRow, TableHeader, SelectStudent, ReceiptCode, Name, Region, Admission, Payment, Receipt };
