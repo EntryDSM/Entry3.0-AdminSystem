@@ -15,7 +15,8 @@ interface State {
   search: string;
   conditions: {
     [k:string]: any;
-  }
+  },
+  csvData: string;
 }
 
 class AsideHelper extends Component<any, any> {
@@ -23,7 +24,8 @@ class AsideHelper extends Component<any, any> {
     isReceipt: false,
     isPayment: false,
     search: '',
-    conditions: {}
+    conditions: {},
+    csvData: ''
   }
 
   checkFilter = ({ target }: Target): void => {
@@ -45,24 +47,25 @@ class AsideHelper extends Component<any, any> {
   }
 
   search = (): void => {
-    console.log('[AsideHelper] - search');
     const jwt = this.props.cookies.cookies.accessToken;
     this.props.updateApplicantsDataAsync(jwt, this.state.search);
   }
 
-  requestCSVFile = (): void => {
-    axios.post('/applicants/excel', {
-      headers: {
-        Authorization: this.props.cookies
-      },
-      params: {
-        users: this.props.data.map((user: any) => user.userId)
-      }
-    }).then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    });
+  getStudentsExcelFile = async () => {
+    try {
+      const response = await axios.post('http://52.79.60.204/applicants/excel', {
+        users: this.props.applicantsData.map(applicant => applicant.user_id)
+      }, {
+        headers: {
+          Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
+        }
+      });
+      this.setState({
+        csvData: response.data
+      })
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   componentDidMount = () => {
@@ -81,12 +84,17 @@ class AsideHelper extends Component<any, any> {
           searchInput={this.searchInput}
           searchValue={this.state.search} />
         <SearchButton search={this.search} />
-        <ExcelRequestButton request={this.requestCSVFile} />
+        <ExcelRequestButton
+          request={this.getStudentsExcelFile}
+          csvData={this.state.csvData} />
       </Aside>
     );
   }
 }
 
+const mapStateToProps = (state: any) => ({
+  applicantsData: state.applicants
+})
 const mapDispatchToProps = { updateApplicantsDataAsync };
 
-export default withCookies(connect(null, mapDispatchToProps)(AsideHelper));
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));
