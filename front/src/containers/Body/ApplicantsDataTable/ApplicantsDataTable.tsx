@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Section, OverFlowContainer, DataTable } from './local-styled/ApplicantsDataTable';
 import { connect } from 'react-redux';
 import { checkApplicant } from '../../../modules/applicants/actionCreator';
+import { withCookies } from 'react-cookie';
 import Loading from './Loading';
 import ApplicantsDataTableRow from './ApplicantsDataTableRow';
 import ApplicantsDataTableHeader from './ApplicantsDataTableHeader';
@@ -23,16 +24,26 @@ class ApplicantsDataTable extends Component<any, any> {
     }
   }
 
-  static getDerivedStateFromProps = (nextProps: any, prevState: State) => ({
-    applicantsData: nextProps.applicantsData.applicantsData
-  });
-
+  
   checkApplicant = ({ target }: Target): void => {
     const checkApplicant = this.props.checkApplicant;
     checkApplicant(target.name);
   }
 
+  componentDidMount = () => {
+    if (this.props.cookies.cookies.length !== 0) {
+      
+    } else {
+
+    }
+  }
+  
+  static getDerivedStateFromProps = (nextProps: any, prevState: State) => ({
+    applicantsData: nextProps.applicantsData.applicantsData
+  })
+
   render() {
+    console.log(this.props);
     if (this.props.applicantsData.length !== 0) {
       return (
         <Section>
@@ -72,4 +83,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   checkApplicant: (userId: string) => dispatch(checkApplicant(userId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApplicantsDataTable);
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(ApplicantsDataTable));

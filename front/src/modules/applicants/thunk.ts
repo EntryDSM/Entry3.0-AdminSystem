@@ -12,7 +12,7 @@ export const updateApplicantsDataAsync = (jwt: string, search: string) => (dispa
   }).then(res => {
     dispatch(updateApplicantsData(res.data.map((applicantData: ApplicantData) => ({
       ...applicantData,
-      isSelected: false
+      isCheck: false
     }))));
   }).catch(err => {
     console.log(err);

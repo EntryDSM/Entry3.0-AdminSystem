@@ -5,8 +5,9 @@ interface ApplicantData {
   admission: string;
   receiptCode: string;
   region: string;
-  userId: string;
-  isCheck: boolean;
+  userId?: string;
+  user_id?: string;
+  isCheck?: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
 interface ApplicantsAction extends Action {
