@@ -2,6 +2,7 @@ import pytest
 import pymysql
 
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 from app import create_app
 from config.test import TestConfig
@@ -42,20 +43,19 @@ def mysql_client_for_test(flask_app):
     mysql_setting = flask_app.config['MYSQL_SETTING']
     connection = pymysql.connect(**mysql_setting)
     # db_name = mysql_setting.pop('db')
-    db_cursor = connection.cursor()
 
-    yield db_cursor
+    yield connection
 
     # teardown
     del_list = ['admin', 'user', 'apply_status', 'document',
                 'info', 'school', 'graduate_grade', 'graduate_score', 'graduate_info', 'ged_score']
     for table in del_list:
-        db_cursor.execute("DELETE FROM " + table + ';')
+        connection.cursor().execute("DELETE FROM " + table + ';')
     connection.commit()
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def create_fake_account(flask_app):
     fake_user = {
         'admin_id': 'geni429',
@@ -71,4 +71,16 @@ def create_fake_account(flask_app):
 
     fake_user['password'] = '1234qwer'
 
+    with flask_app.app_context():
+        fake_user['accessToken'] = 'JWT {}'.format(create_access_token(fake_user['admin_id']))
+        fake_user['refreshToken'] = 'JWT {}'.format(create_refresh_token(fake_user['admin_id']))
+
     return fake_user
+
+
+@pytest.fixture(scope="session")
+def create_forbidden_token(flask_app):
+    with flask_app.app_context():
+        access_token = 'JWT {}'.format(create_access_token('userId'))
+
+    return access_token

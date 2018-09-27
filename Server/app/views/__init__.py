@@ -34,7 +34,7 @@ def check_auth():
         @jwt_required
         def wrapper(*args, **kwargs):
             if not AdminModel.query.filter_by(admin_id=get_jwt_identity()).first():
-                abort(401)
+                abort(403)
             return original_func(*args, **kwargs)
         return wrapper
     return decorator
