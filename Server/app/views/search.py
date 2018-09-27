@@ -70,9 +70,9 @@ class PrintExcelAllApplicants(BaseResource):
         f = csv.writer(si)
 
         rows = [create_csv_row(user_id) for user_id in users]
-        f.writerow([i for i in rows[0].keys()])
+        f.writerow([i[0] for i in rows[0]])
         for r in rows:
-            f.writerow([i for _, i in r.items()])
+            f.writerow([i[1] for i in r])
 
         res = make_response(si.getvalue(), 201)
         res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
