@@ -1,0 +1,2 @@
+export const GET_APPLICANT_DATA = 'GET_APPLICANT_DATA';
+export const CHECK_PAYMENT = 'CHECK_PAYMENT';

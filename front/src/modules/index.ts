@@ -1,9 +1,11 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import applicants from './applicants';
+import applicant from './applicant';
 
 const rootReducer = combineReducers({
-  applicants
+  applicants,
+  applicant
 });
 const Store = createStore(
   rootReducer,

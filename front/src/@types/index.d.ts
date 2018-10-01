@@ -1,3 +1,6 @@
+interface Action {
+  type: string;
+}
 interface ApplicantData {
   name: string;
   isPayment: boolean;
@@ -10,6 +13,7 @@ interface ApplicantData {
   isCheck?: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
+// Action
 interface ApplicantsAction extends Action {
   applicantsData: ApplicantsData;
 }
@@ -19,4 +23,27 @@ interface UpdateApplicantsDataAction extends ApplicantsAction {
 interface CheckApplicantAction extends Action {
   type: 'CHECK_APPLICANT';
   userId: string;
+}
+interface GetApplicantDataAction extends Action {
+  type: 'GET_APPLICANT_DATA';
+  applicantData: ApplicantData
+}
+interface CheckPaymentAction extends Action {
+  type: 'CHECK_PAYMENT';
+  userId: string;
+}
+// Event target
+interface Target {
+  target: HTMLInputElement;
+}
+
+// Image load
+declare module '*.png' {
+  const value: any;
+  export = value;
+}
+
+declare module '*.jpg' {
+  const value: any;
+  export = value;
 }

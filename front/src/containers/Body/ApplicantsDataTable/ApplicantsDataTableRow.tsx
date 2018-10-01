@@ -12,17 +12,18 @@ interface Props {
   isReceipt: boolean;
   isPayment: boolean;
   checkApplicant: Function;
+  selectStudent: Function;
 }
 
-const ApplicantsDataTableRow = ({ userId, isSelect, receiptCode, name, region, admission, isReceipt, isPayment, checkApplicant }: Props) =>
-  <TableRow id={userId}>
+const ApplicantsDataTableRow = ({ userId, isSelect, receiptCode, name, region, admission, isReceipt, isPayment, checkApplicant, selectStudent }: Props) =>
+  <TableRow id={userId} onClick={() => selectStudent()}>
     <SelectStudent><gs.CheckBox name={userId} checked={isSelect} onClick={event => checkApplicant(event)} /></SelectStudent>
     <ReceiptCode>{receiptCode}</ReceiptCode>
     <Name>{name}</Name>
     <Region>{region}</Region>
     <Admission>{admission}</Admission>
-    <Receipt>{isReceipt ? 'O' : 'X'}</Receipt>
-    <Payment>{isPayment ? 'O' : 'X'}</Payment>
+    <Receipt><gs.CheckBox name={`${userId}_receipt`} checked={isReceipt} /></Receipt>
+    <Payment><gs.CheckBox name={`${userId}_payment`} checked={isPayment} /></Payment>
   </TableRow>
 
 export default ApplicantsDataTableRow;

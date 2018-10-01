@@ -11,7 +11,7 @@ class Body extends Component {
         <AsideHelper />
         <Switch>
           <Route path='/' component={ApplicantsDataTable} exact />
-          <Route path='/applicant' component={ApplicantData} />
+          <Route path='/applicant/:userId' component={ApplicantData} />
         </Switch>
       </React.Fragment>
     );
