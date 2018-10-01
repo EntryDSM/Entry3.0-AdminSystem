@@ -6,12 +6,18 @@ language: python
 
 cache: pip
 
+services:
+  - mysql
+
 python:
   - "3.5"
   - "3.6"
 
 before_install:
-  - sudo docker run -e MYSQL_ROOT_PASSWORD=first1208 -d -p 7000:3306 mysql
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('first1208') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -pfirst1208
+  - sudo service mysql restart
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS entry;'
 
 install:
   - pip3 install -r requirements.txt
