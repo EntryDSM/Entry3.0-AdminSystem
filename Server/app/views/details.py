@@ -222,8 +222,8 @@ class PrintExcelOne(BaseResource):
         si.write(u'\ufeff')
         f = csv.writer(si)
 
-        f.writerow([i for i in column.keys()])
-        f.writerow([i for _, i in column.items()])
+        f.writerow([i[0] for i in column])
+        f.writerow([i[1] for i in column])
 
         res = make_response(si.getvalue(), 201)
         res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"

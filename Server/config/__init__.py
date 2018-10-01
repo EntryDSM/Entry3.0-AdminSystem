@@ -14,8 +14,9 @@ class Config:
     # Secret key for any 3-rd party libraries
     SECRET_KEY = os.getenv('SECRET_KEY', 'lo02pfu743jjdildp20djl03kdk3iodj')
 
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=6)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=3)
+    # production 레벨에서 변경해야 함
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=365)
     JWT_HEADER_TYPE = 'JWT'
 
     MYSQL_SETTING = {
