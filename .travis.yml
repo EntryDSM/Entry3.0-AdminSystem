@@ -11,7 +11,7 @@ python:
   - "3.6"
 
 before_install:
-  - sudo docker run -e MYSQL_ROOT_PASSWORD=germany33 -d -p 7000:3306 mysql
+  - sudo docker run -e MYSQL_ROOT_PASSWORD=first1208 -d -p 7000:3306 mysql
 
 install:
   - pip3 install -r requirements.txt
