@@ -20,7 +20,7 @@ install:
 before_script:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('first1208') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - sudo service mysql restart
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS entry;'
+  - mysql -uroot -pfirst1208 -e 'CREATE DATABASE IF NOT EXISTS entry;'
   - cd Server
 
 script:
