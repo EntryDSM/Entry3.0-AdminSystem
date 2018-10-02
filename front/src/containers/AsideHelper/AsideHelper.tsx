@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Aside, AsideHeader } from './local-styled/AsideHelper';
 import Search from './Search';
-import SearchButton from './SearchButton';
-import SearchFilters from './SearchFilters';
 import ExcelRequestButton from './ExcelRequestButton';
 import { connect } from 'react-redux';
 import { updateApplicantsDataAsync } from '../../modules/applicants/thunk';
@@ -75,7 +73,7 @@ class AsideHelper extends Component<any, any> {
   render() {
     return (
       <Aside>
-        <AsideHeader>지원자 검색</AsideHeader>
+        {/* <AsideHeader>지원자 검색</AsideHeader>
         <SearchFilters
           checkFilter={this.checkFilter}
           isReceipt={this.state.isReceipt}
@@ -86,7 +84,7 @@ class AsideHelper extends Component<any, any> {
         <SearchButton search={this.search} />
         <ExcelRequestButton
           request={this.getStudentsExcelFile}
-          csvData={this.state.csvData} />
+          csvData={this.state.csvData} /> */}
       </Aside>
     );
   }

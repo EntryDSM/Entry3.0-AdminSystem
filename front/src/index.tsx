@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { render } from 'react-dom';
-import { Body, Login } from './containers';
+import { Login, Navigation } from './containers';
+import { ApplicantsHelper } from './containers/AsideHelper';
+import { ApplicantsTable } from './containers/Section';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Store from './modules';
 import { Provider } from 'react-redux';
@@ -12,14 +14,19 @@ const root = document.getElementById('root') as HTMLElement;
 render(
   <Provider store={Store}>
     <CookiesProvider>
-      <Router>
-        <Switch>
-          <Route path='/login' component={Login} />
-          <gs.RootWrapper>
-            <Body />
-          </gs.RootWrapper>
-        </Switch>
-      </Router>
+      <gs.RootWrapper>
+        <Router>
+          <Switch>
+            <Route path='/login' component={Login} />
+            <Route path='/' exact render={() =>
+              <Fragment>
+                <Navigation />
+                <ApplicantsHelper />
+                <ApplicantsTable />
+              </Fragment>} />
+          </Switch>
+        </Router>
+      </gs.RootWrapper>
     </CookiesProvider>
   </Provider>
 , root);

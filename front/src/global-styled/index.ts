@@ -6,10 +6,6 @@ injectGlobal`
     padding: 0;
     font-family: 'Roboto', NanumSquare;
   }
-
-  div {
-    box-sizing: border-box;
-  }
 `
 
 const RootWrapper = styled.div`
@@ -24,6 +20,12 @@ const CheckBox = styled.input.attrs({
 const Tag = {
   P: styled.p`
     font-size: 13px;
+  `,
+  H2: styled.h2`
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 8px;
   `
 }
 

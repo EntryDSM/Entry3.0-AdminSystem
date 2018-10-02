@@ -1,12 +1,21 @@
 import styled from 'styled-components';
 // require('../../../res/ic_search.png'
 
+const SearchWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+`
+
 const SearchBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: calc(100% - 90px);
   height: 50px;
-  margin-top: 7px;
+  margin-right: 10px;
   padding-left: 10px;
   border: 1px solid #ddd;
 `
@@ -17,12 +26,26 @@ const SearchIcon = styled.img`
 `
 
 const SearchInput = styled.input`
-  width: 100%;
+  width: calc(100% - 40px);
   height: 20px;
   padding: 0 10px 0 10px;
   border: 0;
   outline: none;
-  font-size: 18px;
+  font-size: 15px;
 `
 
-export { SearchBox, SearchIcon, SearchInput };
+const SearchButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 50px;
+  background-color: rgb(143, 185, 204);
+  color: #fff;
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export { SearchWrapper, SearchBox, SearchIcon, SearchInput, SearchButton };

@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 const Aside = styled.aside`
-  width: 300px;
-  min-width: 300px;
+  width: 360px;
+  min-width: 360px;
   height: 100vh;
-  padding-left: 30px;
-  padding-right: 30px;
+  min-height: 710px;
+  padding: 30px;
   border-right: 1px solid rgb(154, 193, 210);
+  box-sizing: border-box;
 `
 
 const AsideHeader = styled.header`
