@@ -288,6 +288,7 @@ def create_exam_table(user_id):
     g_info = GraduateInfoModel.query.filter_by(user_id=user_id).first()
 
     return {
+        'img_path': applicant.InfoModel.img_path,
         'exam_code': applicant.ApplyStatusModel.exam_code,
         'name': applicant.InfoModel.name,
         'middle_school': SchoolModel.query.filter_by(code=g_info.school_code).first().name if g_info else "",
