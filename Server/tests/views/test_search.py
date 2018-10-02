@@ -1,11 +1,6 @@
-def test_view_applicants(flask_app, mysql_client_for_test, create_fake_account, create_forbidden_token):
+def test_view_applicants(flask_app, create_fake_account, create_forbidden_token):
     test_client = flask_app.test_client()
     admin = create_fake_account
-
-    for line in open('../SQL/entry_dummy.sql'):
-        mysql_client_for_test.cursor().execute(line)
-
-    mysql_client_for_test.commit()
 
     # search success 200
     resp = test_client.get('/applicants', headers={'Authorization': admin['accessToken']})

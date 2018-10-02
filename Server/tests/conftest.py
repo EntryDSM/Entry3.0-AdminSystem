@@ -44,11 +44,19 @@ def mysql_client_for_test(flask_app):
     connection = pymysql.connect(**mysql_setting)
     # db_name = mysql_setting.pop('db')
 
+    # insert dummy data
+    for line in open('../SQL/entry_dummy.sql'):
+        connection.cursor().execute(line)
+
+    connection.commit()
+
     yield connection
 
     # teardown
     del_list = ['admin', 'user', 'apply_status', 'document',
                 'info', 'school', 'graduate_grade', 'graduate_score', 'graduate_info', 'ged_score']
+
+    # all table clean up
     for table in del_list:
         connection.cursor().execute("DELETE FROM " + table + ';')
     connection.commit()
