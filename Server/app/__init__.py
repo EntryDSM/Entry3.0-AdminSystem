@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
-from app.views import Router
+from app.views import *
 from app.models import db
 
 # WEB_FILE_ROOT_DIR = '../web_files'
@@ -30,5 +30,8 @@ def create_app(*config_cls):
 
     db.init_app(app_)
     db.create_all(app=app_)
+
+    app_.after_request(after_request)
+    app_.register_error_handler(Exception, error_handler)
 
     return app_

@@ -2,8 +2,10 @@ from functools import wraps
 import time
 import ujson
 
-from flask import Response, abort, request
+from werkzeug.exceptions import HTTPException
+from flask import Response, abort, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended.exceptions import JWTExtendedException
 from flask_restful import Resource
 
 from app.models import db
@@ -11,6 +13,22 @@ from app.models.admin_models import AdminModel, SchoolModel
 from app.models.user_models import *
 from app.models.graduate_models import *
 from app.models.ged_models import *
+
+
+def error_handler(e):
+    if isinstance(e, HTTPException):
+        des = e.description
+        code = e.code
+    elif isinstance(e, JWTExtendedException):
+        des = e.__doc__
+        code = 401
+    else:
+        des = ''
+        code = 500
+
+    return jsonify({
+        'description': des
+    }), code
 
 
 def after_request(response):
@@ -94,8 +112,6 @@ class Router:
             self.init_app(app)
 
     def init_app(self, app):
-        app.after_request(after_request)
-
         from app.views import auth, search, details
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
@@ -118,7 +134,7 @@ def create_csv_row(user_id):
             ('3학년', ''),
             ('교과성적환산점수', ged.conversion_score),
             ('봉사시간', ''),
-            ('봉사점수', int(ged.volunteer_score)),
+            ('봉사점수', ged.volunteer_score),
             ('결석', ''),
             ('지각', ''),
             ('조퇴', ''),

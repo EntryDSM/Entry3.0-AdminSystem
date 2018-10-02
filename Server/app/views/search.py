@@ -80,16 +80,6 @@ class PrintExcelAllApplicants(BaseResource):
 
         return res
 
-        # f.writerow(["receipt_code", "name", "region", "type", "receipt", "payment"])
-        # for r in search_res:
-        #     f.writerow([r["receipt_code"], r["name"], r["region"], r["type"], r["receipt"], r["payment"]])
-        #
-        # res = make_response(si.getvalue(), 201)
-        # res.headers['Content-Disposition'] = "attachment; filename=applicants.csv"
-        # res.headers['Content-type'] = "text/csv"
-        #
-        # return res
-
 
 @api.resource('/applicants/exam_table')
 class PrintExamTableAllApplicants(BaseResource):

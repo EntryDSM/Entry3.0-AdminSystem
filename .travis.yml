@@ -6,22 +6,25 @@ language: python
 
 cache: pip
 
+services:
+  - mysql
+
 python:
   - "3.5"
   - "3.6"
-
-before_install:
-  - sudo docker run -e MYSQL_ROOT_PASSWORD=germany33 -d -p 7000:3306 mysql
 
 install:
   - pip3 install -r requirements.txt
   - pip install codecov pytest-cov
 
+before_script:
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('first1208') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - sudo service mysql restart
+  - mysql -uroot -pfirst1208 -e 'CREATE DATABASE IF NOT EXISTS entry;'
+  - cd Server
+
 script:
   - pytest --cov=./
-
-before_script:
-  - cd Server
 
 after_success:
    - codecov
