@@ -10,11 +10,6 @@ def test_view_applicants(flask_app, create_fake_account, create_forbidden_token)
     assert type(resp.json[0]) == dict
     assert sorted(resp.json[0].keys()) == sorted(['user_id', 'receipt_code', 'name', 'region', 'admission', 'receipt', 'payment'])
 
-    # no token 401
-    resp = test_client.get('/applicants')
-
-    assert resp.status_code == 401
-
     # invalid token 403
     resp = test_client.get('/applicants', headers={'Authorization': create_forbidden_token})
 

@@ -4,19 +4,19 @@ SAMPLE_GRADUATE_DETAIL_INFO = {
         'img_path': None,
         'name': 'karl von bismark',
         'admission': 'NORMAL',
-        'region': '전국'
+        'region': '전국'.encode('UTF-8')
     },
     'basic': {
         'name': 'karl von bismark',
         'tel': '010-1234-5888',
-        'address': '경기도 용인시 구성 3로 65'
+        'address': '경기도 용인시 구성 3로 65'.encode('UTF-8')
     },
     'parent': {
         'name': 'otto von bismark',
         'tel': '010-1234-5687'
     },
     'academic': {
-        'school_name': '엔트리중학교',
+        'school_name': '엔트리중학교'.encode('UTF-8'),
         'student_class': 3,
         'student_grade': 3,
         'student_number': 3,
@@ -34,17 +34,17 @@ SAMPLE_GED_DETAIL_INFO = {
     'user_id': '009',
     'main': {
         'img_path': None,
-        'name': '정경서',
+        'name': '정경서'.encode('UTF-8'),
         'admission': 'NORMAL',
-        'region': '전국'
+        'region': '전국'.encode('UTF-8')
     },
     'basic': {
-        'name': '정경서',
+        'name': '정경서'.encode('UTF-8'),
         'tel': '010-1234-5882',
-        'address': '경기도 시흥시 이종현길 91'
+        'address': '경기도 시흥시 이종현길 91'.encode('UTF-8')
     },
     'parent': {
-        'name': '김우진',
+        'name': '김우진'.encode('UTF-8'),
         'tel': '010-1234-5687'
     },
     'academic': {
