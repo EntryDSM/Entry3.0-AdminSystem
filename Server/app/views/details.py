@@ -17,7 +17,7 @@ from app.docs.details import *
 
 api = Api(Blueprint(__name__, __name__))
 
-api.prefix = '/applicants/details'
+api.prefix = '/api/applicants/details'
 
 
 @api.resource('/information/<user_id>')
