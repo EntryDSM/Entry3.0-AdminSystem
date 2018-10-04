@@ -41,15 +41,14 @@ class ApplicantsHelper extends Component<any, any> {
         }
       });
       const date = new Date();
-      const filename = `지원자 현황 ${date.getFullYear()}.${date.getMonth() + 1}.${date.getDay()} ${date.getHours()}:${date.getMinutes()}.csv`;
+      const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.csv`;
       const data = encodeURI(response.data);
       const link = document.createElement('a');
       link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${data}`);
       link.setAttribute('download', filename);
       link.click();
-    } catch (e) {
-      console.log('error');
-      console.log(e);
+    } catch (err) {
+      console.log(err);
     }
   }
 
