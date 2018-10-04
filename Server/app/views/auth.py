@@ -24,7 +24,7 @@ class Auth(BaseResource):
         return ({
             'accessToken': create_access_token(user.admin_id),
             'refreshToken': create_refresh_token(user.admin_id)
-        }, 200) if user and check_password_hash(user.password, request.json['pw']) else abort(401)
+        }, 200) if user and check_password_hash(user.password, request.json['pw']) else abort(400)
 
 
 @api.resource('/account')

@@ -95,7 +95,7 @@ class BaseResource(Resource):
 
     @classmethod
     def str_to_bool(cls, val):
-        if val == 'false':
+        if val == 'f':
             val = None
         return bool(val)
 
@@ -112,10 +112,11 @@ class Router:
             self.init_app(app)
 
     def init_app(self, app):
-        from app.views import auth, search, details
+        from app.views import auth, search, details, conversion
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
         app.register_blueprint(details.api.blueprint)
+        app.register_blueprint(conversion.api.blueprint)
 
 
 def create_csv_row(user_id):
@@ -296,3 +297,16 @@ def create_exam_table(user_id):
         'admission': applicant.UserModel.admission.name,
         'receipt_code': str(applicant.ApplyStatusModel.receipt_code)
     }
+
+
+def untrim_as_zero(code):
+    code = str(code)
+
+    if len(code) == 1:
+        exam_code = '00' + code
+    elif len(code) == 2:
+        exam_code = '0' + code
+    else:
+        exam_code = code
+
+    return exam_code
