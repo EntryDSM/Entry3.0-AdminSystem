@@ -32,14 +32,14 @@ VIEW_APPLICANTS_GET = {
         },
         {
             'name': 'receipt',
-            'description': '원서(종이 문서) 제출 여부(true or false)',
+            'description': '원서(종이 문서) 제출 여부(내용이 있는 문자열 or 없는 값)',
             'in': 'query',
             'type': 'str',
             'required': False
         },
         {
             'name': 'payment',
-            'description': '전형료 납부 여부(true or false)',
+            'description': '전형료 납부 여부(내용이 있는 문자열 or 없는 값)',
             'in': 'query',
             'type': 'str',
             'required': False

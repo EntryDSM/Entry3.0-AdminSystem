@@ -23,8 +23,8 @@ class ViewApplicants(BaseResource):
         search_name = request.args.get('name', default='')
         search_region = request.args.get('region', default='')
         search_admission = request.args.get('admission', default='')
-        checking_receipt = request.args.get('receipt', default='false')
-        checking_payment = request.args.get('payment', default='false')
+        checking_receipt = request.args.get('receipt', default=False)
+        checking_payment = request.args.get('payment', default=False)
 
         joined_res = db.session.query(UserModel, InfoModel, ApplyStatusModel) \
             .join(InfoModel) \
@@ -32,14 +32,14 @@ class ViewApplicants(BaseResource):
             .filter(ApplyStatusModel.final_submit)
 
         # 제출-전형료 조건 없음
-        if not self.str_to_bool(checking_receipt) and not self.str_to_bool(checking_payment):
+        if not bool(checking_receipt) and not bool(checking_payment):
             filtered_res = joined_res
 
         # 제출-전형료 조건 있음
         else:
             filtered_res = joined_res \
-                .filter(ApplyStatusModel.receipt == self.str_to_bool(checking_receipt)) \
-                .filter(ApplyStatusModel.payment == self.str_to_bool(checking_payment))
+                .filter(ApplyStatusModel.receipt == checking_receipt) \
+                .filter(ApplyStatusModel.payment == checking_payment)
 
         if search_name:
             filtered_res = filtered_res.filter(InfoModel.name.like('%' + search_name + '%')).all()
