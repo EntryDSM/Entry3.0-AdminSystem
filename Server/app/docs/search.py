@@ -145,6 +145,7 @@ PRINT_EXAM_TABLE_ALL_APPLICANTS_POST = {
             'examples': {
                 '': [
                     {
+                        'img_path': '서버 어딘가',
                         'exam_code': '110021',
                         'name': '정근철',
                         'middle_school': '해솔중학교',
@@ -153,6 +154,7 @@ PRINT_EXAM_TABLE_ALL_APPLICANTS_POST = {
                         'receipt_code': '004'
                     },
                     {
+                        'img_path': '서버 어딘가',
                         'exam_code': '110023',
                         'name': '정철근',
                         'middle_school': '솔해중학교',
@@ -161,6 +163,7 @@ PRINT_EXAM_TABLE_ALL_APPLICANTS_POST = {
                         'receipt_code': '012'
                     },
                     {
+                        'img_path': '서버 어딘가',
                         'exam_code': '230044',
                         'name': '정긍철',
                         'middle_school': '새살이솔솔중학교',

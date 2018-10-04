@@ -324,6 +324,7 @@ PRINT_EXAM_TABLE_ONE_GET = {
             'description': '조회 성공',
             'examples': {
                 '': {
+                    'img_path': '서버어딘가',
                     'exam_code': '110021',
                     'name': '정근철',
                     'middle_school': '해솔중학교',
