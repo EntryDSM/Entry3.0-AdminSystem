@@ -1,144 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ApplicantsTableWrapper, Table } from './local-styled/ApplicantsTable';
 import ApplicantsTableHeader from './ApplicantsTableHeader';
 import ApplicantsTableRow from './ApplicantsTableRow';
 
-class ApplicantsTable extends Component {
+class ApplicantsTable extends Component<any, any> {
   render() {
     return (
       <ApplicantsTableWrapper>
         <ApplicantsTableHeader />
         <Table>
-          <ApplicantsTableRow rows={[
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "마이스터 인재",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },           {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },           {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-            {
-              name: "정경서",
-              isPayment: true,
-              isReceipt: true,
-              receiptCode: 111,
-              region: "전국",
-              type: "normal",
-              userId: "flouie74"
-            },
-          ]} />
+          <ApplicantsTableRow rows={this.props.applicants} />
         </Table>
       </ApplicantsTableWrapper>
     );
   }
 }
 
-export default ApplicantsTable;
+const mapStateToProps = (state: any) => ({
+  applicants: state.applicants
+});
+
+export default connect(mapStateToProps)(ApplicantsTable);

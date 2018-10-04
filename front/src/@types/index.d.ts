@@ -13,6 +13,9 @@ interface ApplicantData {
   isCheck?: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
+interface AsideMode {
+  mode: string;
+}
 // Action
 interface ApplicantsAction extends Action {
   applicantsData: ApplicantsData;
@@ -31,6 +34,10 @@ interface GetApplicantDataAction extends Action {
 interface CheckPaymentAction extends Action {
   type: 'CHECK_PAYMENT';
   userId: string;
+}
+interface ChangeModeAction extends Action {
+  type: 'CHANGE_MODE';
+  mode: 'all'|'applicants'|'applicant';
 }
 // Event target
 interface Target {

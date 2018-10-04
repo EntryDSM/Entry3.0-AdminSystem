@@ -1,16 +1,19 @@
 import React from 'react';
-import { Button } from './local-styled/ExcelRequestButton';
-import { CSVDownload } from 'react-csv';
+import { Button } from './local-styled/FuncButton';
+import { CSVLink } from 'react-csv';
+import axios from 'axios';
 
 interface Props {
   request: Function;
-  csvData: string;
 }
 
-const ExcelRequestButton = ({ request, csvData }: Props) =>
-  <Button onClick={() => request()}>
-    전체정보 엑셀출력
-    {csvData.length > 0 ? <CSVDownload data={csvData} /> : ''}
-  </Button>
+const ExcelRequestButton = ({ request }: Props) => {
+  let data = '';
+  return (
+    <Button onClick={() => request()}>
+      전체 지원자 정보(Excel) 다운로드
+    </Button>
+  );
+}
 
 export default ExcelRequestButton;

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { render } from 'react-dom';
-import { Login, Navigation } from './containers';
+import { Login, Navigation, AsideHelper } from './containers';
 import { ApplicantsHelper } from './containers/AsideHelper';
 import { ApplicantsTable } from './containers/Section';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';

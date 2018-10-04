@@ -6,6 +6,7 @@ import ExcelRequestButton from './ExcelRequestButton';
 import { connect } from 'react-redux';
 import { updateApplicantsDataAsync } from '../../modules/applicants/thunk';
 import { withCookies } from 'react-cookie';
+import ApplicantsHelper from './ApplicantsHelper';
 
 interface State {
   isReceipt: boolean;
@@ -71,28 +72,19 @@ class AsideHelper extends Component<any, any> {
   }
 
   render() {
-    return (
-      <Aside>
-        {/* <AsideHeader>지원자 검색</AsideHeader>
-        <SearchFilters
-          checkFilter={this.checkFilter}
-          isReceipt={this.state.isReceipt}
-          isPayment={this.state.isPayment}/>
-        <Search
-          searchInput={this.searchInput}
-          searchValue={this.state.search} />
-        <SearchButton search={this.search} />
-        <ExcelRequestButton
-          request={this.getStudentsExcelFile}
-          csvData={this.state.csvData} /> */}
-      </Aside>
-    );
+    switch (this.props.mode) {
+      case 'applicants':
+        return <ApplicantsHelper />
+      default:
+        return <div>Error</div>
+    }
   }
 }
 
 const mapStateToProps = (state: any) => ({
-  applicantsData: state.applicants
-})
+  applicantsData: state.applicants,
+  aside: state.aside
+});
 const mapDispatchToProps = { updateApplicantsDataAsync };
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));

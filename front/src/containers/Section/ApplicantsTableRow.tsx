@@ -7,12 +7,16 @@ const ApplicantsTableRow = ({ rows }) =>
       <CheckWrapper>
         <CheckApplicant />
       </CheckWrapper>
-      <ReceiptCode>{row.receiptCode}</ReceiptCode>
+      <ReceiptCode>{row.receipt_code}</ReceiptCode>
       <Name>{row.name}</Name>
       <Region>{row.region}</Region>
-      <Type>{row.type}</Type>
-      <IsPayment><CheckApplicant checked={row.isPayment} /></IsPayment>
-      <IsReceipt><CheckApplicant checked={row.isReceipt} /></IsReceipt>
+      <Type>{row.admission}</Type>
+      <IsPayment>
+        <CheckApplicant checked={row.payment} />
+      </IsPayment>
+      <IsReceipt>
+        <CheckApplicant checked={row.receipt} />
+      </IsReceipt>
       <CancleSubmit>
         <CancleSubmitButton>취소</CancleSubmitButton>
       </CancleSubmit>
