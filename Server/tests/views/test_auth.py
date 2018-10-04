@@ -19,12 +19,12 @@ def test_auth(flask_app, create_fake_account, mysql_client_for_test):
     assert jwt.decode(data['accessToken'], flask_app.config['SECRET_KEY'], 'HS256')['identity'] == admin['admin_id']
     assert jwt.decode(data['refreshToken'], flask_app.config['SECRET_KEY'], 'HS256')['identity'] == admin['admin_id']
 
-    # wrong password 401
+    # wrong password 400
     resp = test_client.post('/auth', json={'id': admin['admin_id'], 'pw': admin['password'] + '1'})
 
-    assert resp.status_code == 401
+    assert resp.status_code == 400
 
-    # non-exist id 401
+    # non-exist id 400
     resp = test_client.post('/auth', json={'id': admin['admin_id'] + '1', 'pw': admin['password']})
 
-    assert resp.status_code == 401
+    assert resp.status_code == 400

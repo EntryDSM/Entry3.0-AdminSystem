@@ -47,7 +47,8 @@ def test_print_all_exam_table(flask_app, create_fake_account):
     resp = test_client.post(
         '/applicants/exam_table',
         headers={'Authorization': admin['accessToken']},
-        json={'users': users})
+        json={'users': users}
+    )
 
     assert resp.status_code == 200
     assert type(resp.json) == list
