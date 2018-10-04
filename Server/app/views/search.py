@@ -31,15 +31,25 @@ class ViewApplicants(BaseResource):
             .join(ApplyStatusModel)\
             .filter(ApplyStatusModel.final_submit)
 
-        # 제출-전형료 조건 없음
-        if not bool(checking_receipt) and not bool(checking_payment):
-            filtered_res = joined_res
+        print(checking_receipt)
+        print(checking_payment)
 
-        # 제출-전형료 조건 있음
+        # 제출-전형료 조건 없음
+        if checking_receipt is False and checking_payment is False:
+            print('TF TF')
+            filtered_res = joined_res
         else:
-            filtered_res = joined_res \
-                .filter(ApplyStatusModel.receipt == checking_receipt) \
-                .filter(ApplyStatusModel.payment == checking_payment)
+            if not checking_receipt:
+                print('TF', checking_payment)
+                filtered_res = joined_res.filter(ApplyStatusModel.payment == self.str_to_bool(checking_payment))
+            elif not checking_payment:
+                print(checking_receipt, 'TF')
+                filtered_res = joined_res.filter(ApplyStatusModel.receipt == self.str_to_bool(checking_receipt))
+            else:
+                print(checking_receipt, checking_payment)
+                filtered_res = joined_res \
+                    .filter(ApplyStatusModel.receipt == self.str_to_bool(checking_receipt)) \
+                    .filter(ApplyStatusModel.payment == self.str_to_bool(checking_payment))
 
         if search_name:
             filtered_res = filtered_res.filter(InfoModel.name.like('%' + search_name + '%')).all()
