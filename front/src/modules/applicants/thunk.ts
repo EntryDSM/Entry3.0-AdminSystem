@@ -2,13 +2,16 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { updateApplicantsData } from './actionCreator';
 
-export const updateApplicantsDataAsync = (jwt: string, search: string) => (dispatch: Dispatch<UpdateApplicantsDataAction>) => {
-  axios.get(`http://52.79.60.204/applicants?${search}`, {
-    headers: {
-      Authorization: jwt
-    }
-  }).then(res => {
-    dispatch(updateApplicantsData(res.data.map((applicantData: ApplicantData) => {
+export const updateApplicantsDataAsync = (jwt: string, search: string) => async (dispatch: Dispatch<UpdateApplicantsDataAction>) => {
+  try {
+    console.log(search);
+    const response = await axios.get(`http://52.79.60.204/applicants?name=${search}`, {
+      headers: {
+        Authorization: jwt
+      }
+    });
+    console.log(response);
+    dispatch(updateApplicantsData(response.data.map((applicantData: ApplicantData) => {
       let admission = '';
       switch (applicantData.admission) {
         case 'NORMAL':
@@ -30,7 +33,7 @@ export const updateApplicantsDataAsync = (jwt: string, search: string) => (dispa
         isCheck: false
       }
     })));
-  }).catch(err => {
+  } catch (err) {
     console.log(err);
-  });
+  }
 }

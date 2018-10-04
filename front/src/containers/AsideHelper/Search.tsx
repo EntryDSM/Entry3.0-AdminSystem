@@ -20,7 +20,7 @@ const Search = ({ searchText, onSearchInput, onSearch }: Props) =>
           value={searchText}
           placeholder='검색어를 입력하세요' />
       </SearchBox>
-      <SearchButton onClick={() => onSearch()}>검색</SearchButton>
+      <SearchButton onClick={() => onSearch(searchText)}>검색</SearchButton>
     </SearchWrapper>
   </Fragment>
 

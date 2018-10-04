@@ -16,18 +16,19 @@ class ApplicantsHelper extends Component<any, any> {
   }
 
   componentDidMount() {
-    this.search();
+    this.search('');
   }
 
-  search = (): void => {
+  search = (searchText): void => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    this.props.updateApplicantsDataAsync(jwt, this.state.search);
+    this.props.updateApplicantsDataAsync(jwt, searchText);
   }
 
   inputSearch = ({ target }: Target): void => {
     this.setState({
       search: target.value
     });
+    this.search(target.value);
   }
 
   getCSVFile = async () => {
@@ -55,8 +56,10 @@ class ApplicantsHelper extends Component<any, any> {
   render() {
     return (
       <Aside>
-        <Search searchText={this.state.search} onSearchInput={this.inputSearch} onSearch={this.search} />
-        {/* <ExcelRequestButton request={this.getCSVFile} /> */}
+        <Search
+          searchText={this.state.search}
+          onSearchInput={this.inputSearch}
+          onSearch={this.search} />
         <FuncButton funcName='전체 지원자 정보(Excel) 다운로드' clickEvent={this.getCSVFile} />
         <FuncButton funcName='전체 지원자 수험번호 발급' clickEvent={() => {}} />
         <FuncButton funcName='전체 지원자 수험표 출력' clickEvent={() => {}} />
