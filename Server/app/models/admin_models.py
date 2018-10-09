@@ -30,7 +30,7 @@ class SchoolModel(db.Model):
 
     code = db.Column(db.String(10), primary_key=True)
     government = db.Column(db.String(20), nullable=True)
-    name = db.Column(db.String(20), nullable=True)
+    name = db.Column(db.String(50), nullable=True)
     school_region = db.Column(db.String(20), nullable=True)
 
     created_at = db.Column(db.DateTime, nullable=False)

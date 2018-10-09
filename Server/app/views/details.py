@@ -42,7 +42,7 @@ class ViewApplicantDetails(BaseResource):
                 .filter(ApplyStatusModel.final_submit).first()
 
         academic = {
-            'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code,).first().name,
+            'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code).first().name,
             'student_class': applicant.GraduateInfoModel.student_class,
             'student_grade': applicant.GraduateInfoModel.student_grade,
             'student_number': applicant.GraduateInfoModel.student_number,

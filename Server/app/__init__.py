@@ -1,4 +1,6 @@
-from flask import Flask
+import os
+
+from flask import Flask, send_from_directory, render_template
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
@@ -16,8 +18,9 @@ def create_app(*config_cls):
 
     app_ = Flask(
         __name__,
-        # static_folder='{}/static'.format(WEB_FILE_ROOT_DIR),
-        # template_folder='{}/templates'.format(WEB_FILE_ROOT_DIR)
+        static_folder='{}/static'.format('../app'),
+        static_url_path='/',
+        template_folder='{}/static'.format('../app')
     )
 
     for config in config_cls:
@@ -33,5 +36,9 @@ def create_app(*config_cls):
 
     app_.after_request(after_request)
     app_.register_error_handler(Exception, error_handler)
+
+    @app_.route('/')
+    def index():
+        return render_template('index.html')
 
     return app_

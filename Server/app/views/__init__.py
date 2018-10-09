@@ -112,11 +112,12 @@ class Router:
             self.init_app(app)
 
     def init_app(self, app):
-        from app.views import auth, search, details, conversion
+        from app.views import auth, search, details, conversion, statistic
         app.register_blueprint(auth.api.blueprint)
         app.register_blueprint(search.api.blueprint)
         app.register_blueprint(details.api.blueprint)
         app.register_blueprint(conversion.api.blueprint)
+        app.register_blueprint(statistic.api.blueprint)
 
 
 def create_csv_row(user_id):
@@ -310,3 +311,63 @@ def untrim_as_zero(code):
         exam_code = code
 
     return exam_code
+
+
+def calculate_competition_rates(amount, acceptance):
+    if amount == 0:
+        res = '지원자 없음'
+    else:
+        res = str(round(amount / acceptance, 2)) + ' : 1'
+
+    return res
+
+
+def filter_for_statistic(query, admission=None, region=None):
+    res = query
+    if admission:
+        res = res.filter(UserModel.admission == AdmissionChoice(admission))
+    if region is not None:
+        res = res.filter(UserModel.region == region)
+
+    return res
+
+
+def calculate_amount_on_score(amount):
+    res = {
+        '150u': 0,
+        '140u': 0,
+        '130u': 0,
+        '120u': 0,
+        '110u': 0,
+        '100u': 0,
+        '90u': 0,
+        '80u': 0,
+        '70u': 0
+    }
+
+    for user in amount:
+        if user.graduate_type.name == 'GED':
+            score = GedScoreModel.query.filter_by(user_id=user.user_id).first().conversion_score
+        else:
+            score = GraduateScoreModel.query.filter_by(user_id=user.user_id).first().conversion_score
+
+        if score > 140:
+            res['150u'] += 1
+        elif 140 >= score > 130:
+            res['140u'] += 1
+        elif 130 >= score > 120:
+            res['130u'] += 1
+        elif 120 >= score > 110:
+            res['120u'] += 1
+        elif 110 >= score > 100:
+            res['110u'] += 1
+        elif 100 >= score > 90:
+            res['100u'] += 1
+        elif 90 >= score > 80:
+            res['90u'] += 1
+        elif 80 >= score > 70:
+            res['80u'] += 1
+        elif 70 >= score:
+            res['70u'] += 1
+
+    return res
