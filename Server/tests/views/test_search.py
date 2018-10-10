@@ -3,7 +3,7 @@ def test_view_applicants(flask_app, create_fake_account, create_forbidden_token)
     admin = create_fake_account
 
     # search success 200
-    resp = test_client.get('/applicants', headers={'Authorization': admin['accessToken']})
+    resp = test_client.get('/api/applicants', headers={'Authorization': admin['accessToken']})
 
     assert resp.status_code == 200
     assert type(resp.json) == list
@@ -11,7 +11,7 @@ def test_view_applicants(flask_app, create_fake_account, create_forbidden_token)
     assert sorted(resp.json[0].keys()) == sorted(['user_id', 'receipt_code', 'name', 'region', 'admission', 'receipt', 'payment'])
 
     # invalid token 403
-    resp = test_client.get('/applicants', headers={'Authorization': create_forbidden_token})
+    resp = test_client.get('/api/applicants', headers={'Authorization': create_forbidden_token})
 
     assert resp.status_code == 403
 
@@ -25,7 +25,7 @@ def test_print_all_excel(flask_app, create_fake_account):
 
     # print excel success 201
     resp = test_client.post(
-        '/applicants/excel',
+        '/api/applicants/excel',
         headers={'Authorization': admin['accessToken']},
         json={'users': users})
 
@@ -45,7 +45,7 @@ def test_print_all_exam_table(flask_app, create_fake_account):
 
     # print exam table 200
     resp = test_client.post(
-        '/applicants/exam_table',
+        '/api/applicants/exam_table',
         headers={'Authorization': admin['accessToken']},
         json={'users': users}
     )

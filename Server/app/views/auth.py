@@ -13,6 +13,8 @@ from app.docs.auth import AUTH_POST
 
 api = Api(Blueprint(__name__, __name__))
 
+api.prefix = '/api'
+
 
 @api.resource('/auth')
 class Auth(BaseResource):

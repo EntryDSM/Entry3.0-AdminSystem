@@ -9,7 +9,7 @@ def test_view_detail_information(flask_app, create_fake_account):
 
     # get Graduate detail information success 200
     resp = test_client.get(
-        '/applicants/details/information/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/information/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -19,7 +19,7 @@ def test_view_detail_information(flask_app, create_fake_account):
 
     # get Ged detail information success 200
     resp = test_client.get(
-        '/applicants/details/information/{}'.format(SAMPLE_GED_USER_ID),
+        '/api/applicants/details/information/{}'.format(SAMPLE_GED_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -29,7 +29,7 @@ def test_view_detail_information(flask_app, create_fake_account):
 
     # non-existence applicant 400
     resp = test_client.get(
-        '/applicants/details/information/{}'.format('101'),
+        '/api/applicants/details/information/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -42,7 +42,7 @@ def test_view_detail_grade(flask_app, create_fake_account, mysql_client_for_test
 
     # get Graduate detail grade success 200
     resp = test_client.get(
-        '/applicants/details/grade/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/grade/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -52,7 +52,7 @@ def test_view_detail_grade(flask_app, create_fake_account, mysql_client_for_test
 
     # get GED detail grade success 200
     resp = test_client.get(
-        '/applicants/details/grade/{}'.format(SAMPLE_GED_USER_ID),
+        '/api/applicants/details/grade/{}'.format(SAMPLE_GED_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -62,7 +62,7 @@ def test_view_detail_grade(flask_app, create_fake_account, mysql_client_for_test
 
     # non-existence applicant 400
     resp = test_client.get(
-        '/applicants/details/grade/{}'.format('any'),
+        '/api/applicants/details/grade/{}'.format('any'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -73,7 +73,7 @@ def test_view_detail_grade(flask_app, create_fake_account, mysql_client_for_test
     mysql_client_for_test.commit()
 
     resp = test_client.get(
-        '/applicants/details/grade/{}'.format('002'),
+        '/api/applicants/details/grade/{}'.format('002'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -89,7 +89,7 @@ def test_print_one_excel(flask_app, create_fake_account):
 
     # print exam table 200
     resp = test_client.post(
-        '/applicants/details/excel/{}'.format(SAMPLE_GED_USER_ID),
+        '/api/applicants/details/excel/{}'.format(SAMPLE_GED_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -101,7 +101,7 @@ def test_print_one_excel(flask_app, create_fake_account):
 
     # non-existence 400
     resp = test_client.post(
-        '/applicants/details/excel/{}'.format('101'),
+        '/api/applicants/details/excel/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -113,7 +113,7 @@ def test_print_one_exam_table(flask_app, create_fake_account):
     admin = create_fake_account
 
     resp = test_client.get(
-        '/applicants/details/exam_table/{}'.format(SAMPLE_GED_USER_ID),
+        '/api/applicants/details/exam_table/{}'.format(SAMPLE_GED_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 

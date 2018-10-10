@@ -10,7 +10,7 @@ def test_convert_receipt(flask_app, create_fake_account, mysql_client_for_test):
     mysql_client_for_test.commit()
 
     resp = test_client.patch(
-        '/applicants/details/receipt/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/receipt/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -18,7 +18,7 @@ def test_convert_receipt(flask_app, create_fake_account, mysql_client_for_test):
     assert resp.status_code == 201
 
     resp = test_client.patch(
-        '/applicants/details/receipt/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/receipt/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -27,7 +27,7 @@ def test_convert_receipt(flask_app, create_fake_account, mysql_client_for_test):
 
     # non-existence applicant 400
     resp = test_client.patch(
-        '/applicants/details/receipt/{}'.format('101'),
+        '/api/applicants/details/receipt/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -43,7 +43,7 @@ def test_convert_payment(flask_app, create_fake_account, mysql_client_for_test):
     mysql_client_for_test.commit()
 
     resp = test_client.patch(
-        '/applicants/details/payment/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/payment/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -51,7 +51,7 @@ def test_convert_payment(flask_app, create_fake_account, mysql_client_for_test):
     assert resp.status_code == 201
 
     resp = test_client.patch(
-        '/applicants/details/payment/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/payment/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -60,7 +60,7 @@ def test_convert_payment(flask_app, create_fake_account, mysql_client_for_test):
 
     # non-existence applicant 400
     resp = test_client.patch(
-        '/applicants/details/payment/{}'.format('101'),
+        '/api/applicants/details/payment/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -73,7 +73,7 @@ def test_issue_exam_code(flask_app, create_fake_account):
 
     # issue exam_code success 201
     resp = test_client.patch(
-        '/applicants/details/exam_code/{}'.format(SAMPLE_GRADUATE_USER_ID),
+        '/api/applicants/details/exam_code/{}'.format(SAMPLE_GRADUATE_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -81,7 +81,7 @@ def test_issue_exam_code(flask_app, create_fake_account):
 
     # non-existence 400
     resp = test_client.patch(
-        '/applicants/details/exam_code/{}'.format('101'),
+        '/api/applicants/details/exam_code/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -94,7 +94,7 @@ def test_reversal_final_submit(flask_app, create_fake_account, mysql_client_for_
 
     # revere final_submit success 201
     resp = test_client.patch(
-        '/applicants/details/final_submit/{}'.format(SAMPLE_GED_USER_ID),
+        '/api/applicants/details/final_submit/{}'.format(SAMPLE_GED_USER_ID),
         headers={'Authorization': admin['accessToken']}
     )
 
@@ -105,7 +105,7 @@ def test_reversal_final_submit(flask_app, create_fake_account, mysql_client_for_
 
     # non-existence 400
     resp = test_client.patch(
-        '/applicants/details/final_submit/{}'.format('101'),
+        '/api/applicants/details/final_submit/{}'.format('101'),
         headers={'Authorization': admin['accessToken']}
     )
 

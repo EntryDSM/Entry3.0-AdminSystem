@@ -14,6 +14,8 @@ from app.docs.search import *
 
 api = Api(Blueprint(__name__, __name__))
 
+api.prefix = '/api'
+
 
 @api.resource('/applicants')
 class ViewApplicants(BaseResource):

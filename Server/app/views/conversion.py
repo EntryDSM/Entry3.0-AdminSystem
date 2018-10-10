@@ -11,7 +11,7 @@ from app.docs.conversion import *
 
 api = Api(Blueprint(__name__, __name__))
 
-api.prefix = '/applicants/details'
+api.prefix = '/api/applicants/details'
 
 
 @api.resource('/receipt/<user_id>')
