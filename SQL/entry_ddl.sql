@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `entry`.`school` (
   `code` VARCHAR(10) NOT NULL,
   `government` VARCHAR(20) NOT NULL,
   `name` VARCHAR(20) NOT NULL,
-  `school_region` VARCHAR(20) NOT NULL,
+  
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`code`))

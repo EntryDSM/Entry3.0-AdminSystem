@@ -31,7 +31,7 @@ class ViewApplicants(BaseResource):
         joined_res = db.session.query(UserModel, InfoModel, ApplyStatusModel) \
             .join(InfoModel) \
             .join(ApplyStatusModel)\
-            .filter(ApplyStatusModel.final_submit)
+            # .filter(ApplyStatusModel.final_submit)
 
         print(checking_receipt)
         print(checking_payment)
