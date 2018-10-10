@@ -8,7 +8,7 @@ export const checkApplicant = (userId: string): CheckApplicantAction => ({
 });
 export const updateApplicantsData = (jwt: string, search: string) => async (dispatch: Dispatch<UpdateApplicantsDataAction>) => {
   try {
-    const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants?name=${search}`, {
+    const response = await axios.get(`http://52.79.60.204/api/applicants?name=${search}`, {
       headers: {
         Authorization: jwt
       }

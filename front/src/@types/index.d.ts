@@ -55,7 +55,7 @@ interface CheckApplicantAction extends Action {
 }
 interface GetApplicantDataAction extends Action {
   type: 'GET_APPLICANT_DATA';
-  applicantData: ApplicantData
+  applicantData: ApplicantInfo
 }
 interface CheckPaymentAction extends Action {
   type: 'CHECK_PAYMENT';

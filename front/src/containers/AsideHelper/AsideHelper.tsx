@@ -37,7 +37,7 @@ class AsideHelper extends Component<any, any> {
 
   getCSVFile = async () => {
     try {
-      const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/excel', {
+      const response = await axios.post('http://52.79.60.204/api/applicants/excel', {
         users: this.props.applicants.map(applicant => applicant.user_id)
       }, {
         headers: {
@@ -66,12 +66,13 @@ class AsideHelper extends Component<any, any> {
         const diffs = [];
         for (let i = 0; i < nextProps.applicants.length; i++) {
           if (!_.isEqual(nextProps.applicants[i], prevState.applicants[i])) {
-            diffs.push({ index: i, check: nextProps.check });
+            diffs.push({ index: i, check: nextProps.applicants[i].isCheck });
           }
         }
         if (diffs.length) {
           if (diffs.length > 1) {
-            nextProps.changeMode('applicants');
+            // DEPRECATED
+            // nextProps.changeMode('applicants');
           } else if (diffs.length === 1) {
             if (diffs[0].check) {
               nextProps.changeMode('applicant');
@@ -81,9 +82,12 @@ class AsideHelper extends Component<any, any> {
                 applicants: nextProps.applicants
               };
             } else {
-              nextProps.changeMode('all');
-              return {
-                applicant: {}
+              if (nextProps.aside.mode !== 'all') {
+                nextProps.changeMode('all');
+                return {
+                  applicants: nextProps.applicants,
+                  applicant: {}
+                }
               }
             }
           } else {
@@ -106,9 +110,9 @@ class AsideHelper extends Component<any, any> {
           }
         }
       }
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   render() {

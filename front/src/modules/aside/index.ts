@@ -7,7 +7,6 @@ const initialState: AsideMode = {
 const aside = (state: AsideMode = initialState, action: ChangeModeAction) => {
   switch (action.type) {
     case CHANGE_MODE:
-      console.log(action.mode);
       return {
         mode: action.mode
       };
