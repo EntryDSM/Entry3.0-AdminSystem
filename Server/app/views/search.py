@@ -67,7 +67,8 @@ class ViewApplicants(BaseResource):
             'region': '대전' if student.UserModel.region is True else '전국',
             'admission': student.UserModel.admission.name,
             'receipt': student.ApplyStatusModel.receipt,
-            'payment': student.ApplyStatusModel.payment
+            'payment': student.ApplyStatusModel.payment,
+            'is_submit': student.ApplyStatusModel.final_submit
         } for student in filtered_res], 200) if filtered_res else []
 
 

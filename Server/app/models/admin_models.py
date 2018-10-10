@@ -32,8 +32,8 @@ class SchoolModel(db.Model):
     government = db.Column(db.String(20), nullable=True)
     name = db.Column(db.String(50), nullable=True)
 
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    # created_at = db.Column(db.DateTime, nullable=False)
+    # updated_at = db.Column(db.DateTime, nullable=False)
 
-    # one to one
+    # one to one3
     graduate_info = relationship("GraduateInfoModel", uselist=False, backref="user")
