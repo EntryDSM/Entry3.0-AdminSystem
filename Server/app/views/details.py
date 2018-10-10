@@ -26,49 +26,76 @@ class ViewApplicantDetails(BaseResource):
     @check_auth()
     def get(self, user_id):
         applicant = UserModel.query.filter_by(user_id=user_id).first()
+        res = {}
 
         if not applicant:
             abort(400)
 
-        if str(applicant.graduate_type.name) != 'GED':
-            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel)\
-                .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel)\
-                .filter(UserModel.user_id == user_id)\
-                .filter(ApplyStatusModel.final_submit).first()
+        # 최종 제출을 하지 않은 지원자
+        if not ApplyStatusModel.query.filter_by(user_id=user_id).first().final_submit:
+            e_info = InfoModel.query.filter_by(user_id=user_id).first()
+            e_graduate_info = GraduateInfoModel.query.filter_by(user_id=user_id).first()
+
+            res = {
+                'name': '',
+                'email': '',
+                'tel': '',
+                'parent_tel': '',
+                'school': ''
+            }
+
+            if e_info:
+                res['name'] = e_info.name
+                res['email'] = applicant.email
+                res['tel'] = e_info.my_tel
+                res['parent_tel'] = e_info.parent_tel
+
+            if e_graduate_info:
+                res['school'] = SchoolModel.query.filter_by(code=e_graduate_info.school_code).first().name
+
+        # 최종 제출한 지원자
         else:
-            applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel)\
-                .join(InfoModel).join(ApplyStatusModel)\
-                .filter(UserModel.user_id == user_id)\
-                .filter(ApplyStatusModel.final_submit).first()
+            if str(applicant.graduate_type.name) != 'GED':
+                applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel, GraduateInfoModel) \
+                    .join(InfoModel).join(ApplyStatusModel).join(GraduateInfoModel) \
+                    .filter(UserModel.user_id == user_id) \
+                    .filter(ApplyStatusModel.final_submit).first()
+            else:
+                applicant = db.session.query(UserModel, InfoModel, ApplyStatusModel) \
+                    .join(InfoModel).join(ApplyStatusModel) \
+                    .filter(UserModel.user_id == user_id) \
+                    .filter(ApplyStatusModel.final_submit).first()
 
-        academic = {
-            'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code).first().name,
-            'student_class': applicant.GraduateInfoModel.student_class,
-            'student_grade': applicant.GraduateInfoModel.student_grade,
-            'student_number': applicant.GraduateInfoModel.student_number,
-            'graduate_year': applicant.GraduateInfoModel.graduate_year,
-            'is_ged': False
-        } if str(applicant.UserModel.graduate_type.name) != 'GED' else {'is_ged': True}
+            academic = {
+                'school_name': SchoolModel.query.filter_by(code=applicant.GraduateInfoModel.school_code).first().name,
+                'student_class': applicant.GraduateInfoModel.student_class,
+                'student_grade': applicant.GraduateInfoModel.student_grade,
+                'student_number': applicant.GraduateInfoModel.student_number,
+                'graduate_year': applicant.GraduateInfoModel.graduate_year,
+                'is_ged': False
+            } if str(applicant.UserModel.graduate_type.name) != 'GED' else {'is_ged': True}
 
-        return self.unicode_safe_json_dumps({
-            'main': {
-                'img_path': applicant.InfoModel.img_path,
-                'name': applicant.InfoModel.name,
-                'admission': str(applicant.UserModel.admission.name),
-                'region': '대전' if applicant.UserModel.region is True else '전국'
-            },
-            'basic': {
-                'name': applicant.InfoModel.name,
-                'tel': applicant.InfoModel.my_tel,
-                'address': applicant.InfoModel.address_base + ' ' + applicant.InfoModel.address_detail
-            },
-            'parent': {
-                'name': applicant.InfoModel.parent_name,
-                'tel': applicant.InfoModel.parent_tel
-            },
-            'academic': academic,
-            'exam_code': applicant.ApplyStatusModel.exam_code
-        }, 200)
+            res = {
+                'main': {
+                    'img_path': applicant.InfoModel.img_path,
+                    'name': applicant.InfoModel.name,
+                    'admission': str(applicant.UserModel.admission.name),
+                    'region': '대전' if applicant.UserModel.region is True else '전국'
+                },
+                'basic': {
+                    'name': applicant.InfoModel.name,
+                    'tel': applicant.InfoModel.my_tel,
+                    'address': applicant.InfoModel.address_base + ' ' + applicant.InfoModel.address_detail
+                },
+                'parent': {
+                    'name': applicant.InfoModel.parent_name,
+                    'tel': applicant.InfoModel.parent_tel
+                },
+                'academic': academic,
+                'exam_code': applicant.ApplyStatusModel.exam_code
+            }
+
+        return self.unicode_safe_json_dumps(res, 200)
 
 
 @api.resource('/grade/<user_id>')
