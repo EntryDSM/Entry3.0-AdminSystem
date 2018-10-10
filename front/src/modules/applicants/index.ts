@@ -7,7 +7,7 @@ const applicants = (state = initialState, action: any) => {
     case UPDATE_APPLICANTS_DATA:
       return [
         ...action.applicantsData
-      ]
+      ];
     case CHECK_APPLICANT:
       return [
         ...state.map(applicant => {
@@ -17,9 +17,9 @@ const applicants = (state = initialState, action: any) => {
             return { ...applicant }
           }
         })
-      ]
+      ];
     default:
-      return state
+      return state;
   }
 }
 

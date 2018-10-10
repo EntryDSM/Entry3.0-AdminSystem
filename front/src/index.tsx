@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { render } from 'react-dom';
-import { Login, Navigation, AsideHelper } from './containers';
-import { ApplicantsHelper } from './containers/AsideHelper';
+import { Login, Navigation } from './containers';
+import AsideHelper from './containers/AsideHelper/AsideHelper';
 import { ApplicantsTable } from './containers/Section';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Store from './modules';
@@ -21,7 +21,7 @@ render(
             <Route path='/' exact render={() =>
               <Fragment>
                 <Navigation />
-                <ApplicantsHelper />
+                <AsideHelper />
                 <ApplicantsTable />
               </Fragment>} />
           </Switch>

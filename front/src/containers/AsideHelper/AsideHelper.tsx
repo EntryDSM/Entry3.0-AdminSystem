@@ -1,90 +1,155 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Aside, AsideHeader } from './local-styled/AsideHelper';
-import Search from './Search';
-import ExcelRequestButton from './ExcelRequestButton';
+import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { updateApplicantsDataAsync } from '../../modules/applicants/thunk';
 import { withCookies } from 'react-cookie';
+import _ from 'lodash';
+import { Aside } from './local-styled/AsideHelper';
+import * as applicants from '../../modules/applicants/actionCreator';
+import * as applicant from '../../modules/applicant/actionCreator';
+import { changeMode } from '../../modules/aside/actionCreator';
 import ApplicantsHelper from './ApplicantsHelper';
-
-interface State {
-  isReceipt: boolean;
-  isPayment: boolean;
-  search: string;
-  conditions: {
-    [k:string]: any;
-  },
-  csvData: string;
-}
+import ApplicantHelper from './ApplicantHelper';
 
 class AsideHelper extends Component<any, any> {
-  state: State = {
-    isReceipt: false,
-    isPayment: false,
+  state = {
+    applicants: [],
+    applicant: {},
     search: '',
-    conditions: {},
     csvData: ''
   }
 
-  checkFilter = ({ target }: Target): void => {
-    this.setState((prevState: State) => {
-      if (target.name === 'receipt')
-        return { isReceipt: !prevState.isReceipt };
-      else
-        return { isPayment: !prevState.isPayment };
-    });
+  componentDidMount() {
+    this.search('');
   }
 
-  selectCondition = ({ target }: Target): void => {
+  search = (searchText): void => {
+    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    this.props.applicantsActionCreators.updateApplicantsData(jwt, searchText);
   }
 
-  searchInput = ({ target }: Target): void => {
+  inputSearch = ({ target }: Target): void => {
     this.setState({
       search: target.value
     });
+    this.search(target.value);
   }
 
-  search = (): void => {
-    const jwt = this.props.cookies.cookies.accessToken;
-    this.props.updateApplicantsDataAsync(jwt, this.state.search);
-  }
-
-  getStudentsExcelFile = async () => {
+  getCSVFile = async () => {
     try {
-      const response = await axios.post('http://52.79.60.204/applicants/excel', {
-        users: this.props.applicantsData.map(applicant => applicant.user_id)
+      const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/excel', {
+        users: this.props.applicants.map(applicant => applicant.user_id)
       }, {
         headers: {
           Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
         }
       });
-      this.setState({
-        csvData: response.data
-      })
-    } catch (e) {
-      console.log(e);
+      const date = new Date();
+      const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.csv`;
+      const data = encodeURI(response.data);
+      const link = document.createElement('a');
+      link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${data}`);
+      link.setAttribute('download', filename);
+      link.click();
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  componentDidMount = () => {
-    this.search();
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    if (nextProps.applicants.length) {
+      if (!prevState.applicants.length) {
+        return {
+          applicants: nextProps.applicants
+        }
+      } else {
+        const diffs = [];
+        for (let i = 0; i < nextProps.applicants.length; i++) {
+          if (!_.isEqual(nextProps.applicants[i], prevState.applicants[i])) {
+            diffs.push({ index: i, check: nextProps.check });
+          }
+        }
+        if (diffs.length) {
+          if (diffs.length > 1) {
+            nextProps.changeMode('applicants');
+          } else if (diffs.length === 1) {
+            if (diffs[0].check) {
+              nextProps.changeMode('applicant');
+              const jwt = `JWT ${nextProps.cookies.cookies.accessToken}`;
+              nextProps.applicantActionCreators.getApplicantData(jwt, nextProps.applicants[diffs[0].index].user_id);
+              return {
+                applicants: nextProps.applicants
+              };
+            } else {
+              nextProps.changeMode('all');
+              return {
+                applicant: {}
+              }
+            }
+          } else {
+            if (!_.isEqual(nextProps.applicant, prevState.applicant)) {
+              return {
+                applicant: nextProps.applicant
+              }
+            } else {
+              nextProps.changeMode('all');
+              return {
+                applicant: {}
+              }
+            }
+          }
+        } else {
+          if (!_.isEqual(nextProps.applicant, prevState.applicant)) {
+            return {
+              applicant: nextProps.applicant
+            }
+          }
+        }
+      }
+    } else {
+      return null;
+    }
   }
 
   render() {
-    switch (this.props.mode) {
+    let helper = null;
+    switch (this.props.aside.mode) {
+      case 'all':
+        helper = <ApplicantsHelper
+                    searchText={this.state.search}
+                    onSearch={this.search}
+                    onSearchInput={this.inputSearch}
+                    getCSVFile={this.getCSVFile} />
+        break;
       case 'applicants':
-        return <ApplicantsHelper />
+        helper = ''
+        break;
+      case 'applicant':
+        helper = <ApplicantHelper />
+        break;
       default:
-        return <div>Error</div>
+        helper = 'error';
+        break;
     }
+    return (
+      <Aside>
+        {helper}
+      </Aside>
+    );
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  applicantsData: state.applicants,
-  aside: state.aside
+const mapStateToProps = (state: any) => {
+  return {
+    applicants: state.applicants,
+    applicant: state.applicant,
+    aside: state.aside
+  }
+};
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  applicantsActionCreators: bindActionCreators(applicants, dispatch),
+  applicantActionCreators: bindActionCreators(applicant, dispatch),
+  changeMode: (mode: 'all'|'applicants'|'applicant') => dispatch(changeMode(mode))
 });
-const mapDispatchToProps = { updateApplicantsDataAsync };
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));

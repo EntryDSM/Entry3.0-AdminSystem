@@ -13,6 +13,32 @@ interface ApplicantData {
   isCheck?: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
+interface ApplicantInfo {
+  academic: {
+    graduate_year: number;
+    is_ged: boolean;
+    school_name: string;
+    student_class: number;
+    student_grade: number;
+    student_number: number;
+  },
+  basic: {
+    address: string;
+    name: string;
+    tel: string;
+  },
+  exam_code: string;
+  main: {
+    admission: string;
+    img_path: string;
+    name: string;
+    region: string;
+  },
+  parent: {
+    name: string;
+    tel: string;
+  }
+}
 interface AsideMode {
   mode: string;
 }
