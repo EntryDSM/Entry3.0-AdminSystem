@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Redirect } from 'react-router';
 import { ApplicantsTableWrapper, Table } from './local-styled/ApplicantsTable';
 import ApplicantsTableHeader from './ApplicantsTableHeader';
 import ApplicantsTableRow from './ApplicantsTableRow';
@@ -24,18 +25,22 @@ class ApplicantsTable extends Component<any, any> {
   }
 
   render() {
-    return (
-      <ApplicantsTableWrapper>
-        <ApplicantsTableHeader />
-        <Table>
-          <ApplicantsTableRow
-            rows={this.props.applicants}
-            checkApplicant={this.checkApplicant}
-            checkPayment={this.checkPayment}
-            checkReceipt={this.checkReceipt} />
-        </Table>
-      </ApplicantsTableWrapper>
-    );
+    if (this.props.cookies.cookies.accessToken === undefined) {
+      return <Redirect to='/login' />
+    } else {
+      return (
+        <ApplicantsTableWrapper>
+          <ApplicantsTableHeader />
+          <Table>
+            <ApplicantsTableRow
+              rows={this.props.applicants}
+              checkApplicant={this.checkApplicant}
+              checkPayment={this.checkPayment}
+              checkReceipt={this.checkReceipt} />
+          </Table>
+        </ApplicantsTableWrapper>
+      );
+    }
   }
 }
 
