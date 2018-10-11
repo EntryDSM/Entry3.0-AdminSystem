@@ -3,6 +3,7 @@ import { ApplicantHelperHeader, ApplicantInfoSectionHeader } from './local-style
 import ApplicantInfo from './ApplicantInfo';
 
 const ApplicantHelper = ({ applicant }) => {
+  console.log(applicant);
   const { address, name: basicName, tel: basicTel } = applicant.basic;
   const { name: parentName, tel: parentTel } = applicant.parent;
   const { school_name, student_grade, student_class, student_number, graduate_year } = applicant.academic;

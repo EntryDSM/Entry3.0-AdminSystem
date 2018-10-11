@@ -1,13 +1,11 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import applicants from './applicants';
-import applicant from './applicant';
-import aside from './aside';
+import checks from './checks';
 
 const rootReducer = combineReducers({
   applicants,
-  applicant,
-  aside
+  checks
 });
 const Store = createStore(
   rootReducer,

@@ -6,24 +6,36 @@ import { withCookies } from 'react-cookie';
 import _ from 'lodash';
 import { Aside } from './local-styled/AsideHelper';
 import * as applicants from '../../modules/applicants/actionCreator';
-import * as applicant from '../../modules/applicant/actionCreator';
-import { changeMode } from '../../modules/aside/actionCreator';
+import * as checks from '../../modules/checks/actionCreator';
 import ApplicantsHelper from './ApplicantsHelper';
 import ApplicantHelper from './ApplicantHelper';
 
 class AsideHelper extends Component<any, any> {
   state = {
-    applicants: [],
-    applicant: {},
     search: '',
-    csvData: ''
+    checkDatas: [],
+    checkIds: []
   }
 
   componentDidMount() {
     this.search('');
   }
 
-  search = (searchText): void => {
+  updateChecksData = async (checks: Array<string>) => {
+    const checkDatas = await Promise.all(checks.map(async userId => {
+      const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/information/${userId}`, {
+        headers: {
+          Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
+        }
+      });
+      return response.data;
+    }))
+    this.setState({
+      checkDatas: checkDatas
+    })
+  }
+
+  search = (searchText: string): void => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
     this.props.applicantsActionCreators.updateApplicantsData(jwt, searchText);
   }
@@ -35,128 +47,89 @@ class AsideHelper extends Component<any, any> {
     this.search(target.value);
   }
 
-  getCSVFile = async () => {
+  getCSVFile = () => {
+    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    this.props.applicantsActionCreators.requestExcel(jwt);
+  }
+
+  issuingExaminationNumber = async ({ target }: Target) => {
+    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
     try {
-      const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/excel', {
-        users: this.props.applicants
-          .filter(applicant => applicant.is_submit)
-          .map(applicant => applicant.user_id)
-      }, {
+      await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/exam_code/${target.id}`, null, {
         headers: {
-          Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
+          Authorization: jwt
         }
       });
-      const date = new Date();
-      const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.csv`;
-      const data = encodeURI(response.data);
-      const link = document.createElement('a');
-      link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${data}`);
-      link.setAttribute('download', filename);
-      link.click();
     } catch (err) {
       console.log(err);
     }
   }
 
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (nextProps.applicants.length) {
-      if (!prevState.applicants.length) {
-        return {
-          applicants: nextProps.applicants
+  issuingAdmissionNumber = async ({ target }: Target) => {
+    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    try {
+      await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/exam_code/${target.id}`, null, {
+        headers: {
+          Authorization: jwt
         }
-      } else {
-        const diffs = [];
-        for (let i = 0; i < nextProps.applicants.length; i++) {
-          if (!_.isEqual(nextProps.applicants[i], prevState.applicants[i])) {
-            diffs.push({ index: i, check: nextProps.applicants[i].isCheck });
-          }
-        }
-        if (diffs.length) {
-          if (diffs.length > 1) {
-            // DEPRECATED
-            // nextProps.changeMode('applicants');
-          } else if (diffs.length === 1) {
-            if (diffs[0].check) {
-              nextProps.changeMode('applicant');
-              const jwt = `JWT ${nextProps.cookies.cookies.accessToken}`;
-              nextProps.applicantActionCreators.getApplicantData(jwt, nextProps.applicants[diffs[0].index].user_id);
-              return {
-                applicants: nextProps.applicants
-              };
-            } else {
-              if (nextProps.aside.mode !== 'all') {
-                nextProps.changeMode('all');
-                return {
-                  applicants: nextProps.applicants,
-                  applicant: {}
-                }
-              }
-            }
-          } else {
-            if (!_.isEqual(nextProps.applicant, prevState.applicant)) {
-              return {
-                applicant: nextProps.applicant
-              }
-            } else {
-              nextProps.changeMode('all');
-              return {
-                applicant: {}
-              }
-            }
-          }
-        } else {
-          if (!_.isEqual(nextProps.applicant, prevState.applicant)) {
-            return {
-              applicant: nextProps.applicant
-            }
-          }
-        }
-      }
+      });
+    } catch (err) {
+      console.log(err);
     }
+  }
+  
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    if (nextProps.checks.length !== prevState.checkIds.length) {
+      return {
+        checkIds: nextProps.checks
+      };
+    } else {
+      return {
+        ...prevState
+      };
+    }
+  }
 
-    return null;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.checkIds.length !== prevState.checkIds.length)
+      this.updateChecksData(this.state.checkIds);
   }
 
   render() {
-    let helper = null;
-    switch (this.props.aside.mode) {
-      case 'all':
-        helper = <ApplicantsHelper
-                    searchText={this.state.search}
-                    onSearch={this.search}
-                    onSearchInput={this.inputSearch}
-                    getCSVFile={this.getCSVFile} />
-        break;
-      case 'applicants':
-        helper = ''
-        break;
-      case 'applicant':
-        helper = <ApplicantHelper
-                    applicant={this.props.applicant} />
-        break;
-      default:
-        helper = 'error';
-        break;
+    if (this.state.checkDatas.length === 0) {
+      return (
+        <Aside>
+          <ApplicantsHelper
+            searchText={this.state.search}
+            onSearch={this.search}
+            onSearchInput={this.inputSearch}
+            getCSVFile={this.getCSVFile} />
+        </Aside>
+      );
+    } else if (this.state.checkDatas.length === 1) {
+      return (
+        <Aside>
+          <ApplicantHelper
+            applicant={this.state.checkDatas[0]} />
+        </Aside>
+      );
+    } else if (this.state.checkDatas.length > 1) {
+      return (
+        <Aside></Aside>
+      );
+    } else {
+      return <div>Error</div>
     }
-    return (
-      <Aside>
-        {helper}
-      </Aside>
-    );
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-    applicants: state.applicants,
-    applicant: state.applicant,
-    aside: state.aside
-  }
-};
+const mapStateToProps = (state: any) => ({
+  checks: state.checks,
+  aside: state.aside
+});
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   applicantsActionCreators: bindActionCreators(applicants, dispatch),
-  applicantActionCreators: bindActionCreators(applicant, dispatch),
-  changeMode: (mode: 'all'|'applicants'|'applicant') => dispatch(changeMode(mode))
+  checksActionCreators: bindActionCreators(checks, dispatch)
 });
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));

@@ -6,22 +6,22 @@ import { ApplicantsTableWrapper, Table } from './local-styled/ApplicantsTable';
 import ApplicantsTableHeader from './ApplicantsTableHeader';
 import ApplicantsTableRow from './ApplicantsTableRow';
 import { withCookies } from 'react-cookie';
-import * as applicant from '../../modules/applicant/actionCreator';
-import { checkApplicant } from '../../modules/applicants/actionCreator';
+import * as checks from '../../modules/checks/actionCreator';
 
 class ApplicantsTable extends Component<any, any> {
   checkPayment = ({ target }: Target) => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    this.props.applicantActionCreators.checkPayment(jwt, target.id);
+    this.props.checksActionCreators.checkPayment(jwt, target.id);
   }
 
   checkReceipt = ({ target }: Target) => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    this.props.applicantActionCreators.checkReceipt(jwt, target.id);
+    this.props.checksActionCreators.checkReceipt(jwt, target.id);
   }
 
   checkApplicant = ({ target }: Target) => {
-    this.props.checkApplicant(target.id);
+    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    this.props.checksActionCreators.checkApplicant(jwt, target.id);
   }
 
   render() {
@@ -48,8 +48,7 @@ const mapStateToProps = (state: any) => ({
   applicants: state.applicants
 });
 const mapDispatchToProps = (dispatch: any) => ({
-  applicantActionCreators: bindActionCreators(applicant, dispatch),
-  checkApplicant: (userId: string) => dispatch(checkApplicant(userId))
+  checksActionCreators: bindActionCreators(checks, dispatch)
 });
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(ApplicantsTable));

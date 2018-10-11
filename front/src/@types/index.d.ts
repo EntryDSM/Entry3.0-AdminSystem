@@ -14,14 +14,14 @@ interface ApplicantData {
   is_submit: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
-interface ApplicantInfo {
+interface SubmitApplicantInfo {
   academic: {
-    graduate_year: number;
-    is_ged: boolean;
-    school_name: string;
-    student_class: number;
-    student_grade: number;
-    student_number: number;
+    graduate_year?: number;
+    is_ged?: boolean;
+    school_name?: string;
+    student_class?: number;
+    student_grade?: number;
+    student_number?: number;
   },
   basic: {
     address: string;
@@ -40,8 +40,15 @@ interface ApplicantInfo {
     tel: string;
   }
 }
+interface NotSubmitApplicantInfo {
+  name?: string;
+  email?: string;
+  school?: string;
+  tel?: string;
+  parent_tel?: string;
+}
 interface AsideMode {
-  mode: string;
+  mode: 'all'|'check'|'checks';
 }
 // Action
 interface ApplicantsAction extends Action {
@@ -52,11 +59,7 @@ interface UpdateApplicantsDataAction extends ApplicantsAction {
 }
 interface CheckApplicantAction extends Action {
   type: 'CHECK_APPLICANT';
-  userId: string;
-}
-interface GetApplicantDataAction extends Action {
-  type: 'GET_APPLICANT_DATA';
-  applicantData: ApplicantInfo
+  checks: Array<string>;
 }
 interface CheckPaymentAction extends Action {
   type: 'CHECK_PAYMENT';
@@ -64,8 +67,9 @@ interface CheckPaymentAction extends Action {
 }
 interface ChangeModeAction extends Action {
   type: 'CHANGE_MODE';
-  mode: 'all'|'applicants'|'applicant';
+  mode: 'all'|'check'|'checks';
 }
+
 // Event target
 interface Target {
   target: HTMLInputElement;
@@ -76,7 +80,6 @@ declare module '*.png' {
   const value: any;
   export = value;
 }
-
 declare module '*.jpg' {
   const value: any;
   export = value;

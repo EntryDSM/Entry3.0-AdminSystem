@@ -1,11 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { UPDATE_APPLICANTS_DATA, CHECK_APPLICANT } from './action';
+import { UPDATE_APPLICANTS_DATA } from './action';
 
-export const checkApplicant = (userId: string): CheckApplicantAction => ({
-  type: CHECK_APPLICANT,
-  userId
-});
 export const updateApplicantsData = (jwt: string, search: string) => async (dispatch: Dispatch<UpdateApplicantsDataAction>) => {
   try {
     const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants?name=${search}`, {
@@ -38,6 +34,26 @@ export const updateApplicantsData = (jwt: string, search: string) => async (disp
         }
       })
     });
+  } catch (err) {
+    console.log(err);
+  }
+}
+export const requestExcel = (jwt: string) => async (dispatch: Dispatch, getState) => {
+  try {
+    const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/excel', {
+      users: getState().applicants.filter(applicant => applicant.is_submit).map(applicant => applicant.user_id)
+    }, {
+      headers: {
+        Authorization: jwt
+      }
+    });
+    const date = new Date();
+    const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.csv`;
+    const data = encodeURI(response.data);
+    const link = document.createElement('a');
+    link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${data}`);
+    link.setAttribute('download', filename);
+    link.click();
   } catch (err) {
     console.log(err);
   }
