@@ -50,7 +50,7 @@ class ViewApplicantDetails(BaseResource):
                 res['tel'] = e_info.my_tel
                 res['parent_tel'] = e_info.parent_tel
 
-            if e_graduate_info:
+            if e_graduate_info and e_graduate_info.school_code:
                 res['school'] = SchoolModel.query.filter_by(code=e_graduate_info.school_code).first().name
 
         # 최종 제출한 지원자

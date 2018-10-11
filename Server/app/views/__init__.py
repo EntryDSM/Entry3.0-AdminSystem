@@ -134,15 +134,15 @@ def create_csv_row(user_id):
             ('1학년', ''),
             ('2학년', ''),
             ('3학년', ''),
-            ('교과성적환산점수', ged.conversion_score),
+            ('교과성적환산점수', round(ged.conversion_score, 3)),
             ('봉사시간', ''),
-            ('봉사점수', ged.volunteer_score),
+            ('봉사점수', round(ged.volunteer_score, 3)),
             ('결석', ''),
             ('지각', ''),
             ('조퇴', ''),
             ('결과', ''),
             ('출석점수', ged.attendance_score),
-            ('1차전형 총점', ged.final_score),
+            ('1차전형 총점', round(ged.final_score, 3)),
 
             ('졸업년도', ''),
             ('출신학교', ''),
@@ -169,18 +169,18 @@ def create_csv_row(user_id):
 
         # check
         grade_score = [
-            ('1학년', graduate.first_grade),
-            ('2학년', graduate.second_grade),
-            ('3학년', graduate.third_grade),
-            ('교과성적환산점수', graduate.conversion_score),
+            ('1학년', round(graduate.first_grade, 3)),
+            ('2학년', round(graduate.second_grade, 3)),
+            ('3학년', round(graduate.third_grade, 3)),
+            ('교과성적환산점수', round(graduate.conversion_score, 3)),
             ('봉사시간', graduate.volunteer_time),
-            ('봉사점수', graduate.volunteer_score),
+            ('봉사점수', round(graduate.volunteer_score, 3)),
             ('결석', graduate.full_cut),
             ('지각', graduate.late),
             ('조퇴', graduate.early_leave),
             ('결과', graduate.period_cut),
             ('출석점수', graduate.attendance_score),
-            ('1차전형 총점', graduate.final_score),
+            ('1차전형 총점', round(graduate.final_score, 3)),
 
             ('졸업년도', basic_data.GraduateInfoModel.graduate_year),
             ('출신학교', school_name),
@@ -188,13 +188,13 @@ def create_csv_row(user_id):
         ]
 
         grade_data = [{
-            'korean': grade.korean.name,
-            'social': grade.social.name,
-            'history': grade.history.name,
-            'math': grade.math.name,
-            'science': grade.science.name,
-            'tech': grade.tech.name,
-            'english': grade.english.name
+            'korean': grade.korean.name if grade.korean else '',
+            'social': grade.social.name if grade.social else '',
+            'history': grade.history.name if grade.history else '',
+            'math': grade.math.name if grade.math else '',
+            'science': grade.science.name if grade.science else '',
+            'tech': grade.tech.name if grade.tech else '',
+            'english': grade.english.name if grade.english else ''
         } for grade in GraduateGradeModel.query.filter_by(user_id=user_id).all()]
 
         if len(grade_data):
@@ -278,7 +278,7 @@ def create_csv_row(user_id):
         ('학업계획서', basic_data.DocumentModel.study_plan)
     ]
 
-    column = personal_info + grade_score + subject_grade + documents
+    column = personal_info + subject_grade + grade_score + documents
 
     return column
 
