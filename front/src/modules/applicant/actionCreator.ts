@@ -36,7 +36,7 @@ export const getApplicantData = (jwt: string, userId: string) => async (dispatch
     });
   } else {
     try {
-      const response = await axios.get(`http://52.79.60.204/api/applicants/details/information/${userId}`, {
+      const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/information/${userId}`, {
         headers: {
           Authorization: jwt
         }
@@ -53,7 +53,7 @@ export const getApplicantData = (jwt: string, userId: string) => async (dispatch
 }
 export const checkPayment = (jwt: string, userId: string) => async (dispatch: Dispatch<any>) => {
   try {
-    await axios.patch(`http://52.79.60.204/api/applicants/details/payment/${userId}`, null, {
+    await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/payment/${userId}`, null, {
       headers: {
         Authorization: jwt
       }
@@ -69,7 +69,7 @@ export const checkPayment = (jwt: string, userId: string) => async (dispatch: Di
 }
 export const checkReceipt = (jwt: string, userId: string) => async (dispatch: any) => {
   try {
-    await axios.patch(`http://52.79.60.204/api/applicants/details/receipt/${userId}`, null, {
+    await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/receipt/${userId}`, null, {
       headers: {
         Authorization: jwt
       }

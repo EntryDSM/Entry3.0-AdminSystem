@@ -26,7 +26,7 @@ class Login extends Component<any, any> {
   }
 
   submit = (): void => {
-    axios.post('http://52.79.60.204/api/auth', {
+    axios.post('https://admin-api.entrydsm.hs.kr:80/api/auth', {
       id: this.state.id,
       pw: this.state.password
     }).then(res => {

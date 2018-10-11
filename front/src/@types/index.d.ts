@@ -11,6 +11,7 @@ interface ApplicantData {
   userId?: string;
   user_id?: string;
   isCheck?: boolean;
+  is_submit: boolean;
 }
 interface ApplicantsData extends Array<ApplicantData> {}
 interface ApplicantInfo {

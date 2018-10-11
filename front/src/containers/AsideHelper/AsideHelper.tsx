@@ -37,8 +37,10 @@ class AsideHelper extends Component<any, any> {
 
   getCSVFile = async () => {
     try {
-      const response = await axios.post('http://52.79.60.204/api/applicants/excel', {
-        users: this.props.applicants.map(applicant => applicant.user_id)
+      const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/excel', {
+        users: this.props.applicants
+          .filter(applicant => applicant.is_submit)
+          .map(applicant => applicant.user_id)
       }, {
         headers: {
           Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
@@ -129,7 +131,8 @@ class AsideHelper extends Component<any, any> {
         helper = ''
         break;
       case 'applicant':
-        helper = <ApplicantHelper />
+        helper = <ApplicantHelper
+                    applicant={this.props.applicant} />
         break;
       default:
         helper = 'error';

@@ -12,7 +12,7 @@ const ApplicantsTableHeader = () =>
     <Type>전형</Type>
     <IsPayment>응시료<br />납부여부</IsPayment>
     <IsReceipt>서류도착<br />확인여부</IsReceipt>
-    <CancleSubmit>최종제출<br />취소</CancleSubmit>
+    <CancleSubmit>지원현황</CancleSubmit>
   </TableHeader>
 
 export default ApplicantsTableHeader;

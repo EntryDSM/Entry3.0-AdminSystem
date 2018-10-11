@@ -27,7 +27,7 @@ const ApplicantsTableRow = ({ rows, checkApplicant, checkPayment, checkReceipt }
           onChange={event => checkReceipt(event)} />
       </IsReceipt>
       <CancleSubmit>
-        <CancleSubmitButton>취소</CancleSubmitButton>
+        {row.is_submit ? '완료' : '작성중'}
       </CancleSubmit>
     </TableRow>
   );
