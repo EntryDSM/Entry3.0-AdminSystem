@@ -35,5 +35,5 @@ class SchoolModel(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
 
-    # one to one
+    # one to one3
     graduate_info = relationship("GraduateInfoModel", uselist=False, backref="user")
