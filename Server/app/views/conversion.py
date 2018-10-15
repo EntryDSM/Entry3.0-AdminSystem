@@ -52,7 +52,7 @@ class IssueExamCode(BaseResource):
     @swag_from(ISSUE_EXAM_CODE_PATCH)
     @check_auth()
     def patch(self):
-        users = request.json['users']
+        users = list(request.json['users'])
         registerd_applicant = [user.user_id for user in db.session.query(UserModel).all()]
 
         check_list = [i in registerd_applicant for i in users]

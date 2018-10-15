@@ -76,6 +76,7 @@ class ViewApplicantDetails(BaseResource):
             } if str(applicant.UserModel.graduate_type.name) != 'GED' else {'is_ged': True}
 
             res = {
+                'user_id': user_id,
                 'main': {
                     'img_path': applicant.InfoModel.img_path,
                     'name': applicant.InfoModel.name,
@@ -92,7 +93,7 @@ class ViewApplicantDetails(BaseResource):
                     'tel': applicant.InfoModel.parent_tel
                 },
                 'academic': academic,
-                'exam_code': applicant.ApplyStatusModel.exam_code
+                'exam_code': applicant.ApplyStatusModel.exam_code,
             }
 
         return self.unicode_safe_json_dumps(res, 200)
