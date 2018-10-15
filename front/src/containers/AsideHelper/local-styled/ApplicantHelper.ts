@@ -20,6 +20,9 @@ export const ApplicantInfoHeader = styled.div`
   width: 150px;
 `
 export const ApplicantInfoContent = styled.div`
+  display: flex;
+  align-items: center;
   width: calc(100% - 150px);
+  font-size: 12px;
   font-weight: light;
 `

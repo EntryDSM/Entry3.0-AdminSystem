@@ -10,6 +10,7 @@ import * as checks from '../../modules/checks/actionCreator';
 import * as exam from '../../modules/exam/actionCreator';
 import ApplicantsHelper from './ApplicantsHelper';
 import ApplicantHelper from './ApplicantHelper';
+import NotSubmitApplicantHelper from './NotSubmitApplicantHelper';
 
 class AsideHelper extends Component<any, any> {
   state = {
@@ -120,14 +121,22 @@ class AsideHelper extends Component<any, any> {
         </Aside>
       );
     } else if (this.state.checkDatas.length === 1) {
-      return (
-        <Aside>
-          <ApplicantHelper
-            applicant={this.state.checkDatas[0]}
-            onIssuingAdmissionNumber={this.issuingAdmissionNumber}
-            cancleFinalSubmit={this.cancleFinalSubmit} />
-        </Aside>
-      );
+      if (this.state.checkDatas[0].basic === undefined) {
+        return (
+          <Aside>
+            <NotSubmitApplicantHelper applicant={this.state.checkDatas[0]} />
+          </Aside>
+        );
+      } else {
+        return (
+          <Aside>
+            <ApplicantHelper
+              applicant={this.state.checkDatas[0]}
+              onIssuingAdmissionNumber={this.issuingAdmissionNumber}
+              cancleFinalSubmit={this.cancleFinalSubmit} />
+          </Aside>
+        );
+      }
     } else if (this.state.checkDatas.length > 1) {
       return (
         <Aside></Aside>
