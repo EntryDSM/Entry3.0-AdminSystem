@@ -50,6 +50,15 @@ interface NotSubmitApplicantInfo {
 interface AsideMode {
   mode: 'all'|'check'|'checks';
 }
+interface ExamTableRows {
+  admission: string;
+  exam_code: string;
+  img_path: string;
+  middle_school: string;
+  name: string;
+  receipt_code: string;
+  region: string;
+}
 // Action
 interface ApplicantsAction extends Action {
   applicantsData: ApplicantsData;
@@ -68,6 +77,10 @@ interface CheckPaymentAction extends Action {
 interface ChangeModeAction extends Action {
   type: 'CHANGE_MODE';
   mode: 'all'|'check'|'checks';
+}
+interface ReuqestExamTableAction extends Action {
+  type: 'REQUEST_EXAM_TABLE';
+  rows: Array<ExamTableRows>;
 }
 
 // Event target

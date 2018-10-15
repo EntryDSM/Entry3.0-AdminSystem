@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { UPDATE_APPLICANTS_DATA } from './action';
+import { CHECK_APPLICANT } from '../checks/action';
 
-export const updateApplicantsData = (jwt: string, search: string) => async (dispatch: Dispatch<UpdateApplicantsDataAction>) => {
+export const updateApplicantsData = (jwt: string, search: string) => async (dispatch: Dispatch<any>) => {
   try {
     const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants?name=${search}`, {
       headers: {
@@ -34,6 +35,10 @@ export const updateApplicantsData = (jwt: string, search: string) => async (disp
         }
       })
     });
+    dispatch({
+      type: CHECK_APPLICANT,
+      checks: []
+    })
   } catch (err) {
     console.log(err);
   }
@@ -56,5 +61,19 @@ export const requestExcel = (jwt: string) => async (dispatch: Dispatch, getState
     link.click();
   } catch (err) {
     console.log(err);
+  }
+}
+export const requestExamTable = (jwt: string) => async (dispatch, getState) => {
+  try {
+    const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/exam_table',
+      getState().applicants.map(applicant => applicant.user_id),
+      {
+        headers: {
+          Authorization: jwt
+        }
+      }
+    )
+  } catch (err) {
+
   }
 }

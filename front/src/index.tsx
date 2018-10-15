@@ -15,6 +15,7 @@ render(
   <Provider store={Store}>
     <CookiesProvider>
       <gs.RootWrapper>
+        
         <Router>
           <Switch>
             <Route path='/login' component={Login} />

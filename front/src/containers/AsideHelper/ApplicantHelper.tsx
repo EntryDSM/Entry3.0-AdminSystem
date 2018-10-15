@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
 import { ApplicantHelperHeader, ApplicantInfoSectionHeader } from './local-styled/ApplicantHelper';
+import FuncButton from './FuncButton';
 import ApplicantInfo from './ApplicantInfo';
 
-const ApplicantHelper = ({ applicant }) => {
-  console.log(applicant);
+const ApplicantHelper = ({ applicant, onIssuingAdmissionNumber, cancleFinalSubmit }) => {
   const { address, name: basicName, tel: basicTel } = applicant.basic;
   const { name: parentName, tel: parentTel } = applicant.parent;
   const { school_name, student_grade, student_class, student_number, graduate_year } = applicant.academic;
+  console.log(applicant);
   return (
     <Fragment>
       <ApplicantHelperHeader>지원자 정보</ApplicantHelperHeader>
@@ -22,6 +23,8 @@ const ApplicantHelper = ({ applicant }) => {
       <ApplicantInfo header='학년-반-번호' info={`${student_grade}-${student_class}-${student_number}`} />
       <ApplicantInfo header='졸업년도' info={graduate_year} />
       <ApplicantInfo header='수험번호' info={applicant.exam_code} />
+      <FuncButton funcName='수험표 출력' clickEvent={() => {}} />
+      <FuncButton funcName='최종제출 취소' id={applicant.user_id} clickEvent={cancleFinalSubmit} />
     </Fragment>   
   );
 }
