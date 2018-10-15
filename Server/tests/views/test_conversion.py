@@ -73,16 +73,22 @@ def test_issue_exam_code(flask_app, create_fake_account):
 
     # issue exam_code success 201
     resp = test_client.patch(
-        '/api/applicants/details/exam_code/{}'.format(SAMPLE_GRADUATE_USER_ID),
-        headers={'Authorization': admin['accessToken']}
+        '/api/applicants/details/exam_code',
+        headers={'Authorization': admin['accessToken']},
+        json={
+            'users': ["001", "003", "004", "006", "008", "011"]
+        }
     )
 
     assert resp.status_code == 201
 
     # non-existence 400
     resp = test_client.patch(
-        '/api/applicants/details/exam_code/{}'.format('101'),
-        headers={'Authorization': admin['accessToken']}
+        '/api/applicants/details/exam_code',
+        headers={'Authorization': admin['accessToken']},
+        json={
+            'users': ["001", "003", "004", "006", "008", "099"]
+        }
     )
 
     assert resp.status_code == 400
