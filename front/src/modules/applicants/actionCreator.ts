@@ -53,10 +53,11 @@ export const requestExcel = (jwt: string) => async (dispatch: Dispatch, getState
       }
     });
     const date = new Date();
-    const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.csv`;
+    const filename = `지원자 현황 ${date.getFullYear()}년${date.getMonth() + 1}월${date.getDay()}일 ${date.getHours()}시${date.getMinutes()}분.xls`;
     const data = encodeURI(response.data);
     const link = document.createElement('a');
     link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${data}`);
+    link.setAttribute('target', '_Blank');
     link.setAttribute('download', filename);
     link.click();
   } catch (err) {
