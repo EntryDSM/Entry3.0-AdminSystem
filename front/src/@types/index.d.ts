@@ -38,7 +38,8 @@ interface SubmitApplicantInfo {
   parent: {
     name: string;
     tel: string;
-  }
+  },
+  user_id?: string;
 }
 interface NotSubmitApplicantInfo {
   name?: string;

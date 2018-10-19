@@ -1,13 +1,18 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SFC } from 'react';
 import { ApplicantHelperHeader, ApplicantInfoSectionHeader } from './local-styled/ApplicantHelper';
 import FuncButton from './FuncButton';
 import ApplicantInfo from './ApplicantInfo';
 
-const ApplicantHelper = ({ applicant, onIssuingAdmissionNumber, cancleFinalSubmit }) => {
+interface Props {
+  applicant: SubmitApplicantInfo;
+  cancleFinalSubmit(event): void;
+}
+
+const ApplicantHelper: SFC<Props> = ({ applicant, cancleFinalSubmit }) => {
   const { address, name: basicName, tel: basicTel } = applicant.basic;
   const { name: parentName, tel: parentTel } = applicant.parent;
   const { school_name, student_grade, student_class, student_number, graduate_year } = applicant.academic;
-  console.log(applicant);
+
   return (
     <Fragment>
       <ApplicantHelperHeader>지원자 정보</ApplicantHelperHeader>

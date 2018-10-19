@@ -132,7 +132,6 @@ class AsideHelper extends Component<any, any> {
           <Aside>
             <ApplicantHelper
               applicant={this.state.checkDatas[0]}
-              onIssuingAdmissionNumber={this.issuingAdmissionNumber}
               cancleFinalSubmit={this.cancleFinalSubmit} />
           </Aside>
         );
