@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCookies } from 'react-cookie';
+import { withCookies, Cookies } from 'react-cookie';
 import _ from 'lodash';
 import { Aside } from './local-styled/AsideHelper';
 import * as applicants from '../../modules/applicants/actionCreator';
@@ -12,7 +12,24 @@ import ApplicantsHelper from './ApplicantsHelper';
 import ApplicantHelper from './ApplicantHelper';
 import NotSubmitApplicantHelper from './NotSubmitApplicantHelper';
 
-class AsideHelper extends Component<any, any> {
+
+const mapStateToProps = (state: any) => ({
+  checks: state.checks,
+  aside: state.aside
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  applicantsActionCreators: bindActionCreators(applicants, dispatch),
+  checksActionCreators: bindActionCreators(checks, dispatch),
+  examActionCreators: bindActionCreators(exam, dispatch)
+});
+
+interface State {
+  search: string;
+  checkDatas: Array<SubmitApplicantInfo|NotSubmitApplicantInfo>;
+  checkIds: Array<string>;
+}
+
+class AsideHelper extends Component<any, State> {
   state = {
     search: '',
     checkDatas: [],
@@ -42,11 +59,11 @@ class AsideHelper extends Component<any, any> {
     this.props.applicantsActionCreators.updateApplicantsData(jwt, searchText);
   }
 
-  inputSearch = ({ target }: Target): void => {
+  inputSearch = (event: React.FormEvent<HTMLInputElement>): void => {
     this.setState({
-      search: target.value
+      search: event.currentTarget.value
     });
-    this.search(target.value);
+    this.search(event.currentTarget.value);
   }
 
   getCSVFile = () => {
@@ -56,14 +73,13 @@ class AsideHelper extends Component<any, any> {
 
   issuingExaminationNumber = async () => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    console.log(this.props);
     this.props.examActionCreators.issuingExaminationNumber(jwt);
   }
 
-  issuingAdmissionNumber = async ({ target }: Target) => {
+  issuingAdmissionNumber = async (event: React.FormEvent<HTMLInputElement>) => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
     try {
-      await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/exam_code/${target.id}`, null, {
+      await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/exam_code/${event.currentTarget.id}`, null, {
         headers: {
           Authorization: jwt
         }
@@ -78,9 +94,9 @@ class AsideHelper extends Component<any, any> {
     this.props.examActionCreators.requestExamTable(jwt);
   }
 
-  cancleFinalSubmit = async ({ target }: Target) => {
+  cancleFinalSubmit = async (event: React.FormEvent<HTMLInputElement>) => {
     const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/final_submit/${target.id}`,
+    await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/final_submit/${event.currentTarget.id}`,
       null,
       {
         headers: {
@@ -145,15 +161,5 @@ class AsideHelper extends Component<any, any> {
     }
   }
 }
-
-const mapStateToProps = (state: any) => ({
-  checks: state.checks,
-  aside: state.aside
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  applicantsActionCreators: bindActionCreators(applicants, dispatch),
-  checksActionCreators: bindActionCreators(checks, dispatch),
-  examActionCreators: bindActionCreators(exam, dispatch)
-});
 
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));
