@@ -8,10 +8,10 @@ interface Props {
   cancleFinalSubmit(event): void;
 }
 
-const ApplicantHelper: SFC<Props> = ({ applicant, cancleFinalSubmit }) => {
-  const { address, name: basicName, tel: basicTel } = applicant.basic;
-  const { name: parentName, tel: parentTel } = applicant.parent;
-  const { school_name, student_grade, student_class, student_number, graduate_year } = applicant.academic;
+const ApplicantHelper: SFC<Props> = props => {
+  const { address, name: basicName, tel: basicTel } = props.applicant.basic;
+  const { name: parentName, tel: parentTel } = props.applicant.parent;
+  const { school_name, student_grade, student_class, student_number, graduate_year } = props.applicant.academic;
 
   return (
     <Fragment>
@@ -26,10 +26,10 @@ const ApplicantHelper: SFC<Props> = ({ applicant, cancleFinalSubmit }) => {
       <ApplicantInfoSectionHeader>기본 학적사항</ApplicantInfoSectionHeader>
       <ApplicantInfo header='중학교' info={school_name} />
       <ApplicantInfo header='학년-반-번호' info={`${student_grade}-${student_class}-${student_number}`} />
-      <ApplicantInfo header='졸업년도' info={graduate_year} />
-      <ApplicantInfo header='수험번호' info={applicant.exam_code} />
+      <ApplicantInfo header='졸업년도' info={`${graduate_year}`} />
+      <ApplicantInfo header='수험번호' info={props.applicant.exam_code} />
       <FuncButton funcName='수험표 출력' clickEvent={() => {}} />
-      <FuncButton funcName='최종제출 취소' id={applicant.user_id} clickEvent={cancleFinalSubmit} />
+      <FuncButton funcName='최종제출 취소' id={props.applicant.user_id} clickEvent={props.cancleFinalSubmit} />
     </Fragment>   
   );
 }
