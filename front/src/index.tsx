@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { Login, Navigation } from './containers';
 import AsideHelper from './containers/AsideHelper/AsideHelper';
 import ExamTable from './containers/ExamTable/ExamTable';
+import Statistics from './containers/Statistics/Statistics';
 import { ApplicantsTable } from './containers/Section';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Store from './modules';
@@ -24,7 +25,12 @@ render(
                 <Navigation />
                 <AsideHelper />
                 <ApplicantsTable />
-                </gs.RootWrapper>} />
+              </gs.RootWrapper>} />
+            <Route path='/statistics' exact render={() =>
+              <gs.RootWrapper>
+                <Navigation />
+                <Statistics />
+              </gs.RootWrapper>} />
           </Switch>
         </Router>
     </CookiesProvider>
