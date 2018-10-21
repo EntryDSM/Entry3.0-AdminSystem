@@ -25,23 +25,23 @@ export const Functions = styled.div`
   margin: auto;
   margin-bottom: 20px;
 `
-export const PrintButton = styled.button`
-  position: absolute;
+const FunctionButton = styled.button`
+  position: aboluste;
   top: 50%;
-  left: 0;
   transform: translateY(-50%);
   width: 100px;
   height: 50px;
   background: none;
   font-size: 15px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
-export const DownloadPDFButton = styled.button`
-  position: absolute;
-  top: 50%;
+export const PrintButton = FunctionButton.extend`
+  left: 0;
+
+`
+export const DownloadPDFButton = FunctionButton.extend`
   right: 0;
-  transform: translateY(-50%);
-  width: 100px;
-  height: 50px;
-  background: none;
-  font-size: 15px;
 `
