@@ -1,6 +1,6 @@
 import { REQUEST_EXAM_TABLE } from './action';
 
-const initialState: Array<ExamTableRows> = [];
+const initialState: Array<ExamTableRow> = [];
 
 const exam = (state = initialState, action) => {
   switch (action.type) {

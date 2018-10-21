@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withCookies, Cookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
+import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { Aside } from './local-styled/AsideHelper';
 import * as applicants from '../../modules/applicants/actionCreator';
@@ -14,6 +15,7 @@ import NotSubmitApplicantHelper from './NotSubmitApplicantHelper';
 
 
 const mapStateToProps = (state: any) => ({
+  applicants: state.applicants,
   checks: state.checks,
   aside: state.aside
 });
@@ -55,7 +57,7 @@ class AsideHelper extends Component<any, State> {
   }
 
   search = (searchText: string): void => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = `JWT ${new Cookies().get('accessToken')}`;
     this.props.applicantsActionCreators.updateApplicantsData(jwt, searchText);
   }
 
@@ -67,35 +69,17 @@ class AsideHelper extends Component<any, State> {
   }
 
   getCSVFile = () => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.applicantsActionCreators.requestExcel(jwt);
   }
 
   issuingExaminationNumber = async () => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.examActionCreators.issuingExaminationNumber(jwt);
   }
 
-  issuingAdmissionNumber = async (event: React.FormEvent<HTMLInputElement>) => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    try {
-      await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/exam_code/${event.currentTarget.id}`, null, {
-        headers: {
-          Authorization: jwt
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  printExamTable = async () => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
-    this.props.examActionCreators.requestExamTable(jwt);
-  }
-
   cancleFinalSubmit = async (event: React.FormEvent<HTMLInputElement>) => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     await axios.patch(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/final_submit/${event.currentTarget.id}`,
       null,
       {
@@ -105,6 +89,10 @@ class AsideHelper extends Component<any, State> {
       }
     )
     this.search('');
+  }
+
+  printExamTable = () => {
+    this.props.history.push('/exam');
   }
   
   static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -133,7 +121,8 @@ class AsideHelper extends Component<any, State> {
             onSearch={this.search}
             onSearchInput={this.inputSearch}
             getCSVFile={this.getCSVFile}
-            issuingExaminationNumber={this.issuingExaminationNumber} />
+            issuingExaminationNumber={this.issuingExaminationNumber}
+            printExamTable={this.printExamTable} />
         </Aside>
       );
     } else if (this.state.checkDatas.length === 1) {
@@ -162,4 +151,4 @@ class AsideHelper extends Component<any, State> {
   }
 }
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(AsideHelper));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AsideHelper));

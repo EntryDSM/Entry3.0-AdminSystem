@@ -1,22 +1,31 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SFC } from 'react';
 import Search from './Search';
 import FuncButton from './FuncButton';
 
-const ApplicantsHelper = ({ searchText, onSearch, onSearchInput, getCSVFile, issuingExaminationNumber }) =>
+interface Props {
+  searchText: string;
+  onSearchInput(event): void;
+  onSearch(searchText: string): void;
+  getCSVFile(): void;
+  issuingExaminationNumber(): void;
+  printExamTable(): void;
+}
+
+const ApplicantsHelper: SFC<Props> = props =>
   <Fragment>
     <Search
-      searchText={searchText}
-      onSearchInput={event => onSearchInput(event)}
-      onSearch={() => onSearch(searchText)} />
+      searchText={props.searchText}
+      onSearchInput={props.onSearchInput}
+      onSearch={() => props.onSearch(props.searchText)} />
     <FuncButton
       funcName='전체 지원자 정보(Excel) 다운로드'
-      clickEvent={() => getCSVFile()} />
+      clickEvent={props.getCSVFile} />
     <FuncButton
       funcName='전체 지원자 수험번호 발급' 
-      clickEvent={() => issuingExaminationNumber()} />
+      clickEvent={props.issuingExaminationNumber} />
     <FuncButton 
       funcName='전체 지원자 수험표 출력' 
-      clickEvent={() => {}} />
+      clickEvent={props.printExamTable} />
   </Fragment>
 
 export default ApplicantsHelper;

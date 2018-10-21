@@ -31,7 +31,7 @@ class Login extends Component<any, any> {
       pw: this.state.password
     }).then(res => {
       const { cookies } = this.props;
-      cookies.set('accessToken', res.data.accessToken);
+      cookies.set('accessToken', `JWT ${res.data.accessToken}`);
       this.setState((prevState: State) => ({
         isLogin: !prevState.isLogin
       }));

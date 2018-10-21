@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { render } from 'react-dom';
 import { Login, Navigation } from './containers';
 import AsideHelper from './containers/AsideHelper/AsideHelper';
+import ExamTable from './containers/ExamTable/ExamTable';
 import { ApplicantsTable } from './containers/Section';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Store from './modules';
@@ -14,20 +15,18 @@ const root = document.getElementById('root') as HTMLElement;
 render(
   <Provider store={Store}>
     <CookiesProvider>
-      <gs.RootWrapper>
-        
         <Router>
           <Switch>
             <Route path='/login' component={Login} />
+            <Route path='/exam' component={ExamTable} />
             <Route path='/' exact render={() =>
-              <Fragment>
+              <gs.RootWrapper>
                 <Navigation />
                 <AsideHelper />
                 <ApplicantsTable />
-              </Fragment>} />
+                </gs.RootWrapper>} />
           </Switch>
         </Router>
-      </gs.RootWrapper>
     </CookiesProvider>
   </Provider>
 , root);

@@ -51,7 +51,7 @@ interface NotSubmitApplicantInfo {
 interface AsideMode {
   mode: 'all'|'check'|'checks';
 }
-interface ExamTableRows {
+interface ExamTableRow {
   admission: string;
   exam_code: string;
   img_path: string;
@@ -81,12 +81,18 @@ interface ChangeModeAction extends Action {
 }
 interface ReuqestExamTableAction extends Action {
   type: 'REQUEST_EXAM_TABLE';
-  rows: Array<ExamTableRows>;
+  rows: Array<ExamTableRow>;
 }
 
 // Event target
 interface Target {
   target: HTMLInputElement;
+}
+
+interface AccessToken {
+  cookies: {
+    accessToken: string;
+  }
 }
 
 // Image load

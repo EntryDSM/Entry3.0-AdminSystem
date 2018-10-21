@@ -10,6 +10,7 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.3.0",
     "axios": "^0.18.0",
+    "html2canvas": "^1.0.0-alpha.12",
     "lodash": "^4.17.11",
     "react": "^16.4.2",
     "react-cookie": "^3.0.4",

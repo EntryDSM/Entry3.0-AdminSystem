@@ -5,27 +5,27 @@ import { Redirect } from 'react-router';
 import { ApplicantsTableWrapper, Table } from './local-styled/ApplicantsTable';
 import ApplicantsTableHeader from './ApplicantsTableHeader';
 import ApplicantsTableRow from './ApplicantsTableRow';
-import { withCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import * as checks from '../../modules/checks/actionCreator';
 
 class ApplicantsTable extends Component<any, any> {
   checkPayment = ({ target }: Target) => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.checksActionCreators.checkPayment(jwt, target.id);
   }
 
   checkReceipt = ({ target }: Target) => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.checksActionCreators.checkReceipt(jwt, target.id);
   }
 
   checkApplicant = ({ target }: Target) => {
-    const jwt = `JWT ${this.props.cookies.cookies.accessToken}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.checksActionCreators.checkApplicant(jwt, target.id);
   }
 
   render() {
-    if (this.props.cookies.cookies.accessToken === undefined) {
+    if (new Cookies().get('accessToken') === undefined) {
       return <Redirect to='/login' />
     } else {
       return (
@@ -51,4 +51,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   checksActionCreators: bindActionCreators(checks, dispatch)
 });
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(ApplicantsTable));
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicantsTable);
