@@ -13,7 +13,6 @@ import ApplicantsHelper from './ApplicantsHelper';
 import ApplicantHelper from './ApplicantHelper';
 import NotSubmitApplicantHelper from './NotSubmitApplicantHelper';
 
-
 const mapStateToProps = (state: any) => ({
   applicants: state.applicants,
   checks: state.checks,
@@ -43,10 +42,11 @@ class AsideHelper extends Component<any, State> {
   }
 
   updateChecksData = async (checks: Array<string>) => {
+    const jwt = new Cookies().get('accessToken');
     const checkDatas = await Promise.all(checks.map(async userId => {
       const response = await axios.get(`https://admin-api.entrydsm.hs.kr:80/api/applicants/details/information/${userId}`, {
         headers: {
-          Authorization: `JWT ${this.props.cookies.cookies.accessToken}`
+          Authorization: jwt
         }
       });
       return response.data;
@@ -57,7 +57,7 @@ class AsideHelper extends Component<any, State> {
   }
 
   search = (searchText: string): void => {
-    const jwt = `JWT ${new Cookies().get('accessToken')}`;
+    const jwt = new Cookies().get('accessToken');
     this.props.applicantsActionCreators.updateApplicantsData(jwt, searchText);
   }
 
@@ -143,7 +143,9 @@ class AsideHelper extends Component<any, State> {
       }
     } else if (this.state.checkDatas.length > 1) {
       return (
-        <Aside></Aside>
+        <Aside>
+          <h1>중복선택 기능은 준비중입니다.</h1>
+        </Aside>
       );
     } else {
       return <div>Error</div>

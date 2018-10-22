@@ -47,7 +47,9 @@ class ExamTable extends Component<Props, State> {
     const jwt = new Cookies().get('accessToken');
     try {
       const response = await axios.post('https://admin-api.entrydsm.hs.kr:80/api/applicants/exam_table',
-        this.props.applicants.map(applicant => applicant.user_id),
+        {
+          users: this.props.applicants.map(applicant => applicant.user_id)
+        },
         {
           headers: {
             Authorization: jwt

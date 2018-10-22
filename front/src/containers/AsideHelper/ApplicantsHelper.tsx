@@ -20,12 +20,12 @@ const ApplicantsHelper: SFC<Props> = props =>
     <FuncButton
       funcName='전체 지원자 정보(Excel) 다운로드'
       clickEvent={props.getCSVFile} />
-    <FuncButton
+    {/* <FuncButton
       funcName='전체 지원자 수험번호 발급' 
       clickEvent={props.issuingExaminationNumber} />
     <FuncButton 
       funcName='전체 지원자 수험표 출력' 
-      clickEvent={props.printExamTable} />
+      clickEvent={props.printExamTable} /> */}
   </Fragment>
 
 export default ApplicantsHelper;

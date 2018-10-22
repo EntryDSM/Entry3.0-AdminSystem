@@ -1,9 +1,15 @@
-import React from 'react';
-import { AsideNavigationItem } from './local-styles/NavigationItem';
+import React, { SFC } from 'react';
+import { AsideNavigationItem, AsideNavigationItemImage } from './local-styles/NavigationItem';
 
-const NavigationItem = () =>
-  <AsideNavigationItem>
-    
+interface Props {
+  id: string;
+  image: string;
+  move(event): void;
+}
+
+const NavigationItem: SFC<Props> = props =>
+  <AsideNavigationItem id={props.id} onClick={props.move}>
+    <AsideNavigationItemImage src={props.image} />
   </AsideNavigationItem>
 
 export default NavigationItem;
