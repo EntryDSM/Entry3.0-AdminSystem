@@ -224,7 +224,7 @@ class Statistics extends Component<Props, State> {
   async componentDidMount() {
     const jwt = new Cookies().get('accessToken');
     try {
-      const response = await axios.get('https://admin-api.entrydsm.hs.kr:80/api/statistics', {
+      const response = await axios.get('https://admin-api.entrydsm.hs.kr:80/api/statistic', {
         headers: {
           Authorization: jwt
         }
@@ -237,7 +237,7 @@ class Statistics extends Component<Props, State> {
   }
 
   render() {
-    if (this.state.isUpdate) {
+    if (!this.state.isUpdate) {
       return <div>Loading...</div>
     } else {
       return (

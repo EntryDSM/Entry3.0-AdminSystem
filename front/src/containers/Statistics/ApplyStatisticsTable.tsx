@@ -80,7 +80,7 @@ const ApplyStatisticsTable: SFC<Props> = props =>
       <Tr>
         <Td colSpan={2}>총계</Td>
         <Td colSpan={2}>{props.numberOfApplicants.daejeon.total + props.numberOfApplicants.nationwide.total}</Td>
-        <Td colSpan={2}>{props.competitionRate.daejeon.total + props.competitionRate.nationwide.total}</Td>
+        <Td colSpan={2}>{props.competitionRate.total}</Td>
       </Tr>
     </TBody>
   </Table>
