@@ -129,7 +129,7 @@ const GradeStatistics: SFC<Props> = props =>
         <Td>{props.onScore.daejeon.social['120u']}</Td>
       </Tr>
       <Tr>
-        <Td>109~110</Td>
+        <Td>101~110</Td>
         <Td>{props.onScore.nationwide.normal['110u']}</Td>
         <Td>{props.onScore.nationwide.meister['110u']}</Td>
         <Td>{props.onScore.nationwide.social['110u']}</Td>
