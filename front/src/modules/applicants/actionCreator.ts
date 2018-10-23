@@ -75,6 +75,6 @@ export const requestExamTable = (jwt: string) => async (dispatch, getState) => {
       }
     )
   } catch (err) {
-
+    console.log(err);
   }
 }

@@ -1,5 +1,6 @@
 import React, { Fragment, SFC } from 'react';
 import { SearchBox, SearchIcon, SearchInput, SearchButton, SearchWrapper } from './local-styled/Search';
+import SearchCondition from './SearchCondition';
 import gs from '../../global-styled';
 import ic_search from './res/ic_search.png';
 
@@ -22,6 +23,7 @@ const Search: SFC<Props> = props =>
       </SearchBox>
       <SearchButton onClick={props.onSearch}>검색</SearchButton>
     </SearchWrapper>
+    <SearchCondition />
   </Fragment>
 
 export default Search;
